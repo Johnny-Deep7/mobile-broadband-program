@@ -11,24 +11,26 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class IndustrialParkDTO implements Serializable {
-    private String Id;
-    private String Substation;
-    private String CustomerManager;
-    private String ContactWay;
-    private String HotelName;
-    private String IsCovered;
-    private String RoomNumber;
-    private String GroupNumber;
-    private String Address;
-    private String Type;
-    private String Operator;
-    private String EndTime1;
-    private String InternetCharge;
-    private String EndTime2;
-    private String ResponsiblePerson;
-    private String Position;
-    private String PhoneNumber;
-    private String VisitDate;
-    private String VisitInformation;
-    private String DifficultPoint;
+    private int id;
+    private String substation;
+    private String customerManager;
+    private String contactWay;
+    private String hotelName;
+    private String isCovered;
+    private int roomNumber;
+    private String groupNumber;
+    private String address;
+    private String type;
+    private String operator;
+    private String endTime1;
+    private String internetCharge;
+    private String endTime2;
+    private String responsiblePerson;
+    private String position;
+    private String phoneNumber;
+    private String visitDate;
+    private String visitInformation;
+    private String difficultPoint;
+    private int enterpriseNuMBER;
+    private int buildingNum;
 }
