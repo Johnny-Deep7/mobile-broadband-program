@@ -1,4 +1,6 @@
 package com.tencent.wxcloudrun.dto;
 
-public class HotelDTO {
+import java.io.Serializable;
+
+public class HotelDTO implements Serializable {
 }
