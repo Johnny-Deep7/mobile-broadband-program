@@ -2,132 +2,219 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tencent.wxcloudrun.mapper.HotelMapper">
 
-<insert id="insert"
-        parameterType="com.tencent.wxcloudrun.pto.HotelPTO" useGeneratedKeys="true">
-    INSERT INTO mbp_hotel
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-        <if test="id != null">
-            ID,
+    <insert id="insert"
+            parameterType="com.tencent.wxcloudrun.pto.HotelPTO" useGeneratedKeys="true">
+        INSERT INTO mbp_hotel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="substation != null">
+                SUBSTATION,
+            </if>
+            <if test="customerManager != null">
+                CUSTOMER_MANAGER,
+            </if>
+            <if test="contactWay != null">
+                CONTACT_WAY,
+            </if>
+            <if test="hotelName != null">
+                HOTEL_NAME,
+            </if>
+            <if test="isCovered != null">
+                IS_COVERED,
+            </if>
+            <if test="roomNumber != null">
+                ROOM_NUMBER,
+            </if>
+            <if test="groupNumber != null">
+                GROUP_NUMBER,
+            </if>
+            <if test="address != null">
+                ADDRESS,
+            </if>
+            <if test="type != null">
+                TYPE,
+            </if>
+            <if test="operator != null">
+                OPERATOR,
+            </if>
+            <if test="endTime1 != null">
+                END_TIME1,
+            </if>
+            <if test="internetCharge != null">
+                INTERNET_CHARGE,
+            </if>
+            <if test="endTime2 != null">
+                END_TIME2,
+            </if>
+            <if test="responsiblePerson != null">
+                RESPONSIBLE_PERSON,
+            </if>
+            <if test="position != null">
+                POSITION,
+            </if>
+            <if test="phoneNumber != null">
+                PHONE_NUMBER,
+            </if>
+            <if test="visitDate != null">
+                VISIT_DATE,
+            </if>
+            <if test="visitInformation != null">
+                VISIT_INFORMATION,
+            </if>
+            <if test="difficultPoint != null">
+                DIFFICULT_POINT,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="substation != null">
+                #{substation,jdbcType=VARCHAR},
+            </if>
+            <if test="customerManager != null">
+                #{customerManager,jdbcType=VARCHAR},
+            </if>
+            <if test="contactWay != null">
+                #{contactWay,jdbcType=INTEGER},
+            </if>
+            <if test="hotelName != null">
+                #{hotelName,jdbcType=VARCHAR},
+            </if>
+            <if test="isCovered != null">
+                #{isCovered,jdbcType=VARCHAR},
+            </if>
+            <if test="roomNumber != null">
+                #{roomNumber,jdbcType=INTEGER},
+            </if>
+            <if test="groupNumber != null">
+                #{groupNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="operator != null">
+                #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime1 != null">
+                #{endTime1,jdbcType=VARCHAR},
+            </if>
+            <if test="internetCharge != null">
+                #{internetCharge,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime2 != null">
+                #{endTime2,jdbcType=TIMESTAMP},
+            </if>
+            <if test="responsiblePerson != null">
+                #{responsiblePerson,jdbcType=VARCHAR},
+            </if>
+            <if test="position != null">
+                #{position,jdbcType=VARCHAR},
+            </if>
+            <if test="phoneNumber != null">
+                #{phoneNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="visitDate != null">
+                #{visitDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="visitInformation != null">
+                #{visitInformation,jdbcType=VARCHAR},
+            </if>
+            <if test="difficultPoint != null">
+                #{difficultPoint,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteById">
+        delete
+        from mbp_hotel
+        where ID = #{id}
+    </delete>
+
+    <select id="listHotel"
+            resultType="com.tencent.wxcloudrun.pto.HotelPTO"
+            parameterType="com.tencent.wxcloudrun.pto.HotelPTO">
+    select * from mbp_hotel
+        where 1=1
+        <if test="null != id and id != ''">
+            and ID = #{id}
         </if>
-        <if test="substation != null">
-            SUBSTATION,
+        <if test="null != substation and substation != ''">
+            and SUBSTATION = #{substation}
         </if>
-        <if test="customerManager != null">
-            CUSTOMER_MANAGER,
+        <if test="null != customerManager and customerManager != ''">
+            and CUSTOMER_MANAGER = #{customerManager}
         </if>
-        <if test="contactWay != null">
-            CONTACT_WAY,
+        <if test="null != contactWay and contactWay != ''">
+            and CONTACT_WAY = #{contactWay}
         </if>
-        <if test="hotelName != null">
-            HOTEL_NAME,
+        <if test="null != hotelName and hotelName != ''">
+            and HOTEL_NAME = #{hotelName}
         </if>
-        <if test="isCovered != null">
-            IS_COVERED,
-        </if>
-        <if test="roomNumber != null">
-            ROOM_NUMBER,
-        </if>
-        <if test="groupNumber != null">
-            GROUP_NUMBER,
-        </if>
-        <if test="address != null">
-            ADDRESS,
-        </if>
-        <if test="type != null">
-            TYPE,
-        </if>
-        <if test="operator != null">
-            OPERATOR,
-        </if>
-        <if test="endTime1 != null">
-            END_TIME1,
-        </if>
-        <if test="internetCharge != null">
-            INTERNET_CHARGE,
-        </if>
-        <if test="endTime2 != null">
-            END_TIME2,
-        </if>
-        <if test="responsiblePerson != null">
-            RESPONSIBLE_PERSON,
-        </if>
-        <if test="position != null">
-            POSITION,
-        </if>
-        <if test="phoneNumber != null">
-            PHONE_NUMBER,
-        </if>
-        <if test="visitDate != null">
-            VISIT_DATE,
-        </if>
-        <if test="visitInformation != null">
-            VISIT_INFORMATION,
-        </if>
-        <if test="difficultPoint != null">
-            DIFFICULT_POINT,
-        </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-        <if test="id != null">
-            #{id,jdbcType=INTEGER},
-        </if>
-        <if test="substation != null">
-            #{substation,jdbcType=VARCHAR},
-        </if>
-        <if test="customerManager != null">
-            #{customerManager,jdbcType=VARCHAR},
-        </if>
-        <if test="contactWay != null">
-            #{contactWay,jdbcType=INTEGER},
-        </if>
-        <if test="hotelName != null">
-            #{hotelName,jdbcType=VARCHAR},
-        </if>
-        <if test="isCovered != null">
-            #{isCovered,jdbcType=VARCHAR},
-        </if>
-        <if test="roomNumber != null">
-            #{roomNumber,jdbcType=INTEGER},
-        </if>
-        <if test="groupNumber != null">
-            #{groupNumber,jdbcType=VARCHAR},
-        </if>
-        <if test="address != null">
-            #{address,jdbcType=VARCHAR},
-        </if>
-        <if test="type != null">
-            #{type,jdbcType=VARCHAR},
-        </if>
-        <if test="operator != null">
-            #{operator,jdbcType=VARCHAR},
-        </if>
-        <if test="endTime1 != null">
-            #{endTime1,jdbcType=VARCHAR},
-        </if>
-        <if test="internetCharge != null">
-            #{internetCharge,jdbcType=VARCHAR},
-        </if>
-        <if test="endTime2 != null">
-            #{endTime2,jdbcType=TIMESTAMP},
-        </if>
-        <if test="responsiblePerson != null">
-            #{responsiblePerson,jdbcType=VARCHAR},
-        </if>
-        <if test="position != null">
-            #{position,jdbcType=VARCHAR},
-        </if>
-        <if test="phoneNumber != null">
-            #{phoneNumber,jdbcType=VARCHAR},
-        </if>
-        <if test="visitDate != null">
-            #{visitDate,jdbcType=TIMESTAMP},
-        </if>
-        <if test="visitInformation != null">
-            #{visitInformation,jdbcType=VARCHAR},
-        </if>
-        <if test="difficultPoint != null">
-            #{difficultPoint,jdbcType=VARCHAR},
-        </if>
-    </trim>
-</insert>
+    </select>
+
+    <update id="update"
+            parameterType="com.tencent.wxcloudrun.pto.HotelPTO" >
+        update mbp_hotel
+        <set>
+            <if test="null != substation and substation != ''">
+                SUBSTATION = #{substation}
+            </if>
+            <if test="null != customerManager and customerManager != ''">
+                CUSTOMER_MANAGER = #{customerManager}
+            </if>
+            <if test="null != contactWay and contactWay != ''">
+                CONTACT_WAY = #{contactWay}
+            </if>
+            <if test="null != hotelName and hotelName != ''">
+                HOTEL_NAME = #{hotelName}
+            </if>
+            <if test="null != isCovered and isCovered != ''">
+                IS_COVERED = #{isCovered}
+            </if>
+            <if test="null != roomNumber and roomNumber != ''">
+                ROOM_NUMBER = #{roomNumber}
+            </if>
+            <if test="null != groupNumber and groupNumber != ''">
+                GROUP_NUMBER = #{groupNumber}
+            </if>
+            <if test="null != address and address != ''">
+                ADDRESS = #{address}
+            </if>
+            <if test="null != type and type != ''">
+                TYPE = #{type}
+            </if>
+            <if test="null != operator and operator != ''">
+                OPERATOR = #{operator}
+            </if>
+            <if test="null != endTime1 and endTime1 != ''">
+                END_TIME1 = #{endTime1}
+            </if>
+            <if test="null != internetCharge and internetCharge != ''">
+                INTERNET_CHARGE = #{internetCharge}
+            </if>
+            <if test="null != endTime2 and endTime2 != ''">
+                END_TIME2 = #{endTime2}
+            </if>
+            <if test="null != responsiblePerson and responsiblePerson != ''">
+                RESPONSIBLE_PERSON = #{responsiblePerson}
+            </if>
+            <if test="null != position and position != ''">
+                POSITION = #{position}
+            </if>
+            <if test="null != phoneNumber and phoneNumber != ''">
+                PHONE_NUMBER = #{phoneNumber}
+            </if>
+            <if test="null != visitDate and visitDate != ''">
+                VISIT_DATE = #{visitDate}
+            </if>
+            <if test="null != visitInformation and visitInformation != ''">
+                VISIT_INFORMATION = #{visitInformation}
+            </if>
+            <if test="null != difficultPoint and difficultPoint != ''">
+                DIFFICULT_POINT = #{difficultPoint}
+            </if>
+        </set>
+        where ID = #{id}
+    </update>
 </mapper>

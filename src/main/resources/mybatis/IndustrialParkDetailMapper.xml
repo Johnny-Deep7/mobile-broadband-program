@@ -6,9 +6,6 @@
             parameterType="com.tencent.wxcloudrun.pto.IndustrialParkDetailPTO" useGeneratedKeys="true">
         INSERT INTO mbp_sub_industrial_park
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                ID,
-            </if>
             <if test="substation != null">
                 SUBSTATION,
             </if>
@@ -74,9 +71,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
             <if test="substation != null">
                 #{substation,jdbcType=VARCHAR},
             </if>
@@ -139,4 +133,9 @@
             </if>
         </trim>
     </insert>
+    <delete id="deleteById">
+        delete
+        from mbp_sub_industrial_park
+        where ID = #{id}
+    </delete>
 </mapper>

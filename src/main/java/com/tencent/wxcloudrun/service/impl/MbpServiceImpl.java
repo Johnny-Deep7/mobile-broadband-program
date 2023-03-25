@@ -2,11 +2,10 @@ package com.tencent.wxcloudrun.service.impl;
 
 import com.tencent.wxcloudrun.service.MbpService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.apache.poi.ss.usermodel.*;
+
 
 import java.io.*;
 import java.util.ArrayList;

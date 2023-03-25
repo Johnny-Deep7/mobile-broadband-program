@@ -6,9 +6,6 @@
             parameterType="com.tencent.wxcloudrun.pto.CommercialBuildingDetailPTO" useGeneratedKeys="true">
         INSERT INTO mbp_sub_commercial_building
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                ID,
-            </if>
             <if test="floor != null">
                 FLOOR,
             </if>
@@ -89,9 +86,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
             <if test="floor != null">
                 #{floor,jdbcType=INTEGER},
             </if>
@@ -172,4 +166,10 @@
             </if>
         </trim>
     </insert>
+
+    <delete id="deleteById">
+        delete
+        from mbp_sub_commercial_building
+        where ID = #{id}
+    </delete>
 </mapper>

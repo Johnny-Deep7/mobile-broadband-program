@@ -8,4 +8,9 @@ public interface HotelMapper {
 
     int insert(HotelPTO hotelPTO);
 
+    int deleteById(int id);
+
+    HotelPTO listHotel(HotelPTO hotelPTO);
+
+    int update(HotelPTO hotelPTO);
 }

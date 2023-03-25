@@ -6,9 +6,6 @@
             parameterType="com.tencent.wxcloudrun.pto.IndustrialParkPTO" useGeneratedKeys="true">
         INSERT INTO mbp_industrial_park
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                ID,
-            </if>
             <if test="substation != null">
                 SUBSTATION,
             </if>
@@ -74,9 +71,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
             <if test="substation != null">
                 #{substation,jdbcType=VARCHAR},
             </if>
@@ -142,4 +136,32 @@
             </if>
         </trim>
     </insert>
+
+    <delete id="deleteById">
+        delete
+        from mbp_industrial_park
+        where ID = #{id}
+    </delete>
+
+    <select id="listIndustrialPark"
+            resultType="com.tencent.wxcloudrun.pto.IndustrialParkPTO"
+            parameterType="com.tencent.wxcloudrun.pto.IndustrialParkPTO">
+        select * from mbp_industrial_park
+        where 1=1
+        <if test="null != id and id != ''">
+            and ID = #{id}
+        </if>
+        <if test="null != substation and substation != ''">
+            and SUBSTATION = #{substation}
+        </if>
+        <if test="null != customerManager and customerManager != ''">
+            and CUSTOMER_MANAGER = #{customerManager}
+        </if>
+        <if test="null != contactWay and contactWay != ''">
+            and CONTACT_WAY = #{contactWay}
+        </if>
+        <if test="null != hotelName and hotelName != ''">
+            and HOTEL_NAME = #{hotelName}
+        </if>
+    </select>
 </mapper>
