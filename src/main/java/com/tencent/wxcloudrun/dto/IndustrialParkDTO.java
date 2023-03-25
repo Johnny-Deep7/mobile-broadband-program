@@ -31,6 +31,6 @@ public class IndustrialParkDTO implements Serializable {
     private String visitDate;
     private String visitInformation;
     private String difficultPoint;
-    private int enterpriseNuMBER;
+    private int enterpriseNumber;
     private int buildingNum;
 }

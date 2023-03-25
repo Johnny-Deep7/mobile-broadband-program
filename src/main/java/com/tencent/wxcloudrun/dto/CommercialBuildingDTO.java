@@ -22,7 +22,7 @@ public class CommercialBuildingDTO implements Serializable {
     private String address;
     private String type;
     private String operator;
-    private String endNime1;
+    private String endTime1;
     private String internetCharge;
     private String endTime2;
     private String responsiblePerson;

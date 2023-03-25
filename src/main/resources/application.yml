@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 8080
 
 
 spring:
@@ -16,5 +16,5 @@ spring:
 mybatis:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  mapper-locations: classpath*:mapper/*Mapper.xml
+  mapper-locations: classpath*:mybatis/*Mapper.xml
 
