@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan(basePackages = {"com.tencent.wxcloudrun.dao"})
+@MapperScan(basePackages = {"com.tencent.wxcloudrun.mapper"})
 public class WxCloudRunApplication {  
 
   public static void main(String[] args) {
