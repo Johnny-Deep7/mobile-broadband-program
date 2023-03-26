@@ -1,19 +1,26 @@
 package com.tencent.wxcloudrun.service.impl;
 
+import com.tencent.wxcloudrun.dto.HotelDTO;
+import com.tencent.wxcloudrun.mapper.HotelMapper;
+import com.tencent.wxcloudrun.pto.HotelPTO;
 import com.tencent.wxcloudrun.service.MbpService;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.annotation.Resource;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @Slf4j
 public class MbpServiceImpl implements MbpService {
+    @Resource
+    private HotelMapper hotelMapper;
     @Override
     public void parsingTable(MultipartFile multipartFile) {
         File file = null;
@@ -77,6 +84,46 @@ public class MbpServiceImpl implements MbpService {
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    public void create(HotelDTO hotelDTO) {
+        HotelPTO hotelPTO = new HotelPTO();
+        BeanUtils.copyProperties(hotelDTO,hotelPTO);
+        try{
+            hotelMapper.insert(hotelPTO);
+        }catch (Exception e) {
+            throw new RuntimeException("新建失败！");
+        }
+    }
+
+    public void listHotel(HotelDTO hotelDTO) {
+        HotelPTO hotelPTO = new HotelPTO();
+        BeanUtils.copyProperties(hotelDTO,hotelPTO);
+        try{
+            hotelMapper.listHotel(hotelPTO);
+        }catch (Exception e) {
+            throw new RuntimeException("查询失败！");
+        }
+    }
+
+    public void delete(HotelDTO hotelDTO) {
+        HotelPTO hotelPTO = new HotelPTO();
+        BeanUtils.copyProperties(hotelDTO,hotelPTO);
+        try{
+            hotelMapper.deleteById(hotelPTO.getId());
+        }catch (Exception e) {
+            throw new RuntimeException("删除失败！");
+        }
+    }
+
+    public void update(HotelDTO hotelDTO) {
+        HotelPTO hotelPTO = new HotelPTO();
+        BeanUtils.copyProperties(hotelDTO,hotelPTO);
+        try{
+            hotelMapper.update(hotelPTO);
+        }catch (Exception e) {
+            throw new RuntimeException("修改失败！");
         }
     }
 
