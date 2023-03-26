@@ -33,7 +33,7 @@ public class MbpController {
     }
 
     @GetMapping(value = "/listHotel")
-    public void listHotel(@RequestBody int id) {
+    public void listHotel(@RequestParam("id") int id) {
         log.info("查询宾馆数据开始！");
         mbpService.listHotel(id);
     }
