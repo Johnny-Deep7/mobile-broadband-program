@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.service.impl;
 
+import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.HotelDTO;
 import com.tencent.wxcloudrun.mapper.HotelMapper;
 import com.tencent.wxcloudrun.pto.HotelPTO;
@@ -87,44 +88,54 @@ public class MbpServiceImpl implements MbpService {
         }
     }
 
-    public void create(HotelDTO hotelDTO) {
+    public ApiResponse create(HotelDTO hotelDTO) {
+        ApiResponse apiResponse = new ApiResponse();
         HotelPTO hotelPTO = new HotelPTO();
         BeanUtils.copyProperties(hotelDTO,hotelPTO);
-        try{
-            hotelMapper.insert(hotelPTO);
-        }catch (Exception e) {
-            throw new RuntimeException("新建失败！");
+
+        int i = hotelMapper.insert(hotelPTO);
+        if(i>0){
+            apiResponse.setMsg("添加成功");
+        }else{
+            apiResponse.setMsg("添加失败");
         }
+        return apiResponse;
     }
 
-    public void listHotel(int id) {
-//        HotelPTO hotelPTO = new HotelPTO();
-//        BeanUtils.copyProperties(hotelDTO,hotelPTO);
-        try{
-            hotelMapper.listHotel(id);
-        }catch (Exception e) {
-            throw new RuntimeException("查询失败！");
-        }
-    }
-
-    public void delete(HotelDTO hotelDTO) {
+    public ApiResponse listHotel(HotelDTO hotelDTO) {
+        ApiResponse apiResponse = new ApiResponse();
         HotelPTO hotelPTO = new HotelPTO();
         BeanUtils.copyProperties(hotelDTO,hotelPTO);
-        try{
-            hotelMapper.deleteById(hotelPTO.getId());
-        }catch (Exception e) {
-            throw new RuntimeException("删除失败！");
-        }
+        HotelPTO hotelPto = hotelMapper.listHotel(hotelPTO);
+        apiResponse.setData(hotelPto);
+        apiResponse.setMsg("查询成功");
+        return apiResponse;
     }
 
-    public void update(HotelDTO hotelDTO) {
+    public ApiResponse delete(HotelDTO hotelDTO) {
+        ApiResponse apiResponse = new ApiResponse();
         HotelPTO hotelPTO = new HotelPTO();
         BeanUtils.copyProperties(hotelDTO,hotelPTO);
-        try{
-            hotelMapper.update(hotelPTO);
-        }catch (Exception e) {
-            throw new RuntimeException("修改失败！");
+        int i = hotelMapper.deleteById(hotelPTO.getId());
+        if(i>0){
+            apiResponse.setMsg("删除成功");
+        }else{
+            apiResponse.setMsg("删除失败");
         }
+        return apiResponse;
+    }
+
+    public ApiResponse update(HotelDTO hotelDTO) {
+        ApiResponse apiResponse = new ApiResponse();
+        HotelPTO hotelPTO = new HotelPTO();
+        BeanUtils.copyProperties(hotelDTO,hotelPTO);
+        int i = hotelMapper.update(hotelPTO);
+        if(i>0){
+            apiResponse.setMsg("修改成功");
+        }else{
+            apiResponse.setMsg("修改失败");
+        }
+        return apiResponse;
     }
 
 //    /**

@@ -11,13 +11,13 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class HotelPTO implements Serializable {
 
-    private int id;
+    private Integer id;
     private String substation;
     private String customerManager;
     private String contactWay;
     private String hotelName;
     private String isCovered;
-    private int roomNumber;
+    private Integer roomNumber;
     private String groupNumber;
     private String address;
     private String type;

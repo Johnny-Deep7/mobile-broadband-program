@@ -1,7 +1,9 @@
 package com.tencent.wxcloudrun.controller;
 
 
+import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.HotelDTO;
+import com.tencent.wxcloudrun.mbp.service;
 import com.tencent.wxcloudrun.service.MbpService;
 import com.tencent.wxcloudrun.service.impl.MbpServiceImpl;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.xml.ws.Service;
 
 @RestController
 @Slf4j
@@ -27,26 +30,26 @@ public class MbpController {
     }
 
     @PostMapping(value = "/create")
-    public void create(@RequestBody HotelDTO hotelDTO) {
+    public ApiResponse create(@RequestBody HotelDTO hotelDTO) {
         log.info("添加宾馆数据开始！");
-        mbpService.create(hotelDTO);
+        return mbpService.create(hotelDTO);
     }
 
-    @GetMapping(value = "/listHotel")
-    public void listHotel(@RequestParam("id") int id) {
+    @PostMapping(value = "/listHotel")
+    public ApiResponse listHotel(@RequestBody HotelDTO hotelDTO) {
         log.info("查询宾馆数据开始！");
-        mbpService.listHotel(id);
+        return mbpService.listHotel(hotelDTO);
     }
 
     @DeleteMapping(value = "/delete")
-    public void delete(@RequestBody HotelDTO hotelDTO) {
+    public ApiResponse delete(@RequestBody HotelDTO hotelDTO) {
         log.info("删除宾馆数据开始！");
-        mbpService.delete(hotelDTO);
+        return mbpService.delete(hotelDTO);
     }
 
     @PutMapping(value = "/update")
-    public void update(@RequestBody HotelDTO hotelDTO) {
+    public ApiResponse update(@RequestBody HotelDTO hotelDTO) {
         log.info("更新宾馆数据开始！");
-        mbpService.update(hotelDTO);
+        return mbpService.update(hotelDTO);
     }
 }

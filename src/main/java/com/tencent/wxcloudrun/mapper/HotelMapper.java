@@ -10,7 +10,7 @@ public interface HotelMapper {
 
     int deleteById(int id);
 
-    HotelPTO listHotel(int id);
+    HotelPTO listHotel(HotelPTO hotelPTO);
 
     int update(HotelPTO hotelPTO);
 }

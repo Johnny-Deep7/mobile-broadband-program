@@ -3,8 +3,10 @@ package com.tencent.wxcloudrun;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
+@EnableTransactionManagement
 @MapperScan(basePackages = {"com.tencent.wxcloudrun.mapper"})
 public class WxCloudRunApplication {  
 
