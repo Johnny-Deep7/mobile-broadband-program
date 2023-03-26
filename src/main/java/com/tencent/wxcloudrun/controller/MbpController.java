@@ -33,9 +33,9 @@ public class MbpController {
     }
 
     @GetMapping(value = "/listHotel")
-    public void listHotel(@RequestBody HotelDTO hotelDTO) {
+    public void listHotel(@RequestBody int id) {
         log.info("查询宾馆数据开始！");
-        mbpService.listHotel(hotelDTO);
+        mbpService.listHotel(id);
     }
 
     @DeleteMapping(value = "/delete")

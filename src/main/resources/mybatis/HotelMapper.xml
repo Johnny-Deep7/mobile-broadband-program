@@ -131,27 +131,32 @@
         where ID = #{id}
     </delete>
 
-    <select id="listHotel"
-            resultType="com.tencent.wxcloudrun.pto.HotelPTO"
-            parameterType="com.tencent.wxcloudrun.pto.HotelPTO">
-    select * from mbp_hotel
-        where 1=1
-        <if test="null != id and id != ''">
-            and ID = #{id}
-        </if>
-        <if test="null != substation and substation != ''">
-            and SUBSTATION = #{substation}
-        </if>
-        <if test="null != customerManager and customerManager != ''">
-            and CUSTOMER_MANAGER = #{customerManager}
-        </if>
-        <if test="null != contactWay and contactWay != ''">
-            and CONTACT_WAY = #{contactWay}
-        </if>
-        <if test="null != hotelName and hotelName != ''">
-            and HOTEL_NAME = #{hotelName}
-        </if>
+    <select id="listHotel" resultType="com.tencent.wxcloudrun.pto.HotelPTO">
+        select * from mbp_hotel where
+            ID = #{id}
     </select>
+
+<!--    <select id="listHotel"-->
+<!--            resultType="com.tencent.wxcloudrun.pto.HotelPTO"-->
+<!--            parameterType="com.tencent.wxcloudrun.pto.HotelPTO">-->
+<!--    select * from mbp_hotel-->
+<!--        where 1=1-->
+<!--        <if test="null != id and id != ''">-->
+<!--            and ID = #{id}-->
+<!--        </if>-->
+<!--        <if test="null != substation and substation != ''">-->
+<!--            and SUBSTATION = #{substation}-->
+<!--        </if>-->
+<!--        <if test="null != customerManager and customerManager != ''">-->
+<!--            and CUSTOMER_MANAGER = #{customerManager}-->
+<!--        </if>-->
+<!--        <if test="null != contactWay and contactWay != ''">-->
+<!--            and CONTACT_WAY = #{contactWay}-->
+<!--        </if>-->
+<!--        <if test="null != hotelName and hotelName != ''">-->
+<!--            and HOTEL_NAME = #{hotelName}-->
+<!--        </if>-->
+<!--    </select>-->
 
     <update id="update"
             parameterType="com.tencent.wxcloudrun.pto.HotelPTO" >

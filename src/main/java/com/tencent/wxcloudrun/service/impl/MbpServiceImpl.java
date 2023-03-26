@@ -97,11 +97,11 @@ public class MbpServiceImpl implements MbpService {
         }
     }
 
-    public void listHotel(HotelDTO hotelDTO) {
-        HotelPTO hotelPTO = new HotelPTO();
-        BeanUtils.copyProperties(hotelDTO,hotelPTO);
+    public void listHotel(int id) {
+//        HotelPTO hotelPTO = new HotelPTO();
+//        BeanUtils.copyProperties(hotelDTO,hotelPTO);
         try{
-            hotelMapper.listHotel(hotelPTO);
+            hotelMapper.listHotel(id);
         }catch (Exception e) {
             throw new RuntimeException("查询失败！");
         }
