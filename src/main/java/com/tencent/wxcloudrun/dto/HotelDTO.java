@@ -22,7 +22,7 @@ public class HotelDTO implements Serializable {
     private int roomNumber;
     private String groupNumber;
     private String address;
-    private String type;
+    private String hotelType;
     private String operator;
     private String endTime1;
     private String internetCharge;
@@ -33,4 +33,11 @@ public class HotelDTO implements Serializable {
     private String visitDate;
     private String visitInformation;
     private String difficultPoint;
+    private int enterpriseNumber;
+    private int buildingNum;
+    private String gims;
+    private String gimsCover;
+    private String propertyName;
+    private String isProperty;
+    private String marketType;
 }
