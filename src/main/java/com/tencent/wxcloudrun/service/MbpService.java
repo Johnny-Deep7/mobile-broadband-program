@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface MbpService {
 
-    void parsingTable(MultipartFile file);
+    void parsingTable(MultipartFile multipartFile);
     public ApiResponse create(HotelDTO hotelDTO);
     public ApiResponse listHotel(HotelDTO hotelDTO);
     public ApiResponse delete(HotelDTO hotelDTO);

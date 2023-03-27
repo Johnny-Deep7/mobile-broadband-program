@@ -3,8 +3,6 @@ package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.HotelDTO;
-import com.tencent.wxcloudrun.mbp.service;
-import com.tencent.wxcloudrun.service.MbpService;
 import com.tencent.wxcloudrun.service.impl.MbpServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -12,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.xml.ws.Service;
+
 
 @RestController
 @Slf4j

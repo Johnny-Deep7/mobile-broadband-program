@@ -1,5 +1,9 @@
 package com.tencent.wxcloudrun.service.impl;
 
+import cn.hutool.poi.excel.ExcelReader;
+import cn.hutool.poi.excel.ExcelUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.tencent.wxcloudrun.MbpType;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.HotelDTO;
 import com.tencent.wxcloudrun.mapper.HotelMapper;
@@ -7,6 +11,9 @@ import com.tencent.wxcloudrun.pto.HotelPTO;
 import com.tencent.wxcloudrun.service.MbpService;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.*;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -28,14 +36,16 @@ public class MbpServiceImpl implements MbpService {
         if (multipartFile!=null){
             try {
                 file = multipartFileToFile(multipartFile);
+                if(!file.exists() || file.length() == 0) {
+                    throw new RuntimeException("文件为空！");
+                }
+                parseExcel(file);
+
             } catch (Exception e) {
                 throw new RuntimeException("文件解析失败！");
             }
         }
-        if(!file.exists() || file.length() == 0) {
-            throw new RuntimeException("文件为空！");
-        }
-//        parseExcel(file);
+
 
     }
 
@@ -88,6 +98,7 @@ public class MbpServiceImpl implements MbpService {
         }
     }
 
+    @Override
     public ApiResponse create(HotelDTO hotelDTO) {
         ApiResponse apiResponse = new ApiResponse();
         HotelPTO hotelPTO = new HotelPTO();
@@ -102,16 +113,21 @@ public class MbpServiceImpl implements MbpService {
         return apiResponse;
     }
 
+    @Override
     public ApiResponse listHotel(HotelDTO hotelDTO) {
         ApiResponse apiResponse = new ApiResponse();
         HotelPTO hotelPTO = new HotelPTO();
         BeanUtils.copyProperties(hotelDTO,hotelPTO);
-        HotelPTO hotelPto = hotelMapper.listHotel(hotelPTO);
-        apiResponse.setData(hotelPto);
+//        HotelPTO hotelPto = hotelMapper.listHotel(hotelPTO);
+        QueryWrapper<HotelPTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("id",hotelDTO.getId());
+        List<HotelPTO> userList = hotelMapper.selectList(wrapper);
+        apiResponse.setData(userList);
         apiResponse.setMsg("查询成功");
         return apiResponse;
     }
 
+    @Override
     public ApiResponse delete(HotelDTO hotelDTO) {
         ApiResponse apiResponse = new ApiResponse();
         HotelPTO hotelPTO = new HotelPTO();
@@ -125,6 +141,7 @@ public class MbpServiceImpl implements MbpService {
         return apiResponse;
     }
 
+    @Override
     public ApiResponse update(HotelDTO hotelDTO) {
         ApiResponse apiResponse = new ApiResponse();
         HotelPTO hotelPTO = new HotelPTO();
@@ -179,54 +196,54 @@ public class MbpServiceImpl implements MbpService {
 //
 //        return map;
 //    }
+    /**
+     * 解析导入的文件内容
+     * @param file
+     * @throws Exception
+     */
+    public void parseExcel(File file)throws Exception{
 
-//    /**
-//     * 获取不同sheet的数据
-//     * @param sheet
-//     */
-//    public List<List<ResultValue>> getSheetData(Sheet sheet,List<Column> list){
-//        List<String> types = new ArrayList<>();
-//        List<Map<String,String>> mapList = new ArrayList<>();
-//        Map<String,String> map = new HashMap<>();
-//        list.forEach(column -> {
-//            map.put(column.getName(),column.getFieldtype());
-//            mapList.add(map);
-//        });
-//        for (Column column:list) {
-//            types.add(column.getFieldtype());
-//        }
-//        List<List<ResultValue>> lists = new ArrayList<>();
-//
-//        ResultValue resultValue = null;
-//        List<String> names = new ArrayList<>();
-//        //获取表头信息
-//        Row r1 = sheet.getRow(0);
-//        for (Cell c:r1){
-//            names.add(c.getStringCellValue());
-//        }
-//
-//        int rowNum = sheet.getLastRowNum();
-//        //遍历所有的Row
-//        for (int i = 1; i <= rowNum; i++) {
-//            List<ResultValue> resultValues = new ArrayList<>();
-//            Row row = sheet.getRow(i);
-//            Cell cell = row.getCell(1);
-//
-//            //读取Cell的值
-//            for (int j = 1; j <row.getLastCellNum(); j++) {
-//                resultValue = new ResultValue();
-//                resultValue.setName(names.get(j));
-//                String s = names.get(j);
-//                resultValue.setType(list.stream()
-//                        .filter(column -> column.getName().equals(s))
-//                        .map(Column::getFieldtype)
-//                        .collect(Collectors.joining()));
-//                resultValue.setValue(row.getCell(j).toString());
-//                resultValues.add(resultValue);
-//            }
-//            lists.add(resultValues);
-//
-//        }
-//        return lists;
-//    }
+
+        int sheetCount = ExcelUtil.getReader(file).getSheetCount();
+
+        for (MbpType mbpType:MbpType.values()) {
+            ExcelReader reader = ExcelUtil.getReader(file, mbpType.getCode());
+            reader.read();
+        }
+
+
+
+
+
+
+        return ;
+    }
+
+    /**
+     * 获取不同sheet的数据
+     * @param sheet
+     */
+    public void getSheetData(Sheet sheet){
+
+
+        //获取sheet名
+        String sheetName = sheet.getSheetName();
+
+        //获取sheet下有多少行
+        int rowNum = sheet.getPhysicalNumberOfRows();
+        //遍历所有的Row
+        for (int i = 1; i <= rowNum; i++) {
+
+            //获取当前sheet的第i行
+            Row row = sheet.getRow(i);
+            Cell cell = row.getCell(1);
+
+            //读取Cell的值
+            for (int j = 1; j <row.getLastCellNum(); j++) {
+
+            }
+
+        }
+        return ;
+    }
 }
