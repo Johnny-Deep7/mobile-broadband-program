@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.tencent.wxcloudrun.MbpType;
 import com.tencent.wxcloudrun.config.ApiResponse;
+import com.tencent.wxcloudrun.config.PageListResp;
 import com.tencent.wxcloudrun.dto.HotelDTO;
 import com.tencent.wxcloudrun.mapper.HotelMapper;
 import com.tencent.wxcloudrun.pto.HotelPTO;
@@ -25,6 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.*;
+import java.math.BigInteger;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -164,6 +167,24 @@ public class MbpServiceImpl implements MbpService {
             apiResponse.setMsg("修改失败");
         }
         return apiResponse;
+    }
+    public PageListResp<SubnetResp> listSubnetResp(SubnetListReq subnetListReq) {
+        subnetListReq.setQueryKey(QueryWordEscapingUtil.escaping(subnetListReq.getQueryKey()));
+        subnetListReq.setNetworkId(null);
+        subnetListReq.setEcStatus(State.ACTIVE);
+        log.info("子网分页查询请求体:{}", subnetListReq);
+        PageListResp<SubnetResp> pageListResp = new PageListResp<>();
+
+        pageListResp.setTotal(subnetDao.count(subnetListReq));
+        if (pageListResp.getTotal().equals(BigInteger.ZERO)) {
+            pageListResp.setContent(Collections.emptyList());
+        } else {
+            subnetListReq.setSize(QueryPageUtil.generateQueryPageSize(subnetListReq.getSize()));
+            subnetListReq.setStart(QueryPageUtil.generateQueryPageStart(
+                    subnetListReq.getPage(), subnetListReq.getSize()));
+            pageListResp.setContent(subnetDao.listSubnetResp(subnetListReq));
+        }
+        return pageListResp;
     }
 
 //    /**
