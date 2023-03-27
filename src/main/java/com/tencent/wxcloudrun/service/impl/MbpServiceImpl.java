@@ -3,6 +3,7 @@ package com.tencent.wxcloudrun.service.impl;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.tencent.wxcloudrun.MbpType;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.HotelDTO;
@@ -14,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.util.StringUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -120,7 +122,18 @@ public class MbpServiceImpl implements MbpService {
         BeanUtils.copyProperties(hotelDTO,hotelPTO);
 //        HotelPTO hotelPto = hotelMapper.listHotel(hotelPTO);
         QueryWrapper<HotelPTO> wrapper = new QueryWrapper<>();
-        wrapper.eq("id",hotelDTO.getId());
+        if (StringUtils.isNotBlank(hotelPTO.getSubstation())){
+            wrapper.like("substation",hotelPTO.getSubstation());
+        }
+        if (StringUtils.isNotBlank(hotelPTO.getCustomerManager())){
+            wrapper.eq("customerManager",hotelPTO.getCustomerManager());
+        }
+        if (StringUtils.isNotBlank(hotelPTO.getHotelName())){
+            wrapper.like("hotelName",hotelPTO.getHotelName());
+        }
+        if (StringUtils.isNotBlank(hotelPTO.getHotelType())){
+            wrapper.eq("hotelType",hotelPTO.getHotelType());
+        }
         List<HotelPTO> userList = hotelMapper.selectList(wrapper);
         apiResponse.setData(userList);
         apiResponse.setMsg("查询成功");
@@ -128,11 +141,9 @@ public class MbpServiceImpl implements MbpService {
     }
 
     @Override
-    public ApiResponse delete(HotelDTO hotelDTO) {
+    public ApiResponse delete(Integer id) {
         ApiResponse apiResponse = new ApiResponse();
-        HotelPTO hotelPTO = new HotelPTO();
-        BeanUtils.copyProperties(hotelDTO,hotelPTO);
-        int i = hotelMapper.deleteById(hotelPTO.getId());
+        int i = hotelMapper.deleteById(id);
         if(i>0){
             apiResponse.setMsg("删除成功");
         }else{

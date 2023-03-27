@@ -9,6 +9,6 @@ public interface MbpService {
     void parsingTable(MultipartFile multipartFile);
     public ApiResponse create(HotelDTO hotelDTO);
     public ApiResponse listHotel(HotelDTO hotelDTO);
-    public ApiResponse delete(HotelDTO hotelDTO);
+    public ApiResponse delete(Integer id);
     public ApiResponse update(HotelDTO hotelDTO);
 }

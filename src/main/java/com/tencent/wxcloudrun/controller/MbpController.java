@@ -40,9 +40,9 @@ public class MbpController {
     }
 
     @DeleteMapping(value = "/delete")
-    public ApiResponse delete(@RequestBody HotelDTO hotelDTO) {
+    public ApiResponse delete(@RequestParam("id") Integer id) {
         log.info("删除宾馆数据开始！");
-        return mbpService.delete(hotelDTO);
+        return mbpService.delete(id);
     }
 
     @PutMapping(value = "/update")
