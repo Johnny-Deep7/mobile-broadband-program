@@ -10,6 +10,7 @@ import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.dto.RequestEntity;
 import com.tencent.wxcloudrun.mapper.IndustrialParkMapper;
+import com.tencent.wxcloudrun.pto.HotelPTO;
 import com.tencent.wxcloudrun.pto.IndustrialParkPTO;
 import com.tencent.wxcloudrun.service.IndustrialParkService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,88 +23,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @Slf4j
 public class IndustrialParkServiceImpl implements IndustrialParkService {
     @Autowired
     private IndustrialParkMapper industrialParkMapper;
-
-    @Override
-    public void parsingTable(MultipartFile multipartFile) {
-        File file = null;
-        if (multipartFile!=null){
-            try {
-                file = multipartFileToFile(multipartFile);
-                if(!file.exists() || file.length() == 0) {
-                    throw new RuntimeException("文件为空！");
-                }
-                parseExcel(file);
-
-            } catch (Exception e) {
-                throw new RuntimeException("文件解析失败！");
-            }
-        }
-    }
-
-    /**
-     * MultipartFile 转 File
-     *
-     * @param multipartFile
-     * @throws Exception
-     */
-    public static File multipartFileToFile(MultipartFile multipartFile) throws Exception {
-
-        File file = null;
-        if (!(multipartFile.equals("") || multipartFile.getSize() <= 0)) {
-            InputStream ins = null;
-            ins = multipartFile.getInputStream();
-            file = new File(multipartFile.getOriginalFilename());
-            inputStreamToFile(ins, file);
-            ins.close();
-        }
-        return file;
-    }
-
-    //获取流文件
-    private static void inputStreamToFile(InputStream ins, File file) {
-        OutputStream os = null;
-        try {
-            os = new FileOutputStream(file);
-            int bytesRead = 0;
-            byte[] buffer = new byte[8192];
-            while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
-                os.write(buffer, 0, bytesRead);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (os != null) {
-                try {
-                    os.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            if (ins != null) {
-                try {
-                    ins.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public void parseExcel(File file)throws Exception{
-
-
-        int sheetCount = ExcelUtil.getReader(file).getSheetCount();
-        for (MbpType mbpType:MbpType.values()) {
-            ExcelReader reader = ExcelUtil.getReader(file, mbpType.getCode());
-            reader.read();
-        }
-        return ;
-    }
 
     @Override
     public ApiResponse create(IndustrialParkPTO industrialParkPTO) {
@@ -143,13 +70,13 @@ public class IndustrialParkServiceImpl implements IndustrialParkService {
             wrapper.like("substation", industrialParkPTO.getSubstation());
         }
         if (StringUtils.isNotBlank(industrialParkPTO.getCustomerManager())) {
-            wrapper.eq("customerManager", industrialParkPTO.getCustomerManager());
+            wrapper.eq("customer_manager", industrialParkPTO.getCustomerManager());
         }
         if (StringUtils.isNotBlank(industrialParkPTO.getHotelName())) {
-            wrapper.like("hotelName", industrialParkPTO.getHotelName());
+            wrapper.like("hotel_name", industrialParkPTO.getHotelName());
         }
         if (StringUtils.isNotBlank(industrialParkPTO.getType())) {
-            wrapper.eq("hotelType", industrialParkPTO.getType());
+            wrapper.eq("hotel_type", industrialParkPTO.getType());
         }
 
         Page<IndustrialParkPTO> page = new Page<>();
@@ -157,7 +84,18 @@ public class IndustrialParkServiceImpl implements IndustrialParkService {
         page.setSize(pageSize);
         Page<IndustrialParkPTO> industrialParkPTOPage = industrialParkMapper.selectPage(page, wrapper);
 
-        apiResponse.setData(industrialParkPTOPage);
+        Page<RequestEntity> requestEntityPage = new Page<>();
+        List<RequestEntity> list = new ArrayList<>();
+        RequestEntity entity = null;
+        for (IndustrialParkPTO industrialParkPTO1:industrialParkPTOPage.getRecords()) {
+            entity = new RequestEntity();
+            BeanUtils.copyProperties(industrialParkPTO1,entity);
+            entity.setMarketType(MbpType.INDUPARK.getCode());
+            list.add(entity);
+        }
+        requestEntityPage.setRecords(list);
+
+        apiResponse.setData(requestEntityPage);
         apiResponse.setCode(200);
         apiResponse.setMsg("查询成功");
         return apiResponse;

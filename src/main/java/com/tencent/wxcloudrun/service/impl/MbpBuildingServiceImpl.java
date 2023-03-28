@@ -12,6 +12,7 @@ import com.tencent.wxcloudrun.dto.RequestEntity;
 import com.tencent.wxcloudrun.mapper.CommercialBuildingMapper;
 import com.tencent.wxcloudrun.pto.CommercialBuildingPTO;
 import com.tencent.wxcloudrun.pto.HotelPTO;
+import com.tencent.wxcloudrun.pto.IndustrialParkPTO;
 import com.tencent.wxcloudrun.service.MbpBuildingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -20,92 +21,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Slf4j
 public class MbpBuildingServiceImpl implements MbpBuildingService {
     @Resource
     private CommercialBuildingMapper commercialBuildingMapper;
-    @Override
-    public void parsingTable(MultipartFile multipartFile) {
-        File file = null;
-        if (multipartFile!=null){
-            try {
-                file = multipartFileToFile(multipartFile);
-                if(!file.exists() || file.length() == 0) {
-                    throw new RuntimeException("文件为空！");
-                }
-                parseExcel(file);
 
-            } catch (Exception e) {
-                throw new RuntimeException("文件解析失败！");
-            }
-        }
-    }
-    /**
-     * MultipartFile 转 File
-     *
-     * @param multipartFile
-     * @throws Exception
-     */
-    public static File multipartFileToFile(MultipartFile multipartFile) throws Exception {
-
-        File file = null;
-        if (!(multipartFile.equals("") || multipartFile.getSize() <= 0)) {
-            InputStream ins = null;
-            ins = multipartFile.getInputStream();
-            file = new File(multipartFile.getOriginalFilename());
-            inputStreamToFile(ins, file);
-            ins.close();
-        }
-        return file;
-    }
-
-    //获取流文件
-    private static void inputStreamToFile(InputStream ins, File file) {
-        OutputStream os = null;
-        try {
-            os = new FileOutputStream(file);
-            int bytesRead = 0;
-            byte[] buffer = new byte[8192];
-            while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
-                os.write(buffer, 0, bytesRead);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (os != null) {
-                try {
-                    os.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            if (ins != null) {
-                try {
-                    ins.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-    /**
-     * 解析导入的文件内容
-     * @param file
-     * @throws Exception
-     */
-    public void parseExcel(File file)throws Exception{
-
-
-        int sheetCount = ExcelUtil.getReader(file).getSheetCount();
-
-        for (MbpType mbpType:MbpType.values()) {
-            ExcelReader reader = ExcelUtil.getReader(file, mbpType.getCode());
-            reader.read();
-        }
-        return ;
-    }
     @Override
     public ApiResponse create(CommercialBuildingPTO commercialBuildingPTO) {
         ApiResponse apiResponse = ApiResponse.ok();
@@ -146,21 +70,32 @@ public class MbpBuildingServiceImpl implements MbpBuildingService {
             wrapper.like("substation",commercialBuildingPTO.getSubstation());
         }
         if (StringUtils.isNotBlank(commercialBuildingPTO.getCustomerManager())){
-            wrapper.eq("customerManager",commercialBuildingPTO.getCustomerManager());
+            wrapper.eq("customer_manager",commercialBuildingPTO.getCustomerManager());
         }
         if (StringUtils.isNotBlank(commercialBuildingPTO.getHotelName())){
-            wrapper.like("hotelName",commercialBuildingPTO.getHotelName());
+            wrapper.like("hotel_name",commercialBuildingPTO.getHotelName());
         }
         if (StringUtils.isNotBlank(commercialBuildingPTO.getType())){
-            wrapper.eq("hotelType",commercialBuildingPTO.getType());
+            wrapper.eq("hotel_type",commercialBuildingPTO.getType());
         }
 
         Page<CommercialBuildingPTO> page = new Page<>();
         page.setCurrent(pageNo);
         page.setSize(pageSize);
-        Page<CommercialBuildingPTO> hotelPTOPage = commercialBuildingMapper.selectPage(page, wrapper);
+        Page<CommercialBuildingPTO> commercialBuildingPTOPage = commercialBuildingMapper.selectPage(page, wrapper);
 
-        apiResponse.setData(hotelPTOPage);
+        Page<RequestEntity> requestEntityPage = new Page<>();
+        List<RequestEntity> list = new ArrayList<>();
+        RequestEntity entity = null;
+        for (CommercialBuildingPTO commercialBuildingPTO1:commercialBuildingPTOPage.getRecords()) {
+            entity = new RequestEntity();
+            BeanUtils.copyProperties(commercialBuildingPTO1,entity);
+            entity.setMarketType(MbpType.COMBUIL.getCode());
+            list.add(entity);
+        }
+        requestEntityPage.setRecords(list);
+
+        apiResponse.setData(requestEntityPage);
         apiResponse.setCode(200);
         apiResponse.setMsg("查询成功");
         return apiResponse;
