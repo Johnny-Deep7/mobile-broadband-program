@@ -1,9 +1,12 @@
 package com.tencent.wxcloudrun.controller;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.HotelDTO;
-import com.tencent.wxcloudrun.service.impl.MbpServiceImpl;
+import com.tencent.wxcloudrun.dto.PageVo;
+import com.tencent.wxcloudrun.service.MpbRouteService;
+import com.tencent.wxcloudrun.service.impl.MbpHotelServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +22,7 @@ import javax.annotation.Resource;
 public class MbpController {
 
     @Resource
-    MbpServiceImpl mbpService;
+    MpbRouteService routeService;
 
     @PostMapping(value = "/parsingTable", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void parsingTable(@RequestParam(value = "file") MultipartFile file) {
@@ -30,24 +33,25 @@ public class MbpController {
     @PostMapping(value = "/create")
     public ApiResponse create(@RequestBody HotelDTO hotelDTO) {
         log.info("添加宾馆数据开始！");
-        return mbpService.create(hotelDTO);
+        return routeService.create(hotelDTO);
     }
 
-    @PostMapping(value = "/listHotel")
-    public ApiResponse listHotel(@RequestBody HotelDTO hotelDTO) {
+    @PostMapping(value = "/list")
+    @ResponseBody
+    public ApiResponse query(@RequestBody PageVo<HotelDTO> pageVo) {
         log.info("查询宾馆数据开始！");
-        return mbpService.listHotel(hotelDTO);
+        return routeService.query(pageVo);
     }
 
     @DeleteMapping(value = "/delete")
-    public ApiResponse delete(@RequestParam("id") Integer id) {
+    public ApiResponse delete(@RequestParam("id") Integer id,@RequestParam("marketType") String marketType) {
         log.info("删除宾馆数据开始！");
-        return mbpService.delete(id);
+        return routeService.delete(id,marketType);
     }
 
     @PutMapping(value = "/update")
     public ApiResponse update(@RequestBody HotelDTO hotelDTO) {
         log.info("更新宾馆数据开始！");
-        return mbpService.update(hotelDTO);
+        return routeService.update(hotelDTO);
     }
 }

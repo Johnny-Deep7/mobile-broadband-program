@@ -7,7 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface HotelMapper extends BaseMapper<HotelPTO> {
 
-    int insert(HotelPTO hotelPTO);
-
     int update(HotelPTO hotelPTO);
 }
