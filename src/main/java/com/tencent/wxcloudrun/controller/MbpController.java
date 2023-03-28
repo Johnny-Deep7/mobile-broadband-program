@@ -6,6 +6,7 @@ import com.tencent.wxcloudrun.dto.*;
 import com.tencent.wxcloudrun.pto.IndustrialParkDetailPTO;
 import com.tencent.wxcloudrun.service.IndustrialParkDetailService;
 import com.tencent.wxcloudrun.service.MpbRouteService;
+import com.tencent.wxcloudrun.service.impl.MbpService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.MediaType;
@@ -23,6 +24,8 @@ public class MbpController {
 
     @Resource
     MpbRouteService routeService;
+    @Resource
+    MbpService mbpService;
     @Resource
     IndustrialParkDetailService industrialParkDetailService;
 
@@ -60,26 +63,26 @@ public class MbpController {
     @PostMapping(value = "/createBuildingDetail")
     public ApiResponse createBuildingDetail(@RequestBody CommercialBuildingDetail commercialBuildingDetail) {
         log.info("添加数据开始！");
-        return routeService.createBuildingDetail(commercialBuildingDetail);
+        return mbpService.createBuildingDetail(commercialBuildingDetail);
     }
 
     @PostMapping(value = "/listBuildingDetail")
     @ResponseBody
     public ApiResponse queryBuildingDetail(@RequestBody PageVo<CommercialBuildingDetail> pageVo) {
         log.info("查询数据开始！");
-        return routeService.queryBuildingDetail(pageVo);
+        return mbpService.queryBuildingDetail(pageVo);
     }
 
     @DeleteMapping(value = "/deleteBuildingDetail")
     public ApiResponse deleteBuildingDetail(@RequestParam("id") Integer id) {
         log.info("删除数据开始！");
-        return routeService.deleteBuildingDetail(id);
+        return mbpService.deleteBuildingDetail(id);
     }
 
     @PutMapping(value = "/updateBuildingDetail")
     public ApiResponse updateBuildingDetail(@RequestBody CommercialBuildingDetail commercialBuildingDetail) {
         log.info("更新数据开始！");
-        return routeService.updateBuildingDetail(commercialBuildingDetail);
+        return mbpService.updateBuildingDetail(commercialBuildingDetail);
     }
 
     @PostMapping(value = "/createIndustrialParkDetail")
@@ -113,50 +116,50 @@ public class MbpController {
     @PostMapping(value = "/createShop")
     public ApiResponse createShop(@RequestBody ShopDTO shopDTO) {
         log.info("添加数据开始！");
-        return routeService.createShop(shopDTO);
+        return mbpService.createShop(shopDTO);
     }
 
     @PostMapping(value = "/listShop")
     @ResponseBody
     public ApiResponse queryShop(@RequestBody PageVo<ShopDTO> pageVo) {
         log.info("查询数据开始！");
-        return routeService.queryShop(pageVo);
+        return mbpService.queryShop(pageVo);
     }
 
     @DeleteMapping(value = "/deleteShop")
     public ApiResponse deleteShop(@RequestParam("id") Integer id) {
         log.info("删除数据开始！");
-        return routeService.deleteShop(id);
+        return mbpService.deleteShop(id);
     }
 
     @PutMapping(value = "/updateShop")
     public ApiResponse updateShop(@RequestBody ShopDTO shopDTO) {
         log.info("更新数据开始！");
-        return routeService.updateShop(shopDTO);
+        return mbpService.updateShop(shopDTO);
     }
 
     @PostMapping(value = "/createShopDetail")
     public ApiResponse createShopDetail(@RequestBody ShopDetail shopDetail) {
         log.info("添加数据开始！");
-        return routeService.createShopDetail(shopDetail);
+        return mbpService.createShopDetail(shopDetail);
     }
 
     @PostMapping(value = "/listShopDetail")
     @ResponseBody
     public ApiResponse queryShopDetail(@RequestBody PageVo<ShopDetail> pageVo) {
         log.info("查询数据开始！");
-        return routeService.queryShopDetail(pageVo);
+        return mbpService.queryShopDetail(pageVo);
     }
 
     @DeleteMapping(value = "/deleteShopDetail")
     public ApiResponse deleteShopDetail(@RequestParam("id") Integer id) {
         log.info("删除数据开始！");
-        return routeService.deleteShopDetail(id);
+        return mbpService.deleteShopDetail(id);
     }
 
     @PutMapping(value = "/updateShopDetail")
     public ApiResponse updateShopDetail(@RequestBody ShopDetail shopDetail) {
         log.info("更新数据开始！");
-        return routeService.updateShopDetail(shopDetail);
+        return mbpService.updateShopDetail(shopDetail);
     }
 }
