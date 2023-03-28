@@ -7,7 +7,6 @@ import com.tencent.wxcloudrun.pto.CommercialBuildingPTO;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MbpBuildingService {
-    void parsingTable(MultipartFile multipartFile);
     public ApiResponse create(CommercialBuildingPTO commercialBuildingPTO);
     public ApiResponse query(PageVo<RequestEntity> pageVo);
     public ApiResponse delete(Integer id);
