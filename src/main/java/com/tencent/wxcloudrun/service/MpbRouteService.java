@@ -51,22 +51,26 @@ public class MpbRouteService {
 
     public ApiResponse query(PageVo<RequestEntity> pageVo) {
 
-        RequestEntity requestEntity = pageVo.getType();
-        if (StringUtils.isBlank(requestEntity.getMarketType())) {
+        String marketType = pageVo.getType().getMarketType();
+        if (StringUtils.isBlank(marketType)) {
             apiResponse.setCode(400);
             apiResponse.setMsg("场景类型为空，无法查询");
             return apiResponse;
         }
-        switch (requestEntity.getMarketType()){
+        switch (marketType){
             case "酒店宾馆" :
                 apiResponse = mbpHotelService.query(pageVo);
+                break;
             case "商务楼宇" :
                 apiResponse = mbpBuildingService.query(pageVo);
+                break;
             case "产业园区" :
                 apiResponse = industrialParkService.query(pageVo);
+                break;
             default:
                 apiResponse.setCode(400);
                 apiResponse.setMsg("场景类型不存在，请重新选择");
+                break;
         }
         return apiResponse;
     }
@@ -80,10 +84,13 @@ public class MpbRouteService {
         switch (marketType){
             case "酒店宾馆" :
                 apiResponse = mbpHotelService.delete(id);
+                break;
             case "商务楼宇" :
                 apiResponse = mbpBuildingService.delete(id);
+                break;
             case "产业园区" :
                 apiResponse = industrialParkService.delete(id);
+                break;
         }
         return apiResponse;
     }
@@ -99,14 +106,17 @@ public class MpbRouteService {
                 HotelPTO hotelPTO = new HotelPTO();
                 BeanUtils.copyProperties(requestEntity,hotelPTO);
                 apiResponse = mbpHotelService.update(hotelPTO);
+                break;
             case "商务楼宇" :
                 CommercialBuildingPTO commercialBuildingPTO = new CommercialBuildingPTO();
                 BeanUtils.copyProperties(requestEntity,commercialBuildingPTO);
                 apiResponse = mbpBuildingService.update(commercialBuildingPTO);
+                break;
             case "产业园区" :
                 IndustrialParkPTO industrialParkPTO = new IndustrialParkPTO();
                 BeanUtils.copyProperties(requestEntity,industrialParkPTO);
                 apiResponse = industrialParkService.update(industrialParkPTO);
+                break;
         }
         return apiResponse;
     }
