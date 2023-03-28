@@ -14,6 +14,7 @@ public class IndustrialParkDetail implements Serializable {
     private String id;
     private String substation;
     private String customerManager;
+    private String industryPark;
     private String contactWay;
     private String enterpriseName;
     private String floor;

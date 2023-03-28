@@ -12,6 +12,9 @@
             <if test="customerManager != null">
                 CUSTOMER_MANAGER,
             </if>
+            <if test="industryPark != null">
+                INDUSTRY_PARK,
+            </if>
             <if test="contactWay != null">
                 CONTACT_WAY,
             </if>
@@ -75,6 +78,9 @@
                 #{substation,jdbcType=VARCHAR},
             </if>
             <if test="customerManager != null">
+                #{customerManager,jdbcType=VARCHAR},
+            </if>
+            <if test="industryPark != null">
                 #{customerManager,jdbcType=VARCHAR},
             </if>
             <if test="contactWay != null">

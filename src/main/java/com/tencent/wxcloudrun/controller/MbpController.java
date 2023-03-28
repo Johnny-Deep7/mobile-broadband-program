@@ -2,10 +2,12 @@ package com.tencent.wxcloudrun.controller;
 
 
 import com.tencent.wxcloudrun.config.ApiResponse;
-import com.tencent.wxcloudrun.dto.RequestEntity;
-import com.tencent.wxcloudrun.dto.PageVo;
+import com.tencent.wxcloudrun.dto.*;
+import com.tencent.wxcloudrun.pto.IndustrialParkDetailPTO;
+import com.tencent.wxcloudrun.service.IndustrialParkDetailService;
 import com.tencent.wxcloudrun.service.MpbRouteService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +23,8 @@ public class MbpController {
 
     @Resource
     MpbRouteService routeService;
+    @Resource
+    IndustrialParkDetailService industrialParkDetailService;
 
     @PostMapping(value = "/parsingTable", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void parsingTable(@RequestParam(value = "file") MultipartFile file) {
@@ -53,5 +57,56 @@ public class MbpController {
         return routeService.update(requestEntity);
     }
 
+    @PostMapping(value = "/createBuildingDetail")
+    public ApiResponse createBuildingDetail(@RequestBody CommercialBuildingDetail commercialBuildingDetail) {
+        log.info("添加数据开始！");
+        return routeService.createBuildingDetail(commercialBuildingDetail);
+    }
 
+    @PostMapping(value = "/listBuildingDetail")
+    @ResponseBody
+    public ApiResponse queryBuildingDetail(@RequestBody PageVo<CommercialBuildingDetail> pageVo) {
+        log.info("查询数据开始！");
+        return routeService.queryBuildingDetail(pageVo);
+    }
+
+    @DeleteMapping(value = "/deleteBuildingDetail")
+    public ApiResponse deleteBuildingDetail(@RequestParam("id") Integer id) {
+        log.info("删除数据开始！");
+        return routeService.deleteBuildingDetail(id);
+    }
+
+    @PutMapping(value = "/updateBuildingDetail")
+    public ApiResponse updateBuildingDetail(@RequestBody CommercialBuildingDetail commercialBuildingDetail) {
+        log.info("更新数据开始！");
+        return routeService.updateBuildingDetail(commercialBuildingDetail);
+    }
+
+    @PostMapping(value = "/createIndustrialParkDetail")
+    public ApiResponse createIndustrialParkDetail(@RequestBody IndustrialParkDetail industrialParkDetail) {
+        log.info("添加数据开始！");
+        IndustrialParkDetailPTO industrialParkDetailPTO = new IndustrialParkDetailPTO();
+        BeanUtils.copyProperties(industrialParkDetail, industrialParkDetailPTO);
+        return industrialParkDetailService.create(industrialParkDetailPTO);
+    }
+
+    @PostMapping(value = "/listIndustrialParkDetail")
+    @ResponseBody
+    public ApiResponse queryIndustrialParkDetail(@RequestBody PageVo<IndustrialParkDetail> pageVo) {
+        log.info("查询数据开始！");
+        return industrialParkDetailService.query(pageVo);
+    }
+
+    @DeleteMapping(value = "/deleteIndustrialParkDetail")
+    public ApiResponse deleteIndustrialParkDetail(@RequestParam("id") Integer id) {
+        log.info("删除数据开始！");
+        return industrialParkDetailService.delete(id);
+    }
+    @PutMapping(value = "/updateIndustrialParkDetail")
+    public ApiResponse updateIndustrialParkDetail(@RequestBody IndustrialParkDetail industrialParkDetail) {
+        log.info("更新数据开始！");
+        IndustrialParkDetailPTO industrialParkDetailPTO = new IndustrialParkDetailPTO();
+        BeanUtils.copyProperties(industrialParkDetail, industrialParkDetailPTO);
+        return industrialParkDetailService.update(industrialParkDetailPTO);
+    }
 }
