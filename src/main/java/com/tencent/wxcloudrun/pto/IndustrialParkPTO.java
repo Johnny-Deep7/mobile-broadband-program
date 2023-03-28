@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.pto;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@TableName(value = "mbp_industrial_park")
 public class IndustrialParkPTO implements Serializable {
     private int id;
     private String substation;

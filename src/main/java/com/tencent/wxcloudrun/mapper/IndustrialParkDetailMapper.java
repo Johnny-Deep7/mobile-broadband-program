@@ -5,7 +5,5 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface IndustrialParkDetailMapper {
-    int insert(IndustrialParkDetailPTO industrialParkDetailPTO);
 
-    int deleteById(int id);
 }

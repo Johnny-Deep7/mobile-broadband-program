@@ -2,9 +2,12 @@ package com.tencent.wxcloudrun.service;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.tencent.wxcloudrun.config.ApiResponse;
+import com.tencent.wxcloudrun.dto.CommercialBuildingDTO;
 import com.tencent.wxcloudrun.dto.RequestEntity;
 import com.tencent.wxcloudrun.dto.PageVo;
+import com.tencent.wxcloudrun.pto.CommercialBuildingPTO;
 import com.tencent.wxcloudrun.pto.HotelPTO;
+import com.tencent.wxcloudrun.pto.IndustrialParkPTO;
 import com.tencent.wxcloudrun.service.impl.MbpHotelServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,10 @@ public class MpbRouteService {
 
     @Autowired
     private MbpHotelServiceImpl mbpHotelService;
+    @Autowired
+    private MbpBuildingService mbpBuildingService;
+    @Autowired
+    private IndustrialParkService industrialParkService;
 
     private static ApiResponse  apiResponse = ApiResponse.ok();
 
@@ -25,11 +32,19 @@ public class MpbRouteService {
             apiResponse.setMsg("场景类型为空，无法新增！");
             return apiResponse;
         }
-        HotelPTO hotelPTO = new HotelPTO();
-        BeanUtils.copyProperties(requestEntity,hotelPTO);
         switch (requestEntity.getMarketType()){
             case "酒店宾馆" :
+                HotelPTO hotelPTO = new HotelPTO();
+                BeanUtils.copyProperties(requestEntity,hotelPTO);
                 apiResponse = mbpHotelService.create(hotelPTO);
+            case "商务楼宇" :
+                CommercialBuildingPTO commercialBuildingPTO = new CommercialBuildingPTO();
+                BeanUtils.copyProperties(requestEntity,commercialBuildingPTO);
+                apiResponse = mbpBuildingService.create(commercialBuildingPTO);
+            case "产业园区" :
+                IndustrialParkPTO industrialParkPTO = new IndustrialParkPTO();
+                BeanUtils.copyProperties(requestEntity,industrialParkPTO);
+                apiResponse = industrialParkService.create(industrialParkPTO);
         }
         return apiResponse;
     }
@@ -45,6 +60,10 @@ public class MpbRouteService {
         switch (requestEntity.getMarketType()){
             case "酒店宾馆" :
                 apiResponse = mbpHotelService.query(pageVo);
+            case "商务楼宇" :
+                apiResponse = mbpBuildingService.query(pageVo);
+            case "产业园区" :
+                apiResponse = industrialParkService.query(pageVo);
         }
         return apiResponse;
     }
@@ -58,6 +77,10 @@ public class MpbRouteService {
         switch (marketType){
             case "酒店宾馆" :
                 apiResponse = mbpHotelService.delete(id);
+            case "商务楼宇" :
+                apiResponse = mbpBuildingService.delete(id);
+            case "产业园区" :
+                apiResponse = industrialParkService.delete(id);
         }
         return apiResponse;
     }
@@ -68,11 +91,19 @@ public class MpbRouteService {
             apiResponse.setMsg("场景类型为空，无法修改");
             return apiResponse;
         }
-        HotelPTO hotelPTO = new HotelPTO();
-        BeanUtils.copyProperties(requestEntity,hotelPTO);
         switch (requestEntity.getMarketType()){
             case "酒店宾馆" :
+                HotelPTO hotelPTO = new HotelPTO();
+                BeanUtils.copyProperties(requestEntity,hotelPTO);
                 apiResponse = mbpHotelService.update(hotelPTO);
+            case "商务楼宇" :
+                CommercialBuildingPTO commercialBuildingPTO = new CommercialBuildingPTO();
+                BeanUtils.copyProperties(requestEntity,commercialBuildingPTO);
+                apiResponse = mbpBuildingService.update(commercialBuildingPTO);
+            case "产业园区" :
+                IndustrialParkPTO industrialParkPTO = new IndustrialParkPTO();
+                BeanUtils.copyProperties(requestEntity,industrialParkPTO);
+                apiResponse = industrialParkService.update(industrialParkPTO);
         }
         return apiResponse;
     }

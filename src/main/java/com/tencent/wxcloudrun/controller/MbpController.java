@@ -30,26 +30,28 @@ public class MbpController {
 
     @PostMapping(value = "/create")
     public ApiResponse create(@RequestBody RequestEntity requestEntity) {
-        log.info("添加宾馆数据开始！");
+        log.info("添加数据开始！");
         return routeService.create(requestEntity);
     }
 
     @PostMapping(value = "/list")
     @ResponseBody
     public ApiResponse query(@RequestBody PageVo<RequestEntity> pageVo) {
-        log.info("查询宾馆数据开始！");
+        log.info("查询数据开始！");
         return routeService.query(pageVo);
     }
 
     @DeleteMapping(value = "/delete")
     public ApiResponse delete(@RequestParam("id") Integer id,@RequestParam("marketType") String marketType) {
-        log.info("删除宾馆数据开始！");
+        log.info("删除数据开始！");
         return routeService.delete(id,marketType);
     }
 
     @PutMapping(value = "/update")
     public ApiResponse update(@RequestBody RequestEntity requestEntity) {
-        log.info("更新宾馆数据开始！");
+        log.info("更新数据开始！");
         return routeService.update(requestEntity);
     }
+
+
 }

@@ -1,14 +1,11 @@
 package com.tencent.wxcloudrun.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tencent.wxcloudrun.pto.HotelPTO;
 import com.tencent.wxcloudrun.pto.IndustrialParkPTO;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
-public interface IndustrialParkMapper {
+public interface IndustrialParkMapper extends BaseMapper<IndustrialParkPTO> {
 
-    int insert(IndustrialParkPTO industrialParkPTO);
-
-    int deleteById(int id);
-
-    IndustrialParkPTO listIndustrialPark(IndustrialParkPTO industrialParkPTO);
 }
