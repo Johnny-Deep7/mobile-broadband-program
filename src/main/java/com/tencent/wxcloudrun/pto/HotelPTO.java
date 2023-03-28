@@ -2,6 +2,7 @@ package com.tencent.wxcloudrun.pto;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "mbp_hotel")
+@Builder
 public class HotelPTO implements Serializable {
 
     private Integer id;
