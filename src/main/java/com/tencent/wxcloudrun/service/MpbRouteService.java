@@ -64,6 +64,9 @@ public class MpbRouteService {
                 apiResponse = mbpBuildingService.query(pageVo);
             case "产业园区" :
                 apiResponse = industrialParkService.query(pageVo);
+            default:
+                apiResponse.setCode(400);
+                apiResponse.setMsg("场景类型不存在，请重新选择");
         }
         return apiResponse;
     }
