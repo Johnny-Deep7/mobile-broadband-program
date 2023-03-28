@@ -109,4 +109,54 @@ public class MbpController {
         BeanUtils.copyProperties(industrialParkDetail, industrialParkDetailPTO);
         return industrialParkDetailService.update(industrialParkDetailPTO);
     }
+
+    @PostMapping(value = "/createShop")
+    public ApiResponse createShop(@RequestBody ShopDTO shopDTO) {
+        log.info("添加数据开始！");
+        return routeService.createShop(shopDTO);
+    }
+
+    @PostMapping(value = "/listShop")
+    @ResponseBody
+    public ApiResponse queryShop(@RequestBody PageVo<ShopDTO> pageVo) {
+        log.info("查询数据开始！");
+        return routeService.queryShop(pageVo);
+    }
+
+    @DeleteMapping(value = "/deleteShop")
+    public ApiResponse deleteShop(@RequestParam("id") Integer id) {
+        log.info("删除数据开始！");
+        return routeService.deleteShop(id);
+    }
+
+    @PutMapping(value = "/updateShop")
+    public ApiResponse updateShop(@RequestBody ShopDTO shopDTO) {
+        log.info("更新数据开始！");
+        return routeService.updateShop(shopDTO);
+    }
+
+    @PostMapping(value = "/createShopDetail")
+    public ApiResponse createShopDetail(@RequestBody ShopDetail shopDetail) {
+        log.info("添加数据开始！");
+        return routeService.createShopDetail(shopDetail);
+    }
+
+    @PostMapping(value = "/listShopDetail")
+    @ResponseBody
+    public ApiResponse queryShopDetail(@RequestBody PageVo<ShopDetail> pageVo) {
+        log.info("查询数据开始！");
+        return routeService.queryShopDetail(pageVo);
+    }
+
+    @DeleteMapping(value = "/deleteShopDetail")
+    public ApiResponse deleteShopDetail(@RequestParam("id") Integer id) {
+        log.info("删除数据开始！");
+        return routeService.deleteShopDetail(id);
+    }
+
+    @PutMapping(value = "/updateShopDetail")
+    public ApiResponse updateShopDetail(@RequestBody ShopDetail shopDetail) {
+        log.info("更新数据开始！");
+        return routeService.updateShopDetail(shopDetail);
+    }
 }

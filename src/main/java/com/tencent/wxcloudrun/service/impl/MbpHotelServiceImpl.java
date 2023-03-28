@@ -175,7 +175,7 @@ public class MbpHotelServiceImpl implements MbpHotelService {
     @Override
     public ApiResponse update(HotelPTO hotelPTO) {
         ApiResponse apiResponse = new ApiResponse();
-        int i = hotelMapper.update(hotelPTO);
+        int i = hotelMapper.updateById(hotelPTO);
         if(i>0){
             apiResponse.setCode(200);
             apiResponse.setMsg("修改成功");

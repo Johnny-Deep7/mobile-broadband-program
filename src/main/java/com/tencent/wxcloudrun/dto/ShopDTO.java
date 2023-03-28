@@ -12,10 +12,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ShopDTO implements Serializable {
     private int id;
+    private String gimsPoint;
     private String substation;
     private String institutionNo;
     private String streetChief;
-    private String callName;
+    private String cellName;
     private String status;
     private String address;
     private String infoPoint;
