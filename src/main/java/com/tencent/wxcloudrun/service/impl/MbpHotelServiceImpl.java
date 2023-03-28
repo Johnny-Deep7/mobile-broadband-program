@@ -24,6 +24,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -87,8 +89,18 @@ public class MbpHotelServiceImpl implements MbpHotelService {
         page.setCurrent(pageNo);
         page.setSize(pageSize);
         Page<HotelPTO> hotelPTOPage = hotelMapper.selectPage(page, wrapper);
+        Page<RequestEntity> requestEntityPage = new Page<>();
+        List<RequestEntity> list = new ArrayList<>();
+        RequestEntity entity = null;
+        for (HotelPTO hotelPTO1:hotelPTOPage.getRecords()) {
+            entity = new RequestEntity();
+            BeanUtils.copyProperties(hotelPTO1,entity);
+            entity.setMarketType(MbpType.HOTEL.getCode());
+            list.add(entity);
+        }
+        requestEntityPage.setRecords(list);
 
-        apiResponse.setData(hotelPTOPage);
+        apiResponse.setData(requestEntityPage);
         apiResponse.setCode(200);
         apiResponse.setMsg("查询成功");
         return apiResponse;
