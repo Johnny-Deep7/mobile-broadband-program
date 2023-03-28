@@ -6,7 +6,7 @@ import com.tencent.wxcloudrun.dto.*;
 import com.tencent.wxcloudrun.pto.IndustrialParkDetailPTO;
 import com.tencent.wxcloudrun.service.IndustrialParkDetailService;
 import com.tencent.wxcloudrun.service.MpbRouteService;
-import com.tencent.wxcloudrun.service.impl.MbpService;
+import com.tencent.wxcloudrun.service.impl.MbpBuildingDetailShopService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.MediaType;
@@ -25,7 +25,7 @@ public class MbpController {
     @Resource
     MpbRouteService routeService;
     @Resource
-    MbpService mbpService;
+    MbpBuildingDetailShopService mbpBuildingDetailShopService;
     @Resource
     IndustrialParkDetailService industrialParkDetailService;
 
@@ -63,26 +63,26 @@ public class MbpController {
     @PostMapping(value = "/createBuildingDetail")
     public ApiResponse createBuildingDetail(@RequestBody CommercialBuildingDetail commercialBuildingDetail) {
         log.info("添加数据开始！");
-        return mbpService.createBuildingDetail(commercialBuildingDetail);
+        return mbpBuildingDetailShopService.createBuildingDetail(commercialBuildingDetail);
     }
 
     @PostMapping(value = "/listBuildingDetail")
     @ResponseBody
     public ApiResponse queryBuildingDetail(@RequestBody PageVo<CommercialBuildingDetail> pageVo) {
         log.info("查询数据开始！");
-        return mbpService.queryBuildingDetail(pageVo);
+        return mbpBuildingDetailShopService.queryBuildingDetail(pageVo);
     }
 
     @DeleteMapping(value = "/deleteBuildingDetail")
     public ApiResponse deleteBuildingDetail(@RequestParam("id") Integer id) {
         log.info("删除数据开始！");
-        return mbpService.deleteBuildingDetail(id);
+        return mbpBuildingDetailShopService.deleteBuildingDetail(id);
     }
 
     @PutMapping(value = "/updateBuildingDetail")
     public ApiResponse updateBuildingDetail(@RequestBody CommercialBuildingDetail commercialBuildingDetail) {
         log.info("更新数据开始！");
-        return mbpService.updateBuildingDetail(commercialBuildingDetail);
+        return mbpBuildingDetailShopService.updateBuildingDetail(commercialBuildingDetail);
     }
 
     @PostMapping(value = "/createIndustrialParkDetail")
@@ -116,50 +116,50 @@ public class MbpController {
     @PostMapping(value = "/createShop")
     public ApiResponse createShop(@RequestBody ShopDTO shopDTO) {
         log.info("添加数据开始！");
-        return mbpService.createShop(shopDTO);
+        return mbpBuildingDetailShopService.createShop(shopDTO);
     }
 
     @PostMapping(value = "/listShop")
     @ResponseBody
     public ApiResponse queryShop(@RequestBody PageVo<ShopDTO> pageVo) {
         log.info("查询数据开始！");
-        return mbpService.queryShop(pageVo);
+        return mbpBuildingDetailShopService.queryShop(pageVo);
     }
 
     @DeleteMapping(value = "/deleteShop")
     public ApiResponse deleteShop(@RequestParam("id") Integer id) {
         log.info("删除数据开始！");
-        return mbpService.deleteShop(id);
+        return mbpBuildingDetailShopService.deleteShop(id);
     }
 
     @PutMapping(value = "/updateShop")
     public ApiResponse updateShop(@RequestBody ShopDTO shopDTO) {
         log.info("更新数据开始！");
-        return mbpService.updateShop(shopDTO);
+        return mbpBuildingDetailShopService.updateShop(shopDTO);
     }
 
     @PostMapping(value = "/createShopDetail")
     public ApiResponse createShopDetail(@RequestBody ShopDetail shopDetail) {
         log.info("添加数据开始！");
-        return mbpService.createShopDetail(shopDetail);
+        return mbpBuildingDetailShopService.createShopDetail(shopDetail);
     }
 
     @PostMapping(value = "/listShopDetail")
     @ResponseBody
     public ApiResponse queryShopDetail(@RequestBody PageVo<ShopDetail> pageVo) {
         log.info("查询数据开始！");
-        return mbpService.queryShopDetail(pageVo);
+        return mbpBuildingDetailShopService.queryShopDetail(pageVo);
     }
 
     @DeleteMapping(value = "/deleteShopDetail")
     public ApiResponse deleteShopDetail(@RequestParam("id") Integer id) {
         log.info("删除数据开始！");
-        return mbpService.deleteShopDetail(id);
+        return mbpBuildingDetailShopService.deleteShopDetail(id);
     }
 
     @PutMapping(value = "/updateShopDetail")
     public ApiResponse updateShopDetail(@RequestBody ShopDetail shopDetail) {
         log.info("更新数据开始！");
-        return mbpService.updateShopDetail(shopDetail);
+        return mbpBuildingDetailShopService.updateShopDetail(shopDetail);
     }
 }

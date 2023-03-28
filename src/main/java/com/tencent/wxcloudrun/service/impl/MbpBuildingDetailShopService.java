@@ -13,8 +13,10 @@ import com.tencent.wxcloudrun.service.IndustrialParkService;
 import com.tencent.wxcloudrun.service.MbpBuildingService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class MbpService {
+@Service
+public class MbpBuildingDetailShopService {
     @Autowired
     private MbpHotelServiceImpl mbpHotelService;
     @Autowired
