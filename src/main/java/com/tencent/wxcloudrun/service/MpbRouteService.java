@@ -45,10 +45,12 @@ public class MpbRouteService {
                 HotelPTO hotelPTO = new HotelPTO();
                 BeanUtils.copyProperties(requestEntity,hotelPTO);
                 apiResponse = mbpHotelService.create(hotelPTO);
+                break;
             case "商务楼宇" :
                 CommercialBuildingPTO commercialBuildingPTO = new CommercialBuildingPTO();
                 BeanUtils.copyProperties(requestEntity,commercialBuildingPTO);
                 apiResponse = mbpBuildingService.create(commercialBuildingPTO);
+                break;
             case "产业园区" :
                 IndustrialParkPTO industrialParkPTO = new IndustrialParkPTO();
                 BeanUtils.copyProperties(requestEntity,industrialParkPTO);
