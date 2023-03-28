@@ -1,12 +1,10 @@
 package com.tencent.wxcloudrun.controller;
 
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
-import com.tencent.wxcloudrun.dto.HotelDTO;
+import com.tencent.wxcloudrun.dto.RequestEntity;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.service.MpbRouteService;
-import com.tencent.wxcloudrun.service.impl.MbpHotelServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -31,14 +29,14 @@ public class MbpController {
     }
 
     @PostMapping(value = "/create")
-    public ApiResponse create(@RequestBody HotelDTO hotelDTO) {
+    public ApiResponse create(@RequestBody RequestEntity requestEntity) {
         log.info("添加宾馆数据开始！");
-        return routeService.create(hotelDTO);
+        return routeService.create(requestEntity);
     }
 
     @PostMapping(value = "/list")
     @ResponseBody
-    public ApiResponse query(@RequestBody PageVo<HotelDTO> pageVo) {
+    public ApiResponse query(@RequestBody PageVo<RequestEntity> pageVo) {
         log.info("查询宾馆数据开始！");
         return routeService.query(pageVo);
     }
@@ -50,8 +48,8 @@ public class MbpController {
     }
 
     @PutMapping(value = "/update")
-    public ApiResponse update(@RequestBody HotelDTO hotelDTO) {
+    public ApiResponse update(@RequestBody RequestEntity requestEntity) {
         log.info("更新宾馆数据开始！");
-        return routeService.update(hotelDTO);
+        return routeService.update(requestEntity);
     }
 }

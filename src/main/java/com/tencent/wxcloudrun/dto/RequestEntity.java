@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HotelDTO implements Serializable {
+public class RequestEntity implements Serializable {
 
     private int id;
     private String substation;

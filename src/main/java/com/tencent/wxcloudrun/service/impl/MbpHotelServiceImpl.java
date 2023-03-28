@@ -2,16 +2,12 @@ package com.tencent.wxcloudrun.service.impl;
 
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.tencent.wxcloudrun.MbpType;
 import com.tencent.wxcloudrun.config.ApiResponse;
-import com.tencent.wxcloudrun.dto.HotelDTO;
+import com.tencent.wxcloudrun.dto.RequestEntity;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.mapper.HotelMapper;
 import com.tencent.wxcloudrun.pto.HotelPTO;
@@ -28,9 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.*;
-import java.math.BigInteger;
-import java.util.Collections;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -121,10 +114,10 @@ public class MbpHotelServiceImpl implements MbpHotelService {
     }
 
     @Override
-    public ApiResponse query(PageVo<HotelDTO> pageVo) {
-        HotelDTO hotelDTO = pageVo.getType();
+    public ApiResponse query(PageVo<RequestEntity> pageVo) {
+        RequestEntity requestEntity = pageVo.getType();
         HotelPTO hotelPTO = new HotelPTO();
-        BeanUtils.copyProperties(hotelDTO,hotelPTO);
+        BeanUtils.copyProperties(requestEntity,hotelPTO);
         ApiResponse apiResponse = new ApiResponse();
 
         int pageNo = 0;

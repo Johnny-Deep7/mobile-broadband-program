@@ -2,7 +2,7 @@ package com.tencent.wxcloudrun.service;
 
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.tencent.wxcloudrun.config.ApiResponse;
-import com.tencent.wxcloudrun.dto.HotelDTO;
+import com.tencent.wxcloudrun.dto.RequestEntity;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.pto.HotelPTO;
 import com.tencent.wxcloudrun.service.impl.MbpHotelServiceImpl;
@@ -18,31 +18,31 @@ public class MpbRouteService {
 
     private static ApiResponse  apiResponse = ApiResponse.ok();
 
-    public ApiResponse create(HotelDTO hotelDTO) {
+    public ApiResponse create(RequestEntity requestEntity) {
 
-        if (StringUtils.isBlank(hotelDTO.getMarketType())) {
+        if (StringUtils.isBlank(requestEntity.getMarketType())) {
             apiResponse.setCode(400);
             apiResponse.setMsg("场景类型为空，无法新增！");
             return apiResponse;
         }
         HotelPTO hotelPTO = new HotelPTO();
-        BeanUtils.copyProperties(hotelDTO,hotelPTO);
-        switch (hotelDTO.getMarketType()){
+        BeanUtils.copyProperties(requestEntity,hotelPTO);
+        switch (requestEntity.getMarketType()){
             case "酒店宾馆" :
                 apiResponse = mbpHotelService.create(hotelPTO);
         }
         return apiResponse;
     }
 
-    public ApiResponse query(PageVo<HotelDTO> pageVo) {
+    public ApiResponse query(PageVo<RequestEntity> pageVo) {
 
-        HotelDTO hotelDTO = pageVo.getType();
-        if (StringUtils.isBlank(hotelDTO.getMarketType())) {
+        RequestEntity requestEntity = pageVo.getType();
+        if (StringUtils.isBlank(requestEntity.getMarketType())) {
             apiResponse.setCode(400);
             apiResponse.setMsg("场景类型为空，无法查询");
             return apiResponse;
         }
-        switch (hotelDTO.getMarketType()){
+        switch (requestEntity.getMarketType()){
             case "酒店宾馆" :
                 apiResponse = mbpHotelService.query(pageVo);
         }
@@ -62,15 +62,15 @@ public class MpbRouteService {
         return apiResponse;
     }
 
-    public ApiResponse update(HotelDTO hotelDTO) {
-        if (StringUtils.isBlank(hotelDTO.getMarketType())) {
+    public ApiResponse update(RequestEntity requestEntity) {
+        if (StringUtils.isBlank(requestEntity.getMarketType())) {
             apiResponse.setCode(400);
             apiResponse.setMsg("场景类型为空，无法修改");
             return apiResponse;
         }
         HotelPTO hotelPTO = new HotelPTO();
-        BeanUtils.copyProperties(hotelDTO,hotelPTO);
-        switch (hotelDTO.getMarketType()){
+        BeanUtils.copyProperties(requestEntity,hotelPTO);
+        switch (requestEntity.getMarketType()){
             case "酒店宾馆" :
                 apiResponse = mbpHotelService.update(hotelPTO);
         }
