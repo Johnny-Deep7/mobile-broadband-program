@@ -65,7 +65,7 @@ public class MpbRouteService {
     public ApiResponse update(HotelDTO hotelDTO) {
         if (StringUtils.isBlank(hotelDTO.getMarketType())) {
             apiResponse.setCode(400);
-            apiResponse.setMsg("场景类型为空，无法删除");
+            apiResponse.setMsg("场景类型为空，无法修改");
             return apiResponse;
         }
         HotelPTO hotelPTO = new HotelPTO();
