@@ -9,7 +9,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShopDetail implements Serializable {
-    private int id;
+    private Integer id;
     private String handlingNumber;
     private String substation;
     private String customerManager;

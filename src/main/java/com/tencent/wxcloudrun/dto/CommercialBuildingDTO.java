@@ -11,13 +11,13 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommercialBuildingDTO implements Serializable {
-    private int id;
+    private Integer id;
     private String substation;
     private String customerManager;
-    private int contactWay;
+    private Integer contactWay;
     private String hotelName;
     private String isCovered;
-    private int roomNumber;
+    private Integer roomNumber;
     private String groupNumber;
     private String address;
     private String type;
@@ -31,8 +31,8 @@ public class CommercialBuildingDTO implements Serializable {
     private String visitDate;
     private String visitInformation;
     private String difficultPoint;
-    private int enterpriseNumber;
-    private int buildingNum;
+    private Integer enterpriseNumber;
+    private Integer buildingNum;
     private String gims;
     private String gimsCover;
     private String propertyName;

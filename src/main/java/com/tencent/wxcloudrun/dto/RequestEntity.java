@@ -33,8 +33,8 @@ public class RequestEntity implements Serializable {
     private String visitDate;
     private String visitInformation;
     private String difficultPoint;
-    private int enterpriseNumber;
-    private int buildingNum;
+    private Integer enterpriseNumber;
+    private Integer buildingNum;
     private String gims;
     private String gimsCover;
     private String propertyName;

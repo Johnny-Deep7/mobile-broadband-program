@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MarketingPlanDTO {
-    int id;
-    String name;
-    String customerManager;
-    String visitInfo;
-    String rivalInfo;
-    String businessOpp;
-    String remarks;
-    String clockingPhoto;
+    private Integer id;
+    private String name;
+    private String customerManager;
+    private String visitInfo;
+    private String rivalInfo;
+    private String businessOpp;
+    private String remarks;
+    private String clockingPhoto;
 }

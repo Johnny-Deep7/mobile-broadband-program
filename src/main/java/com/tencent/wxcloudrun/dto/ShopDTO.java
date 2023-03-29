@@ -11,7 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShopDTO implements Serializable {
-    private int id;
+    private Integer id;
     private String gimsPoint;
     private String substation;
     private String institutionNo;

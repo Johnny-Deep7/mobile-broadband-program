@@ -10,9 +10,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommercialBuildingDetail implements Serializable {
-    private int id;
-    private int floor;
-    private int roomNumber;
+    private Integer id;
+    private Integer floor;
+    private Integer roomNumber;
     private String address;
     private String enterpriseName;
     private String crossNetworkService;
@@ -28,7 +28,7 @@ public class CommercialBuildingDetail implements Serializable {
     private String hotelName;
     private String isCovered;
     private String industryType;
-    private int employeeNumber;
+    private Integer employeeNumber;
     private String operator;
     private String endTime1;
     private String businessSituation;
@@ -36,5 +36,5 @@ public class CommercialBuildingDetail implements Serializable {
     private String visitDate;
     private String visitInformation;
     private String difficultPoint;
-    private int buildingId;
+    private Integer buildingId;
 }
