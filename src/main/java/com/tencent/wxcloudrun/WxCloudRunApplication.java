@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@MapperScan(basePackages = {"com.tencent.wxcloudrun.mapper"})
+@MapperScan(basePackages = {"com.tencent.wxcloudrun.mapper.*"})
 public class WxCloudRunApplication {  
 
   public static void main(String[] args) {

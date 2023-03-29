@@ -95,6 +95,7 @@ public class MbpBuildingServiceImpl implements MbpBuildingService {
             entity.setMarketType(MbpType.COMBUIL.getCode());
             list.add(entity);
         }
+        BeanUtils.copyProperties(commercialBuildingPTOPage,requestEntityPage);
         requestEntityPage.setRecords(list);
 
         apiResponse.setData(requestEntityPage);

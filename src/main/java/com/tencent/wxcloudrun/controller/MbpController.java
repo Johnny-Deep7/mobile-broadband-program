@@ -34,11 +34,13 @@ public class MbpController {
     private MbpShopServiceImpl mbpShopService;
     @Resource
     private MbpShopDetailServiceImpl mbpShopDetailService;
+    @Resource
+    private MbpServiceImpl mbpService;
 
     @PostMapping(value = "/parsingTable", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void parsingTable(@RequestParam(value = "file") MultipartFile file) {
         log.info("处理表格数据开始！");
-
+        mbpService.parsingTable(file);
     }
 
     @PostMapping(value = "/create")

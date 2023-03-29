@@ -96,8 +96,10 @@ public class IndustrialParkServiceImpl implements IndustrialParkService {
             entity.setMarketType(MbpType.INDUPARK.getCode());
             list.add(entity);
         }
+        BeanUtils.copyProperties(industrialParkPTOPage,requestEntityPage);
         requestEntityPage.setRecords(list);
 
+        apiResponse.setData(requestEntityPage);
         apiResponse.setData(requestEntityPage);
         apiResponse.setCode(200);
         apiResponse.setMsg("查询成功");

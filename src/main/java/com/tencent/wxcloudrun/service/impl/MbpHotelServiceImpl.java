@@ -97,6 +97,7 @@ public class MbpHotelServiceImpl implements MbpHotelService {
             entity.setMarketType(MbpType.HOTEL.getCode());
             list.add(entity);
         }
+        BeanUtils.copyProperties(hotelPTOPage,requestEntityPage);
         requestEntityPage.setRecords(list);
 
         apiResponse.setData(requestEntityPage);
