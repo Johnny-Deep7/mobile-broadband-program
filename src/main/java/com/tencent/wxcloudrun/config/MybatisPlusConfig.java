@@ -7,9 +7,12 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @MapperScan("com.tencent.wxcloudrun.mapper")
+@EnableTransactionManagement
 public class MybatisPlusConfig {
     /**
      * 分页插件
@@ -21,5 +24,12 @@ public class MybatisPlusConfig {
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
         return interceptor;
     }
+
+    @Bean
+    @Primary//批量插入配置
+    public EasySqlInjector easySqlInjector() {
+        return new EasySqlInjector();
+    }
+
 
 }

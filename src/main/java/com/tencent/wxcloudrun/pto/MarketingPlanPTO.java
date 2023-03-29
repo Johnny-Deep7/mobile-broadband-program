@@ -1,5 +1,7 @@
 package com.tencent.wxcloudrun.pto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,12 +14,14 @@ import lombok.NoArgsConstructor;
 @TableName(value = "mbp_marketing_plan")
 @Builder
 public class MarketingPlanPTO {
-    int id;
-    String name;
-    String customerManager;
-    String visitInfo;
-    String rivalInfo;
-    String businessOpp;
-    String remarks;
-    String clockingPhoto;
+
+    @TableId(value = "id" ,type = IdType.AUTO)
+    private Integer id;
+    private String name;
+    private String customerManager;
+    private String visitInfo;
+    private String rivalInfo;
+    private String businessOpp;
+    private String remarks;
+    private String clockingPhoto;
 }

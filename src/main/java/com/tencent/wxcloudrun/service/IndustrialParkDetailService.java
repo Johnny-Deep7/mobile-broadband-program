@@ -7,7 +7,6 @@ import com.tencent.wxcloudrun.pto.IndustrialParkDetailPTO;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface IndustrialParkDetailService {
-    void parsingTable(MultipartFile multipartFile);
     public ApiResponse create(IndustrialParkDetailPTO industrialParkDetailPTO);
     public ApiResponse query(PageVo<IndustrialParkDetail> pageVo);
     public ApiResponse delete(Integer id);

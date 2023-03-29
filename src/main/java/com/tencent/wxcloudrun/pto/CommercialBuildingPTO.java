@@ -1,5 +1,7 @@
 package com.tencent.wxcloudrun.pto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,13 +15,15 @@ import java.io.Serializable;
 @NoArgsConstructor
 @TableName(value = "mbp_commercial_building")
 public class CommercialBuildingPTO implements Serializable {
-    private int id;
+
+    @TableId(value = "id" ,type = IdType.AUTO)
+    private Integer id;
     //分局
     private String substation;
     //客户经理
     private String customerManager;
     //联系方式
-    private int contactWay;
+    private String contactWay;
     //名称
     private String hotelName;
 //    覆盖名称（或未覆盖）

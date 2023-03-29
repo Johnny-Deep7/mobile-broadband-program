@@ -1,5 +1,7 @@
 package com.tencent.wxcloudrun.pto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +17,7 @@ import java.io.Serializable;
 @Builder
 public class HotelPTO implements Serializable {
 
+    @TableId(value = "id",type = IdType.AUTO)
     private Integer id;
     //分局
     private String substation;

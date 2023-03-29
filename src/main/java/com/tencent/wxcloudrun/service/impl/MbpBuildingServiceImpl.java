@@ -14,9 +14,11 @@ import com.tencent.wxcloudrun.pto.CommercialBuildingPTO;
 import com.tencent.wxcloudrun.pto.HotelPTO;
 import com.tencent.wxcloudrun.pto.IndustrialParkPTO;
 import com.tencent.wxcloudrun.service.MbpBuildingService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -129,5 +131,19 @@ public class MbpBuildingServiceImpl implements MbpBuildingService {
         }
         return apiResponse;
     }
+
+    @SneakyThrows(Exception.class)
+    @Transactional
+    public void asyncSaveBuilding(List<CommercialBuildingPTO> commercialBuildingPTOS) {
+        log.info("商务楼宇批量存储开始，存储条数{}",commercialBuildingPTOS.size());
+        Integer saveCount=commercialBuildingMapper.insertBatchSomeColumn(commercialBuildingPTOS);
+        if(saveCount<0){
+            log.error("商务楼宇保存失败");
+            return;
+        }
+        log.info("商务楼宇保存成功,成功条数：{},批次标记:{}",saveCount);
+        commercialBuildingPTOS.clear();
+    }
+
 
 }

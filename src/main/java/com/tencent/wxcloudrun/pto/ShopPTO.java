@@ -1,5 +1,7 @@
 package com.tencent.wxcloudrun.pto;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +15,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @TableName(value = "mbp_street_shops")
 public class ShopPTO implements Serializable {
-    private int id;
+
+    @TableId(value = "id" ,type = IdType.AUTO)
+    private Integer id;
 //    小区编号（GIMS信息点）
     private String gimsPoint;
 //    分局

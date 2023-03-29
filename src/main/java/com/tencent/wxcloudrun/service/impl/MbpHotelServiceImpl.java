@@ -12,6 +12,7 @@ import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.mapper.HotelMapper;
 import com.tencent.wxcloudrun.pto.HotelPTO;
 import com.tencent.wxcloudrun.service.MbpHotelService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 //import org.apache.poi.ss.usermodel.Cell;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 //import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -32,9 +34,6 @@ import java.util.List;
 public class MbpHotelServiceImpl implements MbpHotelService {
     @Resource
     private HotelMapper hotelMapper;
-
-
-
 
     @Override
     public ApiResponse create(HotelPTO hotelPTO) {
@@ -134,28 +133,17 @@ public class MbpHotelServiceImpl implements MbpHotelService {
         return apiResponse;
     }
 
-
-    /**
-     * 解析导入的文件内容
-     * @param file
-     * @throws Exception
-     */
-    public void parseExcel(File file)throws Exception{
-
-
-        int sheetCount = ExcelUtil.getReader(file).getSheetCount();
-
-        for (MbpType mbpType:MbpType.values()) {
-            ExcelReader reader = ExcelUtil.getReader(file, mbpType.getCode());
-            reader.read();
+    @SneakyThrows(Exception.class)
+    @Transactional
+    public void asyncSaveHotel(List<HotelPTO> hotelPTOS) {
+        log.info("酒店宾馆批量存储开始，存储条数{}",hotelPTOS.size());
+        Integer saveCount=hotelMapper.insertBatchSomeColumn(hotelPTOS);
+        if(saveCount<0){
+            log.error("酒店宾馆保存失败");
+            return;
         }
-
-
-
-
-
-
-        return ;
+        log.info("酒店宾馆保存成功,成功条数：{},批次标记:{}",saveCount);
+        hotelPTOS.clear();
     }
 
 

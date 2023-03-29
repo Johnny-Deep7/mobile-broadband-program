@@ -11,12 +11,15 @@ import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.dto.RequestEntity;
 import com.tencent.wxcloudrun.mapper.IndustrialParkMapper;
 import com.tencent.wxcloudrun.pto.HotelPTO;
+import com.tencent.wxcloudrun.pto.IndustrialParkDetailPTO;
 import com.tencent.wxcloudrun.pto.IndustrialParkPTO;
 import com.tencent.wxcloudrun.service.IndustrialParkService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -128,5 +131,18 @@ public class IndustrialParkServiceImpl implements IndustrialParkService {
             apiResponse.setMsg("修改失败");
         }
         return apiResponse;
+    }
+
+    @SneakyThrows(Exception.class)
+    @Transactional
+    public void asyncSaveBuilding(List<IndustrialParkPTO> industrialParkPTOS) {
+        log.info("产业园区批量存储开始，存储条数{}",industrialParkPTOS.size());
+        Integer saveCount=industrialParkMapper.insertBatchSomeColumn(industrialParkPTOS);
+        if(saveCount<0){
+            log.error("产业园区保存失败");
+            return;
+        }
+        log.info("产业园区保存成功,成功条数：{},批次标记:{}",saveCount);
+        industrialParkPTOS.clear();
     }
 }

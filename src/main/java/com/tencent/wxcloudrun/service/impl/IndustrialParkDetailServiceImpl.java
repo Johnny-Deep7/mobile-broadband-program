@@ -7,22 +7,25 @@ import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.IndustrialParkDetail;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.mapper.IndustrialParkDetailMapper;
+import com.tencent.wxcloudrun.pto.CommercialBuildingPTO;
 import com.tencent.wxcloudrun.pto.IndustrialParkDetailPTO;
 import com.tencent.wxcloudrun.pto.IndustrialParkPTO;
 import com.tencent.wxcloudrun.service.IndustrialParkDetailService;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
+@Slf4j
 public class IndustrialParkDetailServiceImpl implements IndustrialParkDetailService {
     @Autowired
     private IndustrialParkDetailMapper industrialParkDetailMapper;
-    @Override
-    public void parsingTable(MultipartFile multipartFile) {
-
-    }
 
     @Override
     public ApiResponse create(IndustrialParkDetailPTO industrialParkDetailPTO) {
@@ -75,7 +78,6 @@ public class IndustrialParkDetailServiceImpl implements IndustrialParkDetailServ
         page.setCurrent(pageNo);
         page.setSize(pageSize);
         Page<IndustrialParkDetailPTO> industrialParkPTOPage = industrialParkDetailMapper.selectPage(page, wrapper);
-
         apiResponse.setData(industrialParkPTOPage);
         apiResponse.setCode(200);
         apiResponse.setMsg("查询成功");
@@ -108,5 +110,18 @@ public class IndustrialParkDetailServiceImpl implements IndustrialParkDetailServ
             apiResponse.setMsg("修改失败");
         }
         return apiResponse;
+    }
+
+    @SneakyThrows(Exception.class)
+    @Transactional
+    public void asyncSaveBuilding(List<IndustrialParkDetailPTO> industrialParkDetailPTOS) {
+        log.info("产业园区二级明细批量存储开始，存储条数{}",industrialParkDetailPTOS.size());
+        Integer saveCount=industrialParkDetailMapper.insertBatchSomeColumn(industrialParkDetailPTOS);
+        if(saveCount<0){
+            log.error("产业园区二级明细保存失败");
+            return;
+        }
+        log.info("产业园区二级明细保存成功,成功条数：{},批次标记:{}",saveCount);
+        industrialParkDetailPTOS.clear();
     }
 }
