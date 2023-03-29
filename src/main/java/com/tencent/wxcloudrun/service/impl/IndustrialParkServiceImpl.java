@@ -137,7 +137,7 @@ public class IndustrialParkServiceImpl implements IndustrialParkService {
 
     @SneakyThrows(Exception.class)
     @Transactional
-    public void asyncSaveBuilding(List<IndustrialParkPTO> industrialParkPTOS) {
+    public void asyncSaveInpark(List<IndustrialParkPTO> industrialParkPTOS) {
         log.info("产业园区批量存储开始，存储条数{}",industrialParkPTOS.size());
         Integer saveCount=industrialParkMapper.insertBatchSomeColumn(industrialParkPTOS);
         if(saveCount<0){

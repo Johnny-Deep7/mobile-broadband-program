@@ -23,7 +23,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class MbpBuildingDetailShopService implements MbpBuildingDetailService {
+public class MbpBuildingDetailServiceImpl implements MbpBuildingDetailService {
     @Autowired
     private CommercialBuildingDetailMapper commercialBuildingDetailMapper;
 

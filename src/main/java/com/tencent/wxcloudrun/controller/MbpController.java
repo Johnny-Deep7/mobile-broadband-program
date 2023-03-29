@@ -3,7 +3,6 @@ package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.*;
-import com.tencent.wxcloudrun.pto.CommercialBuildingPTO;
 import com.tencent.wxcloudrun.pto.IndustrialParkDetailPTO;
 import com.tencent.wxcloudrun.service.IndustrialParkDetailService;
 import com.tencent.wxcloudrun.service.MbpRouteService;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 
 @RestController
@@ -27,7 +25,7 @@ public class MbpController {
     @Resource
     private MbpRouteService routeService;
     @Resource
-    private MbpBuildingDetailShopService mbpBuildingDetailShopService;
+    private MbpBuildingDetailServiceImpl mbpBuildingDetailServiceImpl;
     @Resource
     private IndustrialParkDetailService industrialParkDetailService;
     @Resource
@@ -71,26 +69,26 @@ public class MbpController {
     @PostMapping(value = "/createBuildingDetail")
     public ApiResponse createBuildingDetail(@RequestBody CommercialBuildingDetail commercialBuildingDetail) {
         log.info("添加数据开始！");
-        return mbpBuildingDetailShopService.createBuildingDetail(commercialBuildingDetail);
+        return mbpBuildingDetailServiceImpl.createBuildingDetail(commercialBuildingDetail);
     }
 
     @PostMapping(value = "/listBuildingDetail")
     @ResponseBody
     public ApiResponse queryBuildingDetail(@RequestBody PageVo<CommercialBuildingDetail> pageVo) {
         log.info("查询数据开始！");
-        return mbpBuildingDetailShopService.queryBuildingDetail(pageVo);
+        return mbpBuildingDetailServiceImpl.queryBuildingDetail(pageVo);
     }
 
     @DeleteMapping(value = "/deleteBuildingDetail")
     public ApiResponse deleteBuildingDetail(@RequestParam("id") Integer id) {
         log.info("删除数据开始！");
-        return mbpBuildingDetailShopService.deleteBuildingDetail(id);
+        return mbpBuildingDetailServiceImpl.deleteBuildingDetail(id);
     }
 
     @PutMapping(value = "/updateBuildingDetail")
     public ApiResponse updateBuildingDetail(@RequestBody CommercialBuildingDetail commercialBuildingDetail) {
         log.info("更新数据开始！");
-        return mbpBuildingDetailShopService.updateBuildingDetail(commercialBuildingDetail);
+        return mbpBuildingDetailServiceImpl.updateBuildingDetail(commercialBuildingDetail);
     }
 
     @PostMapping(value = "/createIndustrialParkDetail")
