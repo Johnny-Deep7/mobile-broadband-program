@@ -3,10 +3,11 @@ package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.*;
+import com.tencent.wxcloudrun.pto.CommercialBuildingPTO;
 import com.tencent.wxcloudrun.pto.IndustrialParkDetailPTO;
 import com.tencent.wxcloudrun.service.IndustrialParkDetailService;
-import com.tencent.wxcloudrun.service.MpbRouteService;
-import com.tencent.wxcloudrun.service.impl.MbpBuildingDetailShopService;
+import com.tencent.wxcloudrun.service.MbpRouteService;
+import com.tencent.wxcloudrun.service.impl.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.MediaType;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 @RestController
@@ -23,11 +25,15 @@ import javax.annotation.Resource;
 public class MbpController {
 
     @Resource
-    MpbRouteService routeService;
+    private MbpRouteService routeService;
     @Resource
-    MbpBuildingDetailShopService mbpBuildingDetailShopService;
+    private MbpBuildingDetailShopService mbpBuildingDetailShopService;
     @Resource
-    IndustrialParkDetailService industrialParkDetailService;
+    private IndustrialParkDetailService industrialParkDetailService;
+    @Resource
+    private MbpShopServiceImpl mbpShopService;
+    @Resource
+    private MbpShopDetailServiceImpl mbpShopDetailService;
 
     @PostMapping(value = "/parsingTable", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void parsingTable(@RequestParam(value = "file") MultipartFile file) {
@@ -116,50 +122,50 @@ public class MbpController {
     @PostMapping(value = "/createShop")
     public ApiResponse createShop(@RequestBody ShopDTO shopDTO) {
         log.info("添加数据开始！");
-        return mbpBuildingDetailShopService.createShop(shopDTO);
+        return mbpShopService.createShop(shopDTO);
     }
 
     @PostMapping(value = "/listShop")
     @ResponseBody
     public ApiResponse queryShop(@RequestBody PageVo<ShopDTO> pageVo) {
         log.info("查询数据开始！");
-        return mbpBuildingDetailShopService.queryShop(pageVo);
+        return mbpShopService.queryShop(pageVo);
     }
 
     @DeleteMapping(value = "/deleteShop")
     public ApiResponse deleteShop(@RequestParam("id") Integer id) {
         log.info("删除数据开始！");
-        return mbpBuildingDetailShopService.deleteShop(id);
+        return mbpShopService.deleteShop(id);
     }
 
     @PutMapping(value = "/updateShop")
     public ApiResponse updateShop(@RequestBody ShopDTO shopDTO) {
         log.info("更新数据开始！");
-        return mbpBuildingDetailShopService.updateShop(shopDTO);
+        return mbpShopService.updateShop(shopDTO);
     }
 
     @PostMapping(value = "/createShopDetail")
     public ApiResponse createShopDetail(@RequestBody ShopDetail shopDetail) {
         log.info("添加数据开始！");
-        return mbpBuildingDetailShopService.createShopDetail(shopDetail);
+        return mbpShopDetailService.createShopDetail(shopDetail);
     }
 
     @PostMapping(value = "/listShopDetail")
     @ResponseBody
     public ApiResponse queryShopDetail(@RequestBody PageVo<ShopDetail> pageVo) {
         log.info("查询数据开始！");
-        return mbpBuildingDetailShopService.queryShopDetail(pageVo);
+        return mbpShopDetailService.queryShopDetail(pageVo);
     }
 
     @DeleteMapping(value = "/deleteShopDetail")
     public ApiResponse deleteShopDetail(@RequestParam("id") Integer id) {
         log.info("删除数据开始！");
-        return mbpBuildingDetailShopService.deleteShopDetail(id);
+        return mbpShopDetailService.deleteShopDetail(id);
     }
 
     @PutMapping(value = "/updateShopDetail")
     public ApiResponse updateShopDetail(@RequestBody ShopDetail shopDetail) {
         log.info("更新数据开始！");
-        return mbpBuildingDetailShopService.updateShopDetail(shopDetail);
+        return mbpShopDetailService.updateShopDetail(shopDetail);
     }
 }
