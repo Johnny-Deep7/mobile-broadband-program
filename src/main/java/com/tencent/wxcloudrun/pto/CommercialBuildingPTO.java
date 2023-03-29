@@ -31,7 +31,7 @@ public class CommercialBuildingPTO implements Serializable {
 //    覆盖名称（或未覆盖）
     private String isCovered;
 
-    private int roomNumber;
+    private Integer roomNumber;
 //    集团编号
     private String groupNumber;
 //    地址
@@ -59,9 +59,9 @@ public class CommercialBuildingPTO implements Serializable {
 
     private String difficultPoint;
 //    入驻企业数
-    private int enterpriseNumber;
+    private Integer enterpriseNumber;
 //    楼栋数
-    private int buildingNum;
+    private Integer buildingNum;
 //    GIMS编号（本地数据）
     private String gims;
 //    若覆盖，信息点数，根据GIMS系统填写

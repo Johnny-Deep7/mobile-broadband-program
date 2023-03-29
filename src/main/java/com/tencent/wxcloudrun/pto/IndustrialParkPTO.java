@@ -31,7 +31,7 @@ public class IndustrialParkPTO implements Serializable {
     private String hotelName;
     //覆盖名称（或未覆盖）
     private String isCovered;
-    private int roomNumber;
+    private Integer roomNumber;
     private String groupNumber;
     //地址
     private String address;
@@ -54,7 +54,7 @@ public class IndustrialParkPTO implements Serializable {
     private String visitInformation;
     private String difficultPoint;
     //    实际入驻企业数
-    private int enterpriseNumber;
+    private Integer enterpriseNumber;
     //    楼栋数
-    private int buildingNum;
+    private Integer buildingNum;
 }

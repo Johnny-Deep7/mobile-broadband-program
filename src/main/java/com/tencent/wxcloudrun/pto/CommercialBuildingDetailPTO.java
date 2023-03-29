@@ -19,9 +19,9 @@ public class CommercialBuildingDetailPTO implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     //    所在楼层
-    private int floor;
+    private Integer floor;
     //    房间号
-    private int roomNumber;
+    private Integer roomNumber;
     private String address;
     //    企业名称
     private String enterpriseName;
@@ -51,7 +51,7 @@ public class CommercialBuildingDetailPTO implements Serializable {
     //    制造业
     private String industryType;
     //    员工人数
-    private int employeeNumber;
+    private Integer employeeNumber;
     //    运营商选择（移动、电信、联通）
     private String operator;
     private String endTime1;
@@ -64,5 +64,5 @@ public class CommercialBuildingDetailPTO implements Serializable {
     //    走访情况
     private String visitInformation;
     private String difficultPoint;
-    private int buildingId;
+    private Integer buildingId;
 }

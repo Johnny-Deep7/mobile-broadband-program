@@ -52,5 +52,5 @@ public class ShopDetailPTO implements Serializable {
     private String visitDate;
 //    走访情况
     private String visitInformation;
-    private int shopId;
+    private Integer shopId;
 }
