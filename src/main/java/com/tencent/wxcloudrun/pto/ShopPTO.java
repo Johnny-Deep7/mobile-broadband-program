@@ -29,7 +29,7 @@ public class ShopPTO implements Serializable {
     @TableField("INSTITUTIONNO")
     private String institutionNo;
     //    街长
-    @TableField("STREETCHIEF")
+    @TableField("STREET_CHIEF")
     private String streetChief;
     //    小区名称
     @TableField("CELL_NAME")
