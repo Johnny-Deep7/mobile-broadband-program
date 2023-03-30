@@ -19,19 +19,24 @@ import java.io.Serializable;
 public class CommercialBuildingDetailPTO implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+
     //    所在楼层
     @TableField("FLOOR")
     private String floor;
+
     //    房间号
     @TableField("ROOM_NUMBER")
     private String roomNumber;
     private String address;
+
     //    企业名称
     @TableField("ENTERPRISE_NAME")
     private String enterpriseName;
+
     //    异网业务（一网通、专线、号卡等业务政策资费简述）
     @TableField("CROSS_NETWORK_SERVICE")
     private String crossNetworkService;
+
     //    异网到期时间
     @TableField("END_TIME2")
     private String endTime2;
@@ -62,7 +67,7 @@ public class CommercialBuildingDetailPTO implements Serializable {
 
     private String hotelName;
     private String isCovered;
-    //    制造业
+    //    行业类型
     @TableField("INDUSTRY_TYPE")
     private String industryType;
     //    员工人数
@@ -86,5 +91,5 @@ public class CommercialBuildingDetailPTO implements Serializable {
     private String visitInformation;
     private String difficultPoint;
     @TableField("BUILDING_ID")
-    private String buildingId;
+    private Integer buildingId;
 }

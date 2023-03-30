@@ -44,9 +44,13 @@ public class MbpBuildingDetailServiceImpl implements MbpBuildingDetailService {
     @Override
     public ApiResponse queryBuildingDetail(PageVo<CommercialBuildingDetail> pageVo) {
         CommercialBuildingDetail commercialBuildingDetail = pageVo.getType();
+        if (commercialBuildingDetail.getBuildingId() == null || commercialBuildingDetail.getBuildingId() == 0){
+            apiResponse.setCode(400);
+            apiResponse.setMsg("没有传商务大楼的id，商务大楼二级明细查询失败！");
+            return apiResponse;
+        }
         CommercialBuildingDetailPTO commercialBuildingDetailPTO = new CommercialBuildingDetailPTO();
         BeanUtils.copyProperties(commercialBuildingDetail,commercialBuildingDetailPTO);
-        ApiResponse apiResponse = new ApiResponse();
 
         int pageNo = 0;
         int pageSize = 0;
@@ -74,9 +78,8 @@ public class MbpBuildingDetailServiceImpl implements MbpBuildingDetailService {
         if (StringUtils.isNotBlank(commercialBuildingDetailPTO.getEnterpriseName())){
             wrapper.like("enterprise_name",commercialBuildingDetailPTO.getEnterpriseName());
         }
-        if (StringUtils.isNotBlank(commercialBuildingDetailPTO.getBuildingId())){
-            wrapper.eq("building_id",commercialBuildingDetailPTO.getBuildingId());
-        }
+        wrapper.eq("building_id",commercialBuildingDetailPTO.getBuildingId());
+
         wrapper.orderByDesc("id");
         Page<CommercialBuildingDetailPTO> page = new Page<>();
         page.setCurrent(pageNo);
@@ -136,7 +139,7 @@ public class MbpBuildingDetailServiceImpl implements MbpBuildingDetailService {
 
     @SneakyThrows(Exception.class)
     @Transactional
-    public void asyncSaveBuilding(List<CommercialBuildingDetailPTO> commercialBuildingDetailPTOS) {
+    public void asyncSaveBuildingDel(List<CommercialBuildingDetailPTO> commercialBuildingDetailPTOS) {
         log.info("产业园区批量存储开始，存储条数{}",commercialBuildingDetailPTOS.size());
         Integer saveCount=commercialBuildingDetailMapper.insertBatchSomeColumn(commercialBuildingDetailPTOS);
         if(saveCount<0){

@@ -1,9 +1,10 @@
 package com.tencent.wxcloudrun.service.impl;
 
+import com.alibaba.excel.EasyExcel;
 import com.tencent.wxcloudrun.MbpType;
+import com.tencent.wxcloudrun.dto.excelEntity.ExcelHotel;
 import com.tencent.wxcloudrun.pto.CommercialBuildingPTO;
 import com.tencent.wxcloudrun.pto.HotelPTO;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.tencent.wxcloudrun.pto.IndustrialParkPTO;
 import com.tencent.wxcloudrun.service.MbpService;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,7 @@ public class MbpServiceImpl implements MbpService {
     @Resource
     private MbpShopDetailServiceImpl mbpShopDetailService;
     @Override
-    public void parsingTable(MultipartFile multipartFile) {
+    public void parsingTable(MultipartFile multipartFile,String marketType) {
         File file = null;
         if (multipartFile!=null){
             try {
@@ -110,213 +111,20 @@ public class MbpServiceImpl implements MbpService {
         }
     }
 
-        /**
-     * 解析导入的文件内容
-     * @param file
-     * @throws Exception
-     */
-    public void parseExcel(File file)throws Exception{
-
-        //文件名
-        String filename = file.getName();
-
-        //创建一个文件对象
-        Workbook workbook = null;
+    public void parseExcel(File file) throws Exception{
         InputStream inputStream = new FileInputStream(file);
-        //Office 2007版本后excel.xls文件
-        if (filename.endsWith("xlsx")) {
-            workbook = new XSSFWorkbook(inputStream);
-        } //Office 2007版本前excel.xls文件
-        else if (filename.endsWith("xls")) {
-            workbook = new HSSFWorkbook(inputStream);
-        } else {
-            log.error("不是Excel文件");
-            throw new RuntimeException("不是Excel文件");
-        }
+        List<ExcelHotel> tmpList = EasyExcel.read(inputStream)
+                // 设置与Excel表映射的类
+                .head(ExcelHotel.class)
+                // 设置sheet,默认读取第一个
+                .sheet("酒店宾馆")
+                // 设置标题所在行数
+                .headRowNumber(1)
+                // 异步读取
+                .doReadSync();
 
-        //读取Sheet
-        for (MbpType mbpType:MbpType.values()) {
-            Sheet sheet = workbook.getSheet(mbpType.getCode());
-            if (sheet != null){
-                switch (mbpType.getCode()){
-                    case "酒店宾馆":
-                        getHotel(sheet);
-                        break;
-                    case "商务楼宇":
-                        getBuilding(sheet);
-                        break;
-                    case "产业园区":
-                        getIndustrialPark(sheet);
-                        break;
-                    case "商务楼宇二级明细":
-                        getBuildingDel(sheet);
-                        break;
-                }
-            }
-        }
-
-        return ;
-    }
-
-
-    /**
-     * 获取酒店宾馆的数据
-     * @param sheet
-     */
-    public void getHotel(Sheet sheet){
-
-        //获取sheet下有多少行
-        int rowNum = sheet.getPhysicalNumberOfRows();
-        List<HotelPTO> hotelPTOS = new ArrayList<>();
-        //遍历所有的Row
-        for (int i = 1; i < rowNum; i++) {
-
-            //获取当前sheet的第i行
-            Row row = sheet.getRow(i);
-            short cellNum = row.getLastCellNum();
-            for (int j = 0; j < cellNum; j++) {
-                row.getCell(j).setCellType(CellType.STRING);
-            }
-            hotelPTOS.add(HotelPTO.builder().substation(row.getCell(1).getStringCellValue())
-                    .customerManager(row.getCell(2).getStringCellValue())
-                    .contactWay(row.getCell(3).getStringCellValue())
-                    .hotelName(row.getCell(4).getStringCellValue())
-                    .isCovered(row.getCell(5).getStringCellValue())
-                    .roomNumber(row.getCell(6).getStringCellValue())
-                    .groupNumber(row.getCell(7).getStringCellValue())
-                    .address(row.getCell(8).getStringCellValue())
-                    .hotelType(row.getCell(9).getStringCellValue())
-                    .operator(row.getCell(10).getStringCellValue())
-                    .endTime1(row.getCell(11).getStringCellValue())
-                    .internetCharge(row.getCell(12).getStringCellValue())
-                    .endTime2(row.getCell(13).getStringCellValue())
-                    .responsiblePerson(row.getCell(14).getStringCellValue())
-                    .position(row.getCell(15).getStringCellValue())
-                    .phoneNumber(row.getCell(16).getStringCellValue())
-                    .visitDate(row.getCell(17).getStringCellValue())
-                    .visitInformation(row.getCell(18).getStringCellValue())
-                    .difficultPoint(row.getCell(19).getStringCellValue()).build());
-        }
-        mbpHotelService.asyncSaveHotel(hotelPTOS);
+        System.out.println(tmpList.size());
 
     }
 
-    /**
-     * 获取商务楼宇的数据
-     * @param sheet
-     */
-    public void getBuilding(Sheet sheet){
-
-        //获取sheet下有多少行
-        int rowNum = sheet.getPhysicalNumberOfRows();
-        List<CommercialBuildingPTO> commercialBuildingPTOS = new ArrayList<>();
-        //遍历所有的Row
-        for (int i = 1; i < rowNum; i++) {
-
-            //获取当前sheet的第i行
-            Row row = sheet.getRow(i);
-            short cellNum = row.getLastCellNum();
-            for (int j = 0; j < cellNum; j++) {
-                row.getCell(j).setCellType(CellType.STRING);
-            }
-            commercialBuildingPTOS.add(CommercialBuildingPTO.builder().substation(row.getCell(1).getStringCellValue())
-                    .customerManager(row.getCell(2).getStringCellValue())
-                    .contactWay(row.getCell(3).getStringCellValue())
-                    .hotelName(row.getCell(4).getStringCellValue())
-                    .address(row.getCell(5).getStringCellValue())
-                    .isCovered(row.getCell(6).getStringCellValue())
-                    .enterpriseNumber(row.getCell(7).getStringCellValue())
-                    .buildingNum(row.getCell(8).getStringCellValue())
-                    .propertyName(row.getCell(9).getStringCellValue())
-                    .isProperty(row.getCell(10).getStringCellValue())
-                    .groupNumber(row.getCell(11).getStringCellValue())
-                    .responsiblePerson(row.getCell(12).getStringCellValue())
-                    .position(row.getCell(13).getStringCellValue())
-                    .phoneNumber(row.getCell(14).getStringCellValue())
-                    .operator(row.getCell(15).getStringCellValue())
-                    .endTime1(row.getCell(16).getStringCellValue())
-                    .internetCharge(row.getCell(17).getStringCellValue())
-                    .endTime2(row.getCell(18).getStringCellValue())
-                    .visitDate(row.getCell(19).getStringCellValue())
-                    .visitInformation(row.getCell(20).getStringCellValue()).build());
-        }
-        mbpBuildingService.asyncSaveBuilding(commercialBuildingPTOS);
-
-    }
-
-    /**
-     * 获取产业园区的数据
-     * @param sheet
-     */
-    public void getIndustrialPark(Sheet sheet){
-
-        //获取sheet下有多少行
-        int rowNum = sheet.getPhysicalNumberOfRows();
-        List<IndustrialParkPTO> industrialParkPTOS = new ArrayList<>();
-        //遍历所有的Row
-        for (int i = 1; i < rowNum; i++) {
-
-            //获取当前sheet的第i行
-            Row row = sheet.getRow(i);
-            short cellNum = row.getLastCellNum();
-            for (int j = 0; j < cellNum; j++) {
-                row.getCell(j).setCellType(CellType.STRING);
-            }
-            industrialParkPTOS.add(IndustrialParkPTO.builder().substation(row.getCell(1).getStringCellValue())
-                    .customerManager(row.getCell(2).getStringCellValue())
-                    .contactWay(row.getCell(3).getStringCellValue())
-                    .hotelName(row.getCell(4).getStringCellValue())
-                    .address(row.getCell(5).getStringCellValue())
-                    .isCovered(row.getCell(6).getStringCellValue())
-                    .enterpriseNumber(row.getCell(7).getStringCellValue())
-                    .type(row.getCell(8).getStringCellValue())
-                    .buildingNum(row.getCell(9).getStringCellValue())
-                    .operator(row.getCell(10).getStringCellValue())
-                    .endTime1(row.getCell(11).getStringCellValue())
-                    .internetCharge(row.getCell(12).getStringCellValue())
-                    .endTime2(row.getCell(13).getStringCellValue())
-                    .visitDate(row.getCell(14).getStringCellValue())
-                    .visitInformation(row.getCell(15).getStringCellValue()).build());
-        }
-        industrialParkService.asyncSaveInpark(industrialParkPTOS);
-
-    }
-
-    /**
-     * 获取商务楼宇二级明细的数据
-     * @param sheet
-     */
-    public void getBuildingDel(Sheet sheet){
-
-        //获取sheet下有多少行
-        int rowNum = sheet.getPhysicalNumberOfRows();
-        List<IndustrialParkPTO> industrialParkPTOS = new ArrayList<>();
-        //遍历所有的Row
-        for (int i = 1; i < rowNum; i++) {
-
-            //获取当前sheet的第i行
-            Row row = sheet.getRow(i);
-            short cellNum = row.getLastCellNum();
-            for (int j = 0; j < cellNum; j++) {
-                row.getCell(j).setCellType(CellType.STRING);
-            }
-            industrialParkPTOS.add(IndustrialParkPTO.builder().substation(row.getCell(1).getStringCellValue())
-                    .customerManager(row.getCell(2).getStringCellValue())
-                    .contactWay(row.getCell(3).getStringCellValue())
-                    .hotelName(row.getCell(4).getStringCellValue())
-                    .address(row.getCell(5).getStringCellValue())
-                    .isCovered(row.getCell(6).getStringCellValue())
-                    .enterpriseNumber(row.getCell(7).getStringCellValue())
-                    .type(row.getCell(8).getStringCellValue())
-                    .buildingNum(row.getCell(9).getStringCellValue())
-                    .operator(row.getCell(10).getStringCellValue())
-                    .endTime1(row.getCell(11).getStringCellValue())
-                    .internetCharge(row.getCell(12).getStringCellValue())
-                    .endTime2(row.getCell(13).getStringCellValue())
-                    .visitDate(row.getCell(14).getStringCellValue())
-                    .visitInformation(row.getCell(15).getStringCellValue()).build());
-        }
-        industrialParkService.asyncSaveInpark(industrialParkPTOS);
-
-    }
 }

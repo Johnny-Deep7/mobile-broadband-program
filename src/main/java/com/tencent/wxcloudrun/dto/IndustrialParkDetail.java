@@ -33,6 +33,6 @@ public class IndustrialParkDetail implements Serializable {
     private String businessSituation;
     private String visitDate;
     private String visitInformation;
-    private String parkId;
+    private Integer parkId;
 
 }

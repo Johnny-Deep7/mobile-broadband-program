@@ -134,7 +134,7 @@ public class MbpShopServiceImpl implements MbpShopService {
 
     @SneakyThrows(Exception.class)
     @Transactional
-    public void asyncSaveBuilding(List<ShopPTO> shopPTOS) {
+    public void asyncSaveShop(List<ShopPTO> shopPTOS) {
         log.info("沿街商铺批量存储开始，存储条数{}",shopPTOS.size());
         Integer saveCount=shopMapper.insertBatchSomeColumn(shopPTOS);
         if(saveCount<0){

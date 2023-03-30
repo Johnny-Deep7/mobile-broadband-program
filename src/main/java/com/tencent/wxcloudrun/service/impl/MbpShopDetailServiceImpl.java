@@ -47,9 +47,13 @@ public class MbpShopDetailServiceImpl implements MbpShopDetailService {
     @Override
     public ApiResponse queryShopDetail(PageVo<ShopDetail> pageVo) {
         ShopDetail shopDetail = pageVo.getType();
+        if (shopDetail.getShopId() == null || shopDetail.getShopId() == 0){
+            apiResponse.setCode(400);
+            apiResponse.setMsg("没有传沿街商铺的id，沿街商铺二级明细查询失败！");
+            return apiResponse;
+        }
         ShopDetailPTO shopDetailPTO = new ShopDetailPTO();
         BeanUtils.copyProperties(shopDetail, shopDetailPTO);
-        ApiResponse apiResponse = new ApiResponse();
 
         int pageNo = 0;
         int pageSize = 0;
@@ -77,9 +81,7 @@ public class MbpShopDetailServiceImpl implements MbpShopDetailService {
         if (StringUtils.isNotBlank(shopDetailPTO.getHouseNumber())){
             wrapper.like("house_number",shopDetailPTO.getHouseNumber());
         }
-        if (StringUtils.isNotBlank(shopDetailPTO.getShopId())){
-            wrapper.eq("shop_id",shopDetailPTO.getShopId());
-        }
+        wrapper.eq("shop_id",shopDetailPTO.getShopId());
         wrapper.orderByDesc("id");
 
         Page<ShopDetailPTO> page = new Page<>();
@@ -139,7 +141,7 @@ public class MbpShopDetailServiceImpl implements MbpShopDetailService {
     }
     @SneakyThrows(Exception.class)
     @Transactional
-    public void asyncSaveBuilding(List<ShopDetailPTO> shopDetailPTOS) {
+    public void asyncSaveShopDel(List<ShopDetailPTO> shopDetailPTOS) {
         log.info("沿街商铺二级菜单批量存储开始，存储条数{}",shopDetailPTOS.size());
         Integer saveCount=shopDetailMapper.insertBatchSomeColumn(shopDetailPTOS);
         if(saveCount<0){

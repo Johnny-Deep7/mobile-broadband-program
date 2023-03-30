@@ -28,5 +28,5 @@ public class ShopDetail implements Serializable {
     private String talkStatus;
     private String visitDate;
     private String visitInformation;
-    private String shopId;
+    private Integer shopId;
 }

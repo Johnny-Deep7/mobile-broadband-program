@@ -4,9 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.io.Serializable;
 
@@ -14,6 +12,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName(value = "mbp_sub_industrial_park")
+@Builder
+@Getter
+@Setter
 public class IndustrialParkDetailPTO implements Serializable {
     @TableId(value = "id" ,type = IdType.AUTO)
     private Integer id;
@@ -81,5 +82,5 @@ public class IndustrialParkDetailPTO implements Serializable {
     @TableField("VISIT_INFORMATION")
     private String visitInformation;
     @TableField("PARK_ID")
-    private String parkId;
+    private Integer parkId;
 }

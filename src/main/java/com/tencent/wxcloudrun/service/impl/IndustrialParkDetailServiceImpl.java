@@ -41,10 +41,16 @@ public class IndustrialParkDetailServiceImpl implements IndustrialParkDetailServ
 
     @Override
     public ApiResponse query(PageVo<IndustrialParkDetail> pageVo) {
+        ApiResponse apiResponse = new ApiResponse();
         IndustrialParkDetailPTO industrialParkDetailPTO = new IndustrialParkDetailPTO();
         IndustrialParkDetail industrialParkDetail = pageVo.getType();
+        if (industrialParkDetail.getParkId() == null || industrialParkDetail.getParkId() == 0){
+            apiResponse.setCode(400);
+            apiResponse.setMsg("没有传产业园区的id，产业园区二级明细查询失败！");
+            return apiResponse;
+        }
         BeanUtils.copyProperties(industrialParkDetail, industrialParkDetailPTO);
-        ApiResponse apiResponse = new ApiResponse();
+
         int pageNo = 0;
         int pageSize = 0;
         if (pageVo.getPage() == 0) {
@@ -71,9 +77,9 @@ public class IndustrialParkDetailServiceImpl implements IndustrialParkDetailServ
         if (StringUtils.isNotBlank(industrialParkDetailPTO.getEnterpriseName())) {
             wrapper.eq("enterprise_name", industrialParkDetailPTO.getEnterpriseName());
         }
-        if (StringUtils.isNotBlank(industrialParkDetailPTO.getParkId())){
-            wrapper.eq("park_id",industrialParkDetailPTO.getParkId());
-        }
+
+        wrapper.eq("park_id",industrialParkDetailPTO.getParkId());
+
         wrapper.orderByDesc("id");
         Page<IndustrialParkDetailPTO> page = new Page<>();
         page.setCurrent(pageNo);
@@ -132,7 +138,7 @@ public class IndustrialParkDetailServiceImpl implements IndustrialParkDetailServ
 
     @SneakyThrows(Exception.class)
     @Transactional
-    public void asyncSaveBuilding(List<IndustrialParkDetailPTO> industrialParkDetailPTOS) {
+    public void asyncSaveParkDel(List<IndustrialParkDetailPTO> industrialParkDetailPTOS) {
         log.info("产业园区二级明细批量存储开始，存储条数{}",industrialParkDetailPTOS.size());
         Integer saveCount=industrialParkDetailMapper.insertBatchSomeColumn(industrialParkDetailPTOS);
         if(saveCount<0){

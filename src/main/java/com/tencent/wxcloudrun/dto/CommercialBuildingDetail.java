@@ -36,5 +36,5 @@ public class CommercialBuildingDetail implements Serializable {
     private String visitDate;
     private String visitInformation;
     private String difficultPoint;
-    private String buildingId;
+    private Integer buildingId;
 }
