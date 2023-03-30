@@ -10,7 +10,6 @@ import com.tencent.wxcloudrun.dto.MarketingPlanDTO;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.dto.RequestEntity;
 import com.tencent.wxcloudrun.mapper.MarketingPlanMapper;
-import com.tencent.wxcloudrun.pto.CommercialBuildingPTO;
 import com.tencent.wxcloudrun.pto.MarketingPlanPTO;
 import com.tencent.wxcloudrun.service.MarketingPlanService;
 import lombok.SneakyThrows;
