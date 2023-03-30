@@ -80,6 +80,7 @@ public class MbpBuildingServiceImpl implements MbpBuildingService {
         if (StringUtils.isNotBlank(commercialBuildingPTO.getType())){
             wrapper.eq("hotel_type",commercialBuildingPTO.getType());
         }
+        wrapper.orderByDesc("id");
 
         Page<CommercialBuildingPTO> page = new Page<>();
         page.setCurrent(pageNo);

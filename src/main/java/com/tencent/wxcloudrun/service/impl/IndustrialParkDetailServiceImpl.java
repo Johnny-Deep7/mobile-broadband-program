@@ -65,15 +65,15 @@ public class IndustrialParkDetailServiceImpl implements IndustrialParkDetailServ
             wrapper.like("substation", industrialParkDetailPTO.getSubstation());
         }
         if (StringUtils.isNotBlank(industrialParkDetailPTO.getCustomerManager())) {
-            wrapper.eq("customerManager", industrialParkDetailPTO.getCustomerManager());
+            wrapper.eq("customer_manager", industrialParkDetailPTO.getCustomerManager());
         }
         if (StringUtils.isNotBlank(industrialParkDetailPTO.getIndustryPark())) {
-            wrapper.like("industryPark", industrialParkDetailPTO.getIndustryPark());
+            wrapper.like("industry_park", industrialParkDetailPTO.getIndustryPark());
         }
         if (StringUtils.isNotBlank(industrialParkDetailPTO.getEnterpriseName())) {
-            wrapper.eq("enterpriseName", industrialParkDetailPTO.getEnterpriseName());
+            wrapper.eq("enterprise_name", industrialParkDetailPTO.getEnterpriseName());
         }
-
+        wrapper.orderByDesc("id");
         Page<IndustrialParkDetailPTO> page = new Page<>();
         page.setCurrent(pageNo);
         page.setSize(pageSize);

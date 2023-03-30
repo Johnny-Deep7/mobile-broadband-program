@@ -68,14 +68,15 @@ public class MbpShopDetailServiceImpl implements MbpShopDetailService {
             wrapper.like("substation",shopDetailPTO.getSubstation());
         }
         if (StringUtils.isNotBlank(shopDetailPTO.getCustomerManager())){
-            wrapper.eq("customerManager",shopDetailPTO.getCustomerManager());
+            wrapper.eq("customer_manager",shopDetailPTO.getCustomerManager());
         }
         if (StringUtils.isNotBlank(shopDetailPTO.getStreetBelong())){
-            wrapper.like("streetBelong",shopDetailPTO.getStreetBelong());
+            wrapper.like("street_belong",shopDetailPTO.getStreetBelong());
         }
         if (StringUtils.isNotBlank(shopDetailPTO.getHouseNumber())){
-            wrapper.like("houseNumber",shopDetailPTO.getHouseNumber());
+            wrapper.like("house_number",shopDetailPTO.getHouseNumber());
         }
+        wrapper.orderByDesc("id");
 
         Page<ShopDetailPTO> page = new Page<>();
         page.setCurrent(pageNo);

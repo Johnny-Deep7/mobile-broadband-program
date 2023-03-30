@@ -81,6 +81,7 @@ public class IndustrialParkServiceImpl implements IndustrialParkService {
         if (StringUtils.isNotBlank(industrialParkPTO.getType())) {
             wrapper.eq("hotel_type", industrialParkPTO.getType());
         }
+        wrapper.orderByDesc("id");
 
         Page<IndustrialParkPTO> page = new Page<>();
         page.setCurrent(pageNo);

@@ -61,19 +61,14 @@ public class MarketingPlanServiceImpl implements MarketingPlanService {
         }
 
         QueryWrapper<MarketingPlanPTO> wrapper = new QueryWrapper<>();
-        if (StringUtils.isNotBlank(marketingPlanPTO.getRemarks())){
-            wrapper.like("remarks",marketingPlanPTO.getCustomerManager());
-        }
         if (StringUtils.isNotBlank(marketingPlanPTO.getCustomerManager())){
             wrapper.eq("customer_manager",marketingPlanPTO.getCustomerManager());
-        }
-        if (StringUtils.isNotBlank(marketingPlanPTO.getRivalInfo())){
-            wrapper.like("rival_info",marketingPlanPTO.getRivalInfo());
         }
         if (StringUtils.isNotBlank(marketingPlanPTO.getName())){
             wrapper.eq("name",marketingPlanPTO.getName());
         }
         wrapper.orderByDesc("id");
+
         Page<MarketingPlanPTO> page = new Page<>();
         page.setCurrent(pageNo);
         page.setSize(pageSize);

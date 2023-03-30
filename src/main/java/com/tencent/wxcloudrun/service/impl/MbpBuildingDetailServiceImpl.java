@@ -69,15 +69,15 @@ public class MbpBuildingDetailServiceImpl implements MbpBuildingDetailService {
             wrapper.like("substation",commercialBuildingDetailPTO.getSubstation());
         }
         if (StringUtils.isNotBlank(commercialBuildingDetailPTO.getCustomerManager())){
-            wrapper.eq("customerManager",commercialBuildingDetailPTO.getCustomerManager());
+            wrapper.eq("customer_manager",commercialBuildingDetailPTO.getCustomerManager());
         }
         if (StringUtils.isNotBlank(commercialBuildingDetailPTO.getOwnerBuilding())){
-            wrapper.like("ownerBuilding",commercialBuildingDetailPTO.getOwnerBuilding());
+            wrapper.like("owner_building",commercialBuildingDetailPTO.getOwnerBuilding());
         }
         if (StringUtils.isNotBlank(commercialBuildingDetailPTO.getEnterpriseName())){
-            wrapper.like("enterpriseName",commercialBuildingDetailPTO.getEnterpriseName());
+            wrapper.like("enterprise_name",commercialBuildingDetailPTO.getEnterpriseName());
         }
-
+        wrapper.orderByDesc("id");
         Page<CommercialBuildingDetailPTO> page = new Page<>();
         page.setCurrent(pageNo);
         page.setSize(pageSize);

@@ -66,14 +66,15 @@ public class MbpShopServiceImpl implements MbpShopService {
             wrapper.like("substation",shopPTO.getSubstation());
         }
         if (StringUtils.isNotBlank(shopPTO.getGimsPoint())){
-            wrapper.eq("gimsPoint",shopPTO.getGimsPoint());
+            wrapper.eq("gims_point",shopPTO.getGimsPoint());
         }
         if (StringUtils.isNotBlank(shopPTO.getCellName())){
-            wrapper.like("cellName",shopPTO.getCellName());
+            wrapper.like("cell_name",shopPTO.getCellName());
         }
         if (StringUtils.isNotBlank(shopPTO.getAddress())){
             wrapper.like("address",shopPTO.getAddress());
         }
+        wrapper.orderByDesc("id");
 
         Page<ShopPTO> page = new Page<>();
         page.setCurrent(pageNo);
