@@ -40,9 +40,11 @@ public class MbpController {
     private MarketingPlanService marketingPlanService;
 
     @PostMapping(value = "/parsingTable", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void parsingTable(@RequestParam(value = "file") MultipartFile file,@RequestParam(value = "marketType") String marketType) {
-        log.info("处理表格数据开始！");
-        mbpService.parsingTable(file,marketType);
+    public ApiResponse parsingTable(@RequestParam(value = "file") MultipartFile file,
+                             @RequestParam(value = "marketType") String marketType,
+                             @RequestParam(required = false,value = "id")Integer id) {
+        log.info("处理{}表格数据开始！",marketType);
+        return mbpService.parsingTable(file,marketType,id);
     }
 
     @PostMapping(value = "/create")

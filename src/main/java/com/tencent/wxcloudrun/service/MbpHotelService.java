@@ -6,11 +6,13 @@ import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.pto.HotelPTO;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 public interface MbpHotelService {
 
     public ApiResponse create(HotelPTO hotelPTO);
     public ApiResponse query(PageVo<RequestEntity> pageVo);
     public ApiResponse delete(Integer id);
     public ApiResponse update(HotelPTO hotelPTO);
-    public ApiResponse queryAllNameAndID();
+    public List<HotelPTO> queryAllNameAndID();
 }

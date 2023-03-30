@@ -21,11 +21,3 @@ public enum MbpType {
 
 
 }
-
-class Test{
-    public static void main(String[] args) {
-        for (MbpType m:MbpType.values()) {
-            System.out.println(m.name());
-        }
-    }
-}

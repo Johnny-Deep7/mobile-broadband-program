@@ -129,20 +129,12 @@ public class MbpHotelServiceImpl implements MbpHotelService {
     }
 
     @Override
-    public ApiResponse queryAllNameAndID() {
+    public List<HotelPTO> queryAllNameAndID() {
         ApiResponse apiResponse = new ApiResponse();
         QueryWrapper<HotelPTO> wrapper = new QueryWrapper<>();
         wrapper.select("id", "hotel_name");
-        List<HotelPTO> list = hotelMapper.selectList(wrapper);
-        if (list.size() != 0 && CollectionUtils.isNotEmpty(list)) {
-            apiResponse.setData(list);
-            apiResponse.setCode(200);
-            apiResponse.setMsg("查询成功");
-        } else {
-            apiResponse.setCode(400);
-            apiResponse.setMsg("查询失败");
-        }
-        return apiResponse;
+        return hotelMapper.selectList(wrapper);
+
     }
 
     @SneakyThrows(Exception.class)
@@ -157,6 +149,5 @@ public class MbpHotelServiceImpl implements MbpHotelService {
         log.info("酒店宾馆保存成功,成功条数：{},批次标记:{}",saveCount);
         hotelPTOS.clear();
     }
-
 
 }
