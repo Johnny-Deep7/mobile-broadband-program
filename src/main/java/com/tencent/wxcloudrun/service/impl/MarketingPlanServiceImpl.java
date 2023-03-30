@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tencent.wxcloudrun.MbpType;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.tencent.wxcloudrun.config.ApiResponse;
+import com.tencent.wxcloudrun.dto.MarketingPlanDTO;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.dto.RequestEntity;
 import com.tencent.wxcloudrun.mapper.MarketingPlanMapper;
@@ -43,10 +44,10 @@ public class MarketingPlanServiceImpl implements MarketingPlanService {
     }
 
     @Override
-    public ApiResponse query(PageVo<RequestEntity> pageVo) {
-        RequestEntity requestEntity = pageVo.getType();
+    public ApiResponse query(PageVo<MarketingPlanDTO> pageVo) {
+        MarketingPlanDTO marketingPlanDTO = pageVo.getType();
         MarketingPlanPTO marketingPlanPTO = new MarketingPlanPTO();
-        BeanUtils.copyProperties(requestEntity,marketingPlanPTO);
+        BeanUtils.copyProperties(marketingPlanDTO,marketingPlanPTO);
         ApiResponse apiResponse = new ApiResponse();
 
         int pageNo = 0;

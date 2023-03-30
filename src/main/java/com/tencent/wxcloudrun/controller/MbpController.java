@@ -183,7 +183,7 @@ public class MbpController {
 
     @PostMapping(value = "/listMarketingPlan")
     @ResponseBody
-    public ApiResponse queryMarketingPlan(@RequestBody PageVo<RequestEntity> pageVo) {
+    public ApiResponse queryMarketingPlan(@RequestBody PageVo<MarketingPlanDTO> pageVo) {
         log.info("查询数据开始！");
         return marketingPlanService.query(pageVo);
     }
