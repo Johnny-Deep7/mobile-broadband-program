@@ -37,7 +37,7 @@ public class CommercialBuildingPTO implements Serializable {
     @TableField("IS_COVERED")
     private String isCovered;
 
-    private Integer roomNumber;
+    private String roomNumber;
 //    集团编号
     @TableField("GROUP_NUMBER")
     private String groupNumber;
@@ -78,10 +78,10 @@ public class CommercialBuildingPTO implements Serializable {
     private String difficultPoint;
 //    入驻企业数
     @TableField("ENTERPRISE_NUMBER")
-    private Integer enterpriseNumber;
+    private String enterpriseNumber;
 //    楼栋数
     @TableField("BUILDING_NUM")
-    private Integer buildingNum;
+    private String buildingNum;
 //    GIMS编号（本地数据）
     @TableField("GIMS")
     private String gims;

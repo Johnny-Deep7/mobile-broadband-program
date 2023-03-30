@@ -14,10 +14,10 @@ public class CommercialBuildingDTO implements Serializable {
     private Integer id;
     private String substation;
     private String customerManager;
-    private Integer contactWay;
+    private String contactWay;
     private String hotelName;
     private String isCovered;
-    private Integer roomNumber;
+    private String roomNumber;
     private String groupNumber;
     private String address;
     private String type;
@@ -31,8 +31,8 @@ public class CommercialBuildingDTO implements Serializable {
     private String visitDate;
     private String visitInformation;
     private String difficultPoint;
-    private Integer enterpriseNumber;
-    private Integer buildingNum;
+    private String enterpriseNumber;
+    private String buildingNum;
     private String gims;
     private String gimsCover;
     private String propertyName;

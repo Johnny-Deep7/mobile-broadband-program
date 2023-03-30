@@ -81,5 +81,5 @@ public class IndustrialParkDetailPTO implements Serializable {
     @TableField("VISIT_INFORMATION")
     private String visitInformation;
     @TableField("PARK_ID")
-    private Integer parkId;
+    private String parkId;
 }

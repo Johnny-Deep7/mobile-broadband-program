@@ -72,5 +72,5 @@ public class ShopDetailPTO implements Serializable {
     @TableField("VISITINFORMATION")
     private String visitInformation;
     @TableField("SHOPID")
-    private Integer shopId;
+    private String shopId;
 }

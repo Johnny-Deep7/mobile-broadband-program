@@ -69,8 +69,8 @@ public class IndustrialParkPTO implements Serializable {
     private String difficultPoint;
     //    实际入驻企业数
     @TableField("ENTERPRISE_NUMBER")
-    private Integer enterpriseNumber;
+    private String enterpriseNumber;
     //    楼栋数
     @TableField("BUILDING_NUM")
-    private Integer buildingNum;
+    private String buildingNum;
 }

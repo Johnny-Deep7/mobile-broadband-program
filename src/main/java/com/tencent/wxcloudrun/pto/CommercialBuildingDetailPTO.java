@@ -21,10 +21,10 @@ public class CommercialBuildingDetailPTO implements Serializable {
     private Integer id;
     //    所在楼层
     @TableField("FLOOR")
-    private Integer floor;
+    private String floor;
     //    房间号
     @TableField("ROOM_NUMBER")
-    private Integer roomNumber;
+    private String roomNumber;
     private String address;
     //    企业名称
     @TableField("ENTERPRISE_NAME")
@@ -86,5 +86,5 @@ public class CommercialBuildingDetailPTO implements Serializable {
     private String visitInformation;
     private String difficultPoint;
     @TableField("BUILDING_ID")
-    private Integer buildingId;
+    private String buildingId;
 }

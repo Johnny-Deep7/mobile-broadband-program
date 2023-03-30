@@ -37,7 +37,7 @@ public class HotelPTO implements Serializable {
     private String isCovered;
     //房间数
     @TableField("ROOM_NUMBER")
-    private Integer roomNumber;
+    private String roomNumber;
     //集团编号（已建）
     @TableField("GROUP_NUMBER")
     private String groupNumber;

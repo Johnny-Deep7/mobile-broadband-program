@@ -11,7 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class IndustrialParkDetail implements Serializable {
 
-    private String id;
+    private Integer id;
     private String substation;
     private String customerManager;
     private String industryPark;
