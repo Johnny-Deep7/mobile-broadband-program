@@ -75,18 +75,8 @@ public class MarketingPlanServiceImpl implements MarketingPlanService {
         page.setCurrent(pageNo);
         page.setSize(pageSize);
         Page<MarketingPlanPTO> marketingPlanPTOPage = marketingPlanMapper.selectPage(page, wrapper);
-        Page<RequestEntity> requestEntityPage = new Page<>();
-        List<RequestEntity> list = new ArrayList<>();
-        RequestEntity entity = null;
-        for (MarketingPlanPTO marketingPlanPTO1:marketingPlanPTOPage.getRecords()) {
-            entity = new RequestEntity();
-            BeanUtils.copyProperties(marketingPlanPTO1,entity);
-            entity.setMarketType(MbpType.HOTEL.getCode());
-            list.add(entity);
-        }
-        requestEntityPage.setRecords(list);
 
-        apiResponse.setData(requestEntityPage);
+        apiResponse.setData(marketingPlanPTOPage);
         apiResponse.setCode(200);
         apiResponse.setMsg("查询成功");
         return apiResponse;
