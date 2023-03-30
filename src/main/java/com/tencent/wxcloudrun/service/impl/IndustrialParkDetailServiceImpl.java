@@ -73,6 +73,9 @@ public class IndustrialParkDetailServiceImpl implements IndustrialParkDetailServ
         if (StringUtils.isNotBlank(industrialParkDetailPTO.getEnterpriseName())) {
             wrapper.eq("enterprise_name", industrialParkDetailPTO.getEnterpriseName());
         }
+        if (null != industrialParkDetailPTO.getParkId() && 0 != industrialParkDetailPTO.getParkId()){
+            wrapper.eq("park_id",industrialParkDetailPTO.getParkId());
+        }
         wrapper.orderByDesc("id");
         Page<IndustrialParkDetailPTO> page = new Page<>();
         page.setCurrent(pageNo);

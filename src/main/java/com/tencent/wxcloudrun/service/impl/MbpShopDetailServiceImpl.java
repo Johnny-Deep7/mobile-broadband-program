@@ -76,6 +76,9 @@ public class MbpShopDetailServiceImpl implements MbpShopDetailService {
         if (StringUtils.isNotBlank(shopDetailPTO.getHouseNumber())){
             wrapper.like("house_number",shopDetailPTO.getHouseNumber());
         }
+        if (null != shopDetailPTO.getShopId() && 0 != shopDetailPTO.getShopId()){
+            wrapper.eq("shop_id",shopDetailPTO.getShopId());
+        }
         wrapper.orderByDesc("id");
 
         Page<ShopDetailPTO> page = new Page<>();

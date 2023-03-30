@@ -59,5 +59,5 @@ public class IndustrialParkDetailPTO implements Serializable {
     private String visitDate;
 //    走访情况
     private String visitInformation;
-    private String parkId;
+    private Integer parkId;
 }

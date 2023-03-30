@@ -77,6 +77,9 @@ public class MbpBuildingDetailServiceImpl implements MbpBuildingDetailService {
         if (StringUtils.isNotBlank(commercialBuildingDetailPTO.getEnterpriseName())){
             wrapper.like("enterprise_name",commercialBuildingDetailPTO.getEnterpriseName());
         }
+        if (null != commercialBuildingDetailPTO.getBuildingId() && 0 != commercialBuildingDetailPTO.getBuildingId()){
+            wrapper.eq("building_id",commercialBuildingDetailPTO.getBuildingId());
+        }
         wrapper.orderByDesc("id");
         Page<CommercialBuildingDetailPTO> page = new Page<>();
         page.setCurrent(pageNo);
