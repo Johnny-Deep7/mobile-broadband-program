@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.pto;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
@@ -16,44 +17,64 @@ import java.io.Serializable;
 @TableName(value = "mbp_street_shops")
 public class ShopPTO implements Serializable {
 
-    @TableId(value = "id" ,type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-//    小区编号（GIMS信息点）
+    //    小区编号（GIMS信息点）
+    @TableField("GIMSPOINT")
     private String gimsPoint;
-//    分局
+    //    分局
+    @TableField("SUBSTATION")
     private String substation;
-//    包干厅店机构编号
+    //    包干厅店机构编号
+    @TableField("INSTITUTIONNO")
     private String institutionNo;
-//    街长
+    //    街长
+    @TableField("STREETCHIEF")
     private String streetChief;
-//    小区名称
+    //    小区名称
+    @TableField("CELLNAME")
     private String cellName;
-//    工程状态
+    //    工程状态
+    @TableField("STATUS")
     private String status;
-//    标准地址
+    //    标准地址
+    @TableField("ADDRESS")
     private String address;
-//    小区信息点数量
+    //    小区信息点数量
+    @TableField("INFOPOINT")
     private String infoPoint;
-//    小区创建时间
+    //    小区创建时间
+    @TableField("CREATETIME")
     private String createTime;
-//    类型
+    //    类型
+    @TableField("SHOPTYPE")
     private String shopType;
-//    户数
+    //    户数
+    @TableField("HOUSEHOLDS")
     private String houseHolds;
-//    属性
+    //    属性
+    @TableField("ATTRIBUTE")
     private String attribute;
-//    商宽
+    //    商宽
+    @TableField("WIDTH")
     private String width;
-//    家宽
+    //    家宽
+    @TableField("FAMILYWIDTH")
     private String familyWidth;
-//    空白
+    //    空白
+    @TableField("BLANK")
     private String blank;
-//    渗透率
+    //    渗透率
+    @TableField("PERMEABILITY")
     private String permeability;
-//    目前洽谈跟进情况 （策反或在谈业务）
+    //    目前洽谈跟进情况 （策反或在谈业务）
+    @TableField("TALKSTATUS")
     private String talkStatus;
-//    走访日期
+    //    走访日期
+    @TableField("VISITDATE")
     private String visitDate;
-//    走访情况
+    //    走访情况
+    @TableField("VISITINFORMATION")
     private String visitInformation;
 }
+
