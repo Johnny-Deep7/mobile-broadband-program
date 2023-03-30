@@ -26,7 +26,7 @@ public class ShopPTO implements Serializable {
     @TableField("SUBSTATION")
     private String substation;
     //    包干厅店机构编号
-    @TableField("INSTITUTIONNO")
+    @TableField("INSTITUTION_NO")
     private String institutionNo;
     //    街长
     @TableField("STREET_CHIEF")
