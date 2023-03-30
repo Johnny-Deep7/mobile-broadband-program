@@ -9,4 +9,5 @@ public interface MbpShopDetailService {
     public ApiResponse queryShopDetail(PageVo<ShopDetail> pageVo);
     public ApiResponse deleteShopDetail(Integer id);
     public ApiResponse updateShopDetail(ShopDetail shopDetail);
+    public ApiResponse queryAllNameAndID();
 }

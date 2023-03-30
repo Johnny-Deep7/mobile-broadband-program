@@ -3,6 +3,7 @@ package com.tencent.wxcloudrun.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.dto.ShopDTO;
@@ -111,6 +112,22 @@ public class MbpShopServiceImpl implements MbpShopService {
         }else{
             apiResponse.setCode(400);
             apiResponse.setMsg("添加失败");
+        }
+        return apiResponse;
+    }
+    @Override
+    public ApiResponse queryAllNameAndID() {
+        ApiResponse apiResponse = new ApiResponse();
+        QueryWrapper<ShopPTO> wrapper = new QueryWrapper<>();
+        wrapper.select("id", "cell_name");
+        List<ShopPTO> list = shopMapper.selectList(wrapper);
+        if (list.size() != 0 && CollectionUtils.isNotEmpty(list)) {
+            apiResponse.setData(list);
+            apiResponse.setCode(200);
+            apiResponse.setMsg("查询成功");
+        } else {
+            apiResponse.setCode(400);
+            apiResponse.setMsg("查询失败");
         }
         return apiResponse;
     }

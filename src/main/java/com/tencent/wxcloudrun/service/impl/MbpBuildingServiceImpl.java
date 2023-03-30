@@ -2,6 +2,7 @@ package com.tencent.wxcloudrun.service.impl;
 
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -130,6 +131,23 @@ public class MbpBuildingServiceImpl implements MbpBuildingService {
         }else{
             apiResponse.setCode(400);
             apiResponse.setMsg("修改失败");
+        }
+        return apiResponse;
+    }
+
+    @Override
+    public ApiResponse queryAllNameAndID() {
+        ApiResponse apiResponse = new ApiResponse();
+        QueryWrapper<CommercialBuildingPTO> wrapper = new QueryWrapper<>();
+        wrapper.select("id", "hotel_name");
+        List<CommercialBuildingPTO> list = commercialBuildingMapper.selectList(wrapper);
+        if (list.size() != 0 && CollectionUtils.isNotEmpty(list)) {
+            apiResponse.setData(list);
+            apiResponse.setCode(200);
+            apiResponse.setMsg("查询成功");
+        } else {
+            apiResponse.setCode(400);
+            apiResponse.setMsg("查询失败");
         }
         return apiResponse;
     }

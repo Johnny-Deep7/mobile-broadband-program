@@ -3,6 +3,7 @@ package com.tencent.wxcloudrun.service.impl;
 import com.tencent.wxcloudrun.MbpType;
 import com.tencent.wxcloudrun.pto.CommercialBuildingPTO;
 import com.tencent.wxcloudrun.pto.HotelPTO;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.tencent.wxcloudrun.pto.IndustrialParkPTO;
 import com.tencent.wxcloudrun.service.MbpService;
 import lombok.extern.slf4j.Slf4j;
@@ -181,7 +182,7 @@ public class MbpServiceImpl implements MbpService {
                     .contactWay(row.getCell(3).getStringCellValue())
                     .hotelName(row.getCell(4).getStringCellValue())
                     .isCovered(row.getCell(5).getStringCellValue())
-                    .roomNumber(Integer.getInteger(row.getCell(6).getStringCellValue()))
+                    .roomNumber(row.getCell(6).getStringCellValue())
                     .groupNumber(row.getCell(7).getStringCellValue())
                     .address(row.getCell(8).getStringCellValue())
                     .hotelType(row.getCell(9).getStringCellValue())
@@ -224,8 +225,8 @@ public class MbpServiceImpl implements MbpService {
                     .hotelName(row.getCell(4).getStringCellValue())
                     .address(row.getCell(5).getStringCellValue())
                     .isCovered(row.getCell(6).getStringCellValue())
-                    .enterpriseNumber(Integer.getInteger(row.getCell(7).getStringCellValue()))
-                    .buildingNum(Integer.getInteger(row.getCell(8).getStringCellValue()))
+                    .enterpriseNumber(row.getCell(7).getStringCellValue())
+                    .buildingNum(row.getCell(8).getStringCellValue())
                     .propertyName(row.getCell(9).getStringCellValue())
                     .isProperty(row.getCell(10).getStringCellValue())
                     .groupNumber(row.getCell(11).getStringCellValue())
@@ -267,9 +268,9 @@ public class MbpServiceImpl implements MbpService {
                     .hotelName(row.getCell(4).getStringCellValue())
                     .address(row.getCell(5).getStringCellValue())
                     .isCovered(row.getCell(6).getStringCellValue())
-                    .enterpriseNumber(Integer.getInteger(row.getCell(7).getStringCellValue()))
+                    .enterpriseNumber(row.getCell(7).getStringCellValue())
                     .type(row.getCell(8).getStringCellValue())
-                    .buildingNum(Integer.getInteger(row.getCell(9).getStringCellValue()))
+                    .buildingNum(row.getCell(9).getStringCellValue())
                     .operator(row.getCell(10).getStringCellValue())
                     .endTime1(row.getCell(11).getStringCellValue())
                     .internetCharge(row.getCell(12).getStringCellValue())
@@ -305,9 +306,9 @@ public class MbpServiceImpl implements MbpService {
                     .hotelName(row.getCell(4).getStringCellValue())
                     .address(row.getCell(5).getStringCellValue())
                     .isCovered(row.getCell(6).getStringCellValue())
-                    .enterpriseNumber(Integer.getInteger(row.getCell(7).getStringCellValue()))
+                    .enterpriseNumber(row.getCell(7).getStringCellValue())
                     .type(row.getCell(8).getStringCellValue())
-                    .buildingNum(Integer.getInteger(row.getCell(9).getStringCellValue()))
+                    .buildingNum(row.getCell(9).getStringCellValue())
                     .operator(row.getCell(10).getStringCellValue())
                     .endTime1(row.getCell(11).getStringCellValue())
                     .internetCharge(row.getCell(12).getStringCellValue())

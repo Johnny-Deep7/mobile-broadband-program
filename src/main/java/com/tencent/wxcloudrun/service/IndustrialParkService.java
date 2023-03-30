@@ -11,4 +11,5 @@ public interface IndustrialParkService {
     public ApiResponse query(PageVo<RequestEntity> pageVo);
     public ApiResponse delete(Integer id);
     public ApiResponse update(IndustrialParkPTO industrialParkPTO);
+    public ApiResponse queryAllNameAndID();
 }

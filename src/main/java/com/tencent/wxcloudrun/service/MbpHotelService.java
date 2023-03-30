@@ -12,4 +12,5 @@ public interface MbpHotelService {
     public ApiResponse query(PageVo<RequestEntity> pageVo);
     public ApiResponse delete(Integer id);
     public ApiResponse update(HotelPTO hotelPTO);
+    public ApiResponse queryAllNameAndID();
 }

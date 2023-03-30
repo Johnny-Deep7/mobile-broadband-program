@@ -12,4 +12,6 @@ public interface MbpBuildingDetailService {
     public ApiResponse deleteBuildingDetail(Integer id);
 
     public ApiResponse updateBuildingDetail(CommercialBuildingDetail commercialBuildingDetail);
+
+    public ApiResponse queryAllNameAndID();
 }

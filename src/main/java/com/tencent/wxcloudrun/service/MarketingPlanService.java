@@ -11,4 +11,5 @@ public interface MarketingPlanService {
     public ApiResponse query(PageVo<RequestEntity> pageVo);
     public ApiResponse delete(Integer id);
     public ApiResponse update(MarketingPlanPTO marketingPlanPTO);
+    public ApiResponse queryAllNameAndID();
 }

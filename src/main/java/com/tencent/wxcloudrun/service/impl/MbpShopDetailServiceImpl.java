@@ -3,6 +3,7 @@ package com.tencent.wxcloudrun.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.dto.ShopDetail;
@@ -76,7 +77,7 @@ public class MbpShopDetailServiceImpl implements MbpShopDetailService {
         if (StringUtils.isNotBlank(shopDetailPTO.getHouseNumber())){
             wrapper.like("house_number",shopDetailPTO.getHouseNumber());
         }
-        if (null != shopDetailPTO.getShopId() && 0 != shopDetailPTO.getShopId()){
+        if (StringUtils.isNotBlank(shopDetailPTO.getShopId())){
             wrapper.eq("shop_id",shopDetailPTO.getShopId());
         }
         wrapper.orderByDesc("id");
@@ -120,6 +121,22 @@ public class MbpShopDetailServiceImpl implements MbpShopDetailService {
         return apiResponse;
     }
 
+    @Override
+    public ApiResponse queryAllNameAndID() {
+        ApiResponse apiResponse = new ApiResponse();
+        QueryWrapper<ShopDetailPTO> wrapper = new QueryWrapper<>();
+        wrapper.select("id", "shop_name");
+        List<ShopDetailPTO> list = shopDetailMapper.selectList(wrapper);
+        if (list.size() != 0 && CollectionUtils.isNotEmpty(list)) {
+            apiResponse.setData(list);
+            apiResponse.setCode(200);
+            apiResponse.setMsg("查询成功");
+        } else {
+            apiResponse.setCode(400);
+            apiResponse.setMsg("查询失败");
+        }
+        return apiResponse;
+    }
     @SneakyThrows(Exception.class)
     @Transactional
     public void asyncSaveBuilding(List<ShopDetailPTO> shopDetailPTOS) {

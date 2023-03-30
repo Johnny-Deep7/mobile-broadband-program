@@ -4,10 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tencent.wxcloudrun.MbpType;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.dto.RequestEntity;
 import com.tencent.wxcloudrun.mapper.MarketingPlanMapper;
+import com.tencent.wxcloudrun.pto.CommercialBuildingPTO;
 import com.tencent.wxcloudrun.pto.MarketingPlanPTO;
 import com.tencent.wxcloudrun.service.MarketingPlanService;
 import lombok.SneakyThrows;
@@ -114,6 +116,23 @@ public class MarketingPlanServiceImpl implements MarketingPlanService {
         }else{
             apiResponse.setCode(400);
             apiResponse.setMsg("修改失败");
+        }
+        return apiResponse;
+    }
+
+    @Override
+    public ApiResponse queryAllNameAndID() {
+        ApiResponse apiResponse = new ApiResponse();
+        QueryWrapper<MarketingPlanPTO> wrapper = new QueryWrapper<>();
+        wrapper.select("id", "name");
+        List<MarketingPlanPTO> list = marketingPlanMapper.selectList(wrapper);
+        if (list.size() != 0 && CollectionUtils.isNotEmpty(list)) {
+            apiResponse.setData(list);
+            apiResponse.setCode(200);
+            apiResponse.setMsg("查询成功");
+        } else {
+            apiResponse.setCode(400);
+            apiResponse.setMsg("查询失败");
         }
         return apiResponse;
     }

@@ -12,4 +12,6 @@ public interface MbpShopService {
     public ApiResponse deleteShop(Integer id);
 
     public ApiResponse updateShop(ShopDTO shopDTO);
+
+    public ApiResponse queryAllNameAndID();
 }
