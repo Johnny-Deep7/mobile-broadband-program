@@ -4,7 +4,9 @@ package com.tencent.wxcloudrun.controller;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.*;
 import com.tencent.wxcloudrun.pto.IndustrialParkDetailPTO;
+import com.tencent.wxcloudrun.pto.MarketingPlanPTO;
 import com.tencent.wxcloudrun.service.IndustrialParkDetailService;
+import com.tencent.wxcloudrun.service.MarketingPlanService;
 import com.tencent.wxcloudrun.service.MbpRouteService;
 import com.tencent.wxcloudrun.service.impl.*;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +36,8 @@ public class MbpController {
     private MbpShopDetailServiceImpl mbpShopDetailService;
     @Resource
     private MbpServiceImpl mbpService;
+    @Resource
+    private MarketingPlanService marketingPlanService;
 
     @PostMapping(value = "/parsingTable", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void parsingTable(@RequestParam(value = "file") MultipartFile file) {
@@ -167,5 +171,34 @@ public class MbpController {
     public ApiResponse updateShopDetail(@RequestBody ShopDetail shopDetail) {
         log.info("更新数据开始！");
         return mbpShopDetailService.updateShopDetail(shopDetail);
+    }
+
+    @PostMapping(value = "/createMarketingPlan")
+    public ApiResponse createMarketingPlan(@RequestBody MarketingPlanDTO marketingPlanDTO) {
+        log.info("添加数据开始！");
+        MarketingPlanPTO marketingPlanPTO = new MarketingPlanPTO();
+        BeanUtils.copyProperties(marketingPlanDTO, marketingPlanPTO);
+        return marketingPlanService.create(marketingPlanPTO);
+    }
+
+    @PostMapping(value = "/listMarketingPlan")
+    @ResponseBody
+    public ApiResponse queryMarketingPlan(@RequestBody PageVo<RequestEntity> pageVo) {
+        log.info("查询数据开始！");
+        return marketingPlanService.query(pageVo);
+    }
+
+    @DeleteMapping(value = "/deleteMarketingPlan")
+    public ApiResponse deleteMarketingPlan(@RequestParam("id") Integer id) {
+        log.info("删除数据开始！");
+        return marketingPlanService.delete(id);
+    }
+
+    @PutMapping(value = "/updateMarketingPlan")
+    public ApiResponse updateMarketingPlan(@RequestBody MarketingPlanDTO marketingPlanDTO) {
+        log.info("更新数据开始！");
+        MarketingPlanPTO marketingPlanPTO = new MarketingPlanPTO();
+        BeanUtils.copyProperties(marketingPlanDTO, marketingPlanPTO);
+        return marketingPlanService.update(marketingPlanPTO);
     }
 }
