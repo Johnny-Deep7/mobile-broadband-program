@@ -20,7 +20,7 @@ public class ShopPTO implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     //    小区编号（GIMS信息点）
-    @TableField("GIMSPOINT")
+    @TableField("GIMS_POINT")
     private String gimsPoint;
     //    分局
     @TableField("SUBSTATION")
@@ -32,7 +32,7 @@ public class ShopPTO implements Serializable {
     @TableField("STREETCHIEF")
     private String streetChief;
     //    小区名称
-    @TableField("CELLNAME")
+    @TableField("CELL_NAME")
     private String cellName;
     //    工程状态
     @TableField("STATUS")
@@ -41,16 +41,16 @@ public class ShopPTO implements Serializable {
     @TableField("ADDRESS")
     private String address;
     //    小区信息点数量
-    @TableField("INFOPOINT")
+    @TableField("INFO_POINT")
     private String infoPoint;
     //    小区创建时间
-    @TableField("CREATETIME")
+    @TableField("CREATE_TIME")
     private String createTime;
     //    类型
-    @TableField("SHOPTYPE")
+    @TableField("SHOP_TYPE")
     private String shopType;
     //    户数
-    @TableField("HOUSEHOLDS")
+    @TableField("HOUSE_HOLDS")
     private String houseHolds;
     //    属性
     @TableField("ATTRIBUTE")
@@ -59,7 +59,7 @@ public class ShopPTO implements Serializable {
     @TableField("WIDTH")
     private String width;
     //    家宽
-    @TableField("FAMILYWIDTH")
+    @TableField("FAMILY_WIDTH")
     private String familyWidth;
     //    空白
     @TableField("BLANK")
@@ -68,13 +68,13 @@ public class ShopPTO implements Serializable {
     @TableField("PERMEABILITY")
     private String permeability;
     //    目前洽谈跟进情况 （策反或在谈业务）
-    @TableField("TALKSTATUS")
+    @TableField("TALK_STATUS")
     private String talkStatus;
     //    走访日期
-    @TableField("VISITDATE")
+    @TableField("VISIT_DATE")
     private String visitDate;
     //    走访情况
-    @TableField("VISITINFORMATION")
+    @TableField("VISIT_INFORMATION")
     private String visitInformation;
 }
 
