@@ -45,8 +45,8 @@ public class CommercialBuildingPTO implements Serializable {
     @TableField("ADDRESS")
     private String address;
 //    酒店类型
-    @TableField("TYPE")
-    private String type;
+    @TableField("HOTEL_TYPE")
+    private String hotelType;
     //现用运营商（移动、电信、联通）
     @TableField("OPERATOR")
     private String operator;

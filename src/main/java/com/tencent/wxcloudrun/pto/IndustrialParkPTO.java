@@ -43,7 +43,7 @@ public class IndustrialParkPTO implements Serializable {
     @TableField("ADDRESS")
     private String address;
     //类型
-    @TableField("TYPE")
+    @TableField("HOTEL_TYPE")
     private String type;
     //现用运营商（移动、电信、联通）
     @TableField("OPERATOR")
