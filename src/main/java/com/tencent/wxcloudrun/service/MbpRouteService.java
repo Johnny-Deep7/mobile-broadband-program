@@ -8,6 +8,7 @@ import com.tencent.wxcloudrun.mapper.ShopDetailMapper;
 import com.tencent.wxcloudrun.mapper.ShopMapper;
 import com.tencent.wxcloudrun.pto.*;
 import com.tencent.wxcloudrun.service.impl.MbpHotelServiceImpl;
+import com.tencent.wxcloudrun.utils.CopyListUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -140,8 +141,7 @@ public class MbpRouteService {
         }
         switch (requestEntity.get(0).getMarketType()){
             case "酒店宾馆" :
-                List<HotelPTO> hotelPTOList = new ArrayList<>();
-                BeanUtils.copyProperties(requestEntity,hotelPTOList);
+                List<HotelPTO> hotelPTOList = CopyListUtils.convertList2List(requestEntity, HotelPTO.class);
                 for(HotelPTO hotelPTO : hotelPTOList){
                     apiResponse = mbpHotelService.update(hotelPTO);
                     if(200 != apiResponse.getCode()){
@@ -150,8 +150,7 @@ public class MbpRouteService {
                 }
                 break;
             case "商务楼宇" :
-                List<CommercialBuildingPTO> commercialBuildingPTOList = new ArrayList<>();
-                BeanUtils.copyProperties(requestEntity,commercialBuildingPTOList);
+                List<CommercialBuildingPTO> commercialBuildingPTOList = CopyListUtils.convertList2List(requestEntity, CommercialBuildingPTO.class);
                 for(CommercialBuildingPTO commercialBuildingPTO : commercialBuildingPTOList){
                     apiResponse = mbpBuildingService.update(commercialBuildingPTO);
                     if(200 != apiResponse.getCode()){
@@ -160,8 +159,7 @@ public class MbpRouteService {
                 }
                 break;
             case "产业园区" :
-                List<IndustrialParkPTO> industrialParkPTOList = new ArrayList<>();
-                BeanUtils.copyProperties(requestEntity,industrialParkPTOList);
+                List<IndustrialParkPTO> industrialParkPTOList = CopyListUtils.convertList2List(requestEntity, IndustrialParkPTO.class);
                 for(IndustrialParkPTO industrialParkPTO : industrialParkPTOList){
                     apiResponse = industrialParkService.update(industrialParkPTO);
                     if(200 != apiResponse.getCode()){

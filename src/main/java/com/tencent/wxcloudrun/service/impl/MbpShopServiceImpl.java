@@ -9,6 +9,7 @@ import com.tencent.wxcloudrun.dto.ShopDTO;
 import com.tencent.wxcloudrun.mapper.ShopMapper;
 import com.tencent.wxcloudrun.pto.ShopPTO;
 import com.tencent.wxcloudrun.service.MbpShopService;
+import com.tencent.wxcloudrun.utils.CopyListUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,10 +108,10 @@ public class MbpShopServiceImpl implements MbpShopService {
         int i = shopMapper.updateById(shopPTO);
         if(i>0){
             apiResponse.setCode(200);
-            apiResponse.setMsg("添加成功");
+            apiResponse.setMsg("修改成功");
         }else{
             apiResponse.setCode(400);
-            apiResponse.setMsg("添加失败");
+            apiResponse.setMsg("修改失败");
         }
         return apiResponse;
     }
@@ -118,16 +119,15 @@ public class MbpShopServiceImpl implements MbpShopService {
     @Override
     public ApiResponse updateShopList(List<ShopDTO> ShopDTOList){
         ApiResponse apiResponse = new ApiResponse();
-        List<ShopPTO> shopPTOList = new ArrayList<>();
-        BeanUtils.copyProperties(ShopDTOList,shopPTOList);
+        List<ShopPTO> shopPTOList = CopyListUtils.convertList2List(ShopDTOList, ShopPTO.class);
         for(ShopPTO shopPTO : shopPTOList){
             int i = shopMapper.updateById(shopPTO);
             if(i>0){
                 apiResponse.setCode(200);
-                apiResponse.setMsg("添加成功");
+                apiResponse.setMsg("更新成功");
             }else{
                 apiResponse.setCode(400);
-                apiResponse.setMsg("添加失败");
+                apiResponse.setMsg("更新失败");
                 break;
             }
         }

@@ -4,11 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.tencent.wxcloudrun.dto.*;
 import com.tencent.wxcloudrun.mapper.CommercialBuildingDetailMapper;
 import com.tencent.wxcloudrun.pto.*;
 import com.tencent.wxcloudrun.service.MbpBuildingDetailService;
+import com.tencent.wxcloudrun.utils.CopyListUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -113,25 +113,24 @@ public class MbpBuildingDetailServiceImpl implements MbpBuildingDetailService {
         int i = commercialBuildingDetailMapper.updateById(commercialBuildingDetailPTO);
         if(i>0){
             apiResponse.setCode(200);
-            apiResponse.setMsg("添加成功");
+            apiResponse.setMsg("更新成功");
         }else{
             apiResponse.setCode(400);
-            apiResponse.setMsg("添加失败");
+            apiResponse.setMsg("更新失败");
         }
         return apiResponse;
     }
 
     public ApiResponse updateBuildingDetailList(List<CommercialBuildingDetail> commercialBuildingDetailList){
-        List<CommercialBuildingDetailPTO> commercialBuildingDetailPTOList = new ArrayList<>();
-        BeanUtils.copyProperties(commercialBuildingDetailList,commercialBuildingDetailPTOList);
+        List<CommercialBuildingDetailPTO> commercialBuildingDetailPTOList = CopyListUtils.convertList2List(commercialBuildingDetailList, CommercialBuildingDetailPTO.class);
         for(CommercialBuildingDetailPTO commercialBuildingDetailPTO : commercialBuildingDetailPTOList){
             int i = commercialBuildingDetailMapper.updateById(commercialBuildingDetailPTO);
             if(i>0){
                 apiResponse.setCode(200);
-                apiResponse.setMsg("添加成功");
+                apiResponse.setMsg("更新成功");
             }else{
                 apiResponse.setCode(400);
-                apiResponse.setMsg("添加失败");
+                apiResponse.setMsg("更新失败");
                 break;
             }
         }

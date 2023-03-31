@@ -4,12 +4,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.tencent.wxcloudrun.dto.IndustrialParkDetail;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.mapper.IndustrialParkDetailMapper;
 import com.tencent.wxcloudrun.pto.IndustrialParkDetailPTO;
 import com.tencent.wxcloudrun.service.IndustrialParkDetailService;
+import com.tencent.wxcloudrun.utils.CopyListUtils;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -122,16 +122,15 @@ public class IndustrialParkDetailServiceImpl implements IndustrialParkDetailServ
     @Override
     public ApiResponse updateIndustrialParkDetailList(List<IndustrialParkDetail> IndustrialParkDetailList){
         ApiResponse apiResponse = new ApiResponse();
-        List<IndustrialParkDetailPTO> IndustrialParkDetailPTOList = new ArrayList<>();
-        BeanUtils.copyProperties(IndustrialParkDetailList,IndustrialParkDetailPTOList);
+        List<IndustrialParkDetailPTO> IndustrialParkDetailPTOList = CopyListUtils.convertList2List(IndustrialParkDetailList, IndustrialParkDetailPTO.class);
         for(IndustrialParkDetailPTO industrialParkDetailPTO : IndustrialParkDetailPTOList){
             int i = industrialParkDetailMapper.updateById(industrialParkDetailPTO);
             if(i>0){
                 apiResponse.setCode(200);
-                apiResponse.setMsg("添加成功");
+                apiResponse.setMsg("更新成功");
             }else{
                 apiResponse.setCode(400);
-                apiResponse.setMsg("添加失败");
+                apiResponse.setMsg("更新失败");
                 break;
             }
         }
