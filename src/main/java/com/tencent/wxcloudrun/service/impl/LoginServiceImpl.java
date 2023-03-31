@@ -72,7 +72,7 @@ public class LoginServiceImpl implements LoginService {
         if (loginPTO1 != null) {
             queryResponse.setCode(200);
             queryResponse.setMsg("账号查询成功");
-            if (loginPTO1.getPassWord() == null) {
+            if (StringUtils.isBlank(loginPTO1.getPassWord())) {
                 queryResponse.setIsFirstLogin(Boolean.TRUE);
                 queryResponse.setIsAdmin(loginPTO1.getIsAdministrator());
             } else {
