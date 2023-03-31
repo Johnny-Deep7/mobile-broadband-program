@@ -72,8 +72,8 @@ public class MbpBuildingServiceImpl implements MbpBuildingService {
         if (StringUtils.isNotBlank(commercialBuildingPTO.getHotelName())){
             wrapper.like("hotel_name",commercialBuildingPTO.getHotelName());
         }
-        if (StringUtils.isNotBlank(commercialBuildingPTO.getType())){
-            wrapper.eq("hotel_type",commercialBuildingPTO.getType());
+        if (StringUtils.isNotBlank(commercialBuildingPTO.getHotelType())){
+            wrapper.eq("hotel_type",commercialBuildingPTO.getHotelType());
         }
         wrapper.orderByDesc("id");
 
