@@ -70,8 +70,8 @@ public class IndustrialParkServiceImpl implements IndustrialParkService {
         if (StringUtils.isNotBlank(industrialParkPTO.getHotelName())) {
             wrapper.like("hotel_name", industrialParkPTO.getHotelName());
         }
-        if (StringUtils.isNotBlank(industrialParkPTO.getType())) {
-            wrapper.eq("hotel_type", industrialParkPTO.getType());
+        if (StringUtils.isNotBlank(industrialParkPTO.getHotelType())) {
+            wrapper.like("hotel_type", industrialParkPTO.getHotelType());
         }
         wrapper.orderByDesc("id");
 
