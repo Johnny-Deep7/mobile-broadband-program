@@ -39,15 +39,14 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public ApiResponse login(LoginPTO loginPTO) {
         String passWord = loginPTO.getPassWord();
-        String isAdmin = loginPTO.getIsAdministrator();
         ApiResponse apiResponse = new ApiResponse();
         QueryWrapper<LoginPTO> queryWrapper = new QueryWrapper<>();
         if (StringUtils.isNotEmpty(loginPTO.getPhoneNumber())) {
             queryWrapper.eq("phone_number", loginPTO.getPhoneNumber());
         }
         LoginPTO loginPTO1 = loginMapper.selectOne(queryWrapper);
-        if (loginPTO1.getPassWord() == null) {
-            loginMapper.updateById(loginPTO);
+        if (StringUtils.isBlank(loginPTO1.getPassWord())) {
+            loginMapper.update(loginPTO,queryWrapper);
             apiResponse.setCode(200);
             apiResponse.setMsg("第一次登录，密码设置成功");
             return apiResponse;
