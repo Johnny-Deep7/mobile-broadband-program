@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QueryResponse {
-    private Boolean isExist;
+    private Integer code;
+    private String msg;
     private Boolean isFirstLogin;
     private String isAdmin;
 }

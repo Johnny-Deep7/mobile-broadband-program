@@ -52,7 +52,7 @@ public class LoginServiceImpl implements LoginService {
             apiResponse.setMsg("第一次登录，密码设置成功");
             return apiResponse;
         }
-        if (passWord.equals(loginPTO1.getPassWord()) && isAdmin.equals(loginPTO1.getIsAdministrator())){
+        if (passWord.equals(loginPTO1.getPassWord())){
             apiResponse.setCode(200);
             apiResponse.setMsg("登录成功");
         } else {
@@ -70,16 +70,18 @@ public class LoginServiceImpl implements LoginService {
         }
         LoginPTO loginPTO1 = loginMapper.selectOne(queryWrapper);
         if (loginPTO1 != null) {
-            queryResponse.setIsExist(Boolean.TRUE);
+            queryResponse.setCode(200);
+            queryResponse.setMsg("账号查询成功");
             if (loginPTO1.getPassWord() == null) {
                 queryResponse.setIsFirstLogin(Boolean.TRUE);
-                queryResponse.setIsAdmin(loginPTO.getIsAdministrator());
+                queryResponse.setIsAdmin(loginPTO1.getIsAdministrator());
             } else {
                 queryResponse.setIsFirstLogin(Boolean.FALSE);
-                queryResponse.setIsAdmin(loginPTO.getIsAdministrator());
+                queryResponse.setIsAdmin(loginPTO1.getIsAdministrator());
             }
         } else {
-            queryResponse.setIsExist(Boolean.FALSE);
+            queryResponse.setCode(400);
+            queryResponse.setMsg("账号查询失败");
         }
         return queryResponse;
     }
@@ -111,7 +113,7 @@ public class LoginServiceImpl implements LoginService {
             apiResponse.setMsg("手机号码输入错误");
             return apiResponse;
         }
-        int i = loginMapper.updateById(loginPTO);
+        int i = loginMapper.update(loginPTO,queryWrapper);
         if (i > 0) {
             apiResponse.setCode(200);
             apiResponse.setMsg("登录信息修改成功");

@@ -9,6 +9,5 @@ public interface LoginService {
     public ApiResponse login(LoginPTO loginPTO);
     public ApiResponse delete(Integer id);
     public ApiResponse update(LoginPTO loginPTO);
-
     public QueryResponse query(LoginPTO loginPTO);
 }
