@@ -138,17 +138,26 @@ public class MbpBuildingServiceImpl implements MbpBuildingService {
 
     }
 
-    @SneakyThrows(Exception.class)
     @Transactional
-    public void asyncSaveBuilding(List<CommercialBuildingPTO> commercialBuildingPTOS) {
+    public ApiResponse asyncSaveBuilding(List<CommercialBuildingPTO> commercialBuildingPTOS) {
         log.info("商务楼宇批量存储开始，存储条数{}",commercialBuildingPTOS.size());
-        Integer saveCount=commercialBuildingMapper.insertBatchSomeColumn(commercialBuildingPTOS);
-        if(saveCount<0){
-            log.error("商务楼宇保存失败");
-            return;
+        ApiResponse apiResponse = ApiResponse.ok();
+        try{
+            Integer saveCount=commercialBuildingMapper.insertBatchSomeColumn(commercialBuildingPTOS);
+            if(saveCount<=0){
+                apiResponse.setMsg("商务楼宇保存失败");
+                apiResponse.setCode(400);
+                return apiResponse;
+            }
+            apiResponse.setMsg("商务楼宇保存成功,成功条数：{"+saveCount+"}");
+            commercialBuildingPTOS.clear();
+        }catch (Exception e){
+            apiResponse.setMsg(e.getMessage());
+            apiResponse.setCode(400);
+            return apiResponse;
         }
-        log.info("商务楼宇保存成功,成功条数：{},批次标记:{}",saveCount);
-        commercialBuildingPTOS.clear();
+        return apiResponse;
+
     }
 
 

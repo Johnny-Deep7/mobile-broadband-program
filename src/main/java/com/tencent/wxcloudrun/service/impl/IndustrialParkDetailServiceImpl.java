@@ -128,16 +128,25 @@ public class IndustrialParkDetailServiceImpl implements IndustrialParkDetailServ
         return industrialParkDetailMapper.selectList(wrapper);
     }
 
-    @SneakyThrows(Exception.class)
     @Transactional
-    public void asyncSaveParkDel(List<IndustrialParkDetailPTO> industrialParkDetailPTOS) {
+    public ApiResponse asyncSaveParkDel(List<IndustrialParkDetailPTO> industrialParkDetailPTOS) {
         log.info("产业园区二级明细批量存储开始，存储条数{}",industrialParkDetailPTOS.size());
-        Integer saveCount=industrialParkDetailMapper.insertBatchSomeColumn(industrialParkDetailPTOS);
-        if(saveCount<0){
-            log.error("产业园区二级明细保存失败");
-            return;
+        ApiResponse apiResponse = ApiResponse.ok();
+        try{
+            Integer saveCount=industrialParkDetailMapper.insertBatchSomeColumn(industrialParkDetailPTOS);
+            if(saveCount<=0){
+                apiResponse.setMsg("产业园区二级明细保存失败");
+                apiResponse.setCode(400);
+                return apiResponse;
+            }
+            apiResponse.setMsg("产业园区二级明细保存成功,成功条数：{"+saveCount+"}");
+            industrialParkDetailPTOS.clear();
+        }catch (Exception e){
+            apiResponse.setMsg(e.getMessage());
+            apiResponse.setCode(400);
+            return apiResponse;
         }
-        log.info("产业园区二级明细保存成功,成功条数：{},批次标记:{}",saveCount);
-        industrialParkDetailPTOS.clear();
+        return apiResponse;
+
     }
 }

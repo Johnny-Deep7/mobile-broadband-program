@@ -153,9 +153,13 @@ public class MbpServiceImpl implements MbpService {
                         apiResponse.setData(hotelPTOS1);
                     }
                     if (hotels.size()>0){
-                        mbpHotelService.asyncSaveHotel(hotels);
+                        ApiResponse response = mbpHotelService.asyncSaveHotel(hotels);
+                        apiResponse.setMsg(response.getMsg());
+                        if (!response.getCode().equals(200)){
+                            apiResponse.setData(null);
+                            apiResponse.setCode(response.getCode());
+                        }
                     }
-
                     break;
                 case "商务楼宇":
                     list = EasyExcel.read(inputStream)
@@ -185,9 +189,13 @@ public class MbpServiceImpl implements MbpService {
                         apiResponse.setData(commercialBuildingPTOS1);
                     }
                     if (buildings.size()>0){
-                        mbpBuildingService.asyncSaveBuilding(buildings);
+                        ApiResponse response = mbpBuildingService.asyncSaveBuilding(buildings);
+                        apiResponse.setMsg(response.getMsg());
+                        if (!response.getCode().equals(200)){
+                            apiResponse.setData(null);
+                            apiResponse.setCode(response.getCode());
+                        }
                     }
-
                     break;
                 case "商务楼宇二级明细":
                     list = EasyExcel.read(inputStream)
@@ -205,22 +213,26 @@ public class MbpServiceImpl implements MbpService {
                     // 查找到excel中的 hotelName相同的记录
                     List<CommercialBuildingDetailPTO> commercialBuildingDetailPTOS1 = commercialBuildingDetailPTOS.stream()
                             .map(t -> buildingDels.stream()
-                                    .filter(s -> Objects.nonNull(t.getHotelName()) && Objects.nonNull(s.getHotelName()) && Objects.equals(t.getHotelName(), s.getHotelName()))
+                                    .filter(s -> Objects.nonNull(t.getEnterpriseName()) && Objects.nonNull(s.getEnterpriseName()) && Objects.equals(t.getEnterpriseName(), s.getEnterpriseName()))
                                     .findAny()
                                     .orElse(null))
                             .filter(Objects::nonNull)
                             .collect(Collectors.toList());
                     if (commercialBuildingDetailPTOS1.size() > 0) {
                         for (CommercialBuildingDetailPTO commercialBuildingDetailPTO : commercialBuildingDetailPTOS1) {
-                            commercialBuildingDetailPTO.setId(commercialBuildingDetailPTOS.stream().filter(item -> item.getHotelName().equals(commercialBuildingDetailPTO.getHotelName())).findFirst().get().getId());
-                            buildingDels.removeIf(comBuildDel -> comBuildDel.getHotelName().equals(commercialBuildingDetailPTO.getHotelName()));
+                            commercialBuildingDetailPTO.setId(commercialBuildingDetailPTOS.stream().filter(item -> item.getEnterpriseName().equals(commercialBuildingDetailPTO.getEnterpriseName())).findFirst().get().getId());
+                            buildingDels.removeIf(comBuildDel -> comBuildDel.getEnterpriseName().equals(commercialBuildingDetailPTO.getEnterpriseName()));
                         }
                         apiResponse.setData(commercialBuildingDetailPTOS1);
                     }
                     if (buildingDels.size()>0){
-                        mbpBuildingDetailService.asyncSaveBuildingDel(buildingDels);
+                        ApiResponse response = mbpBuildingDetailService.asyncSaveBuildingDel(buildingDels);
+                        apiResponse.setMsg(response.getMsg());
+                        if (!response.getCode().equals(200)){
+                            apiResponse.setData(null);
+                            apiResponse.setCode(response.getCode());
+                        }
                     }
-
                     break;
                 case "产业园区":
                     list = EasyExcel.read(inputStream)
@@ -250,9 +262,13 @@ public class MbpServiceImpl implements MbpService {
                         apiResponse.setData(industrialParkPTOS1);
                     }
                     if (inPark.size()>0){
-                        industrialParkService.asyncSaveInpark(inPark);
+                        ApiResponse response = industrialParkService.asyncSaveInpark(inPark);
+                        apiResponse.setMsg(response.getMsg());
+                        if (!response.getCode().equals(200)){
+                            apiResponse.setData(null);
+                            apiResponse.setCode(response.getCode());
+                        }
                     }
-
                     break;
                 case "产业园区二级明细":
                     list = EasyExcel.read(inputStream)
@@ -283,8 +299,12 @@ public class MbpServiceImpl implements MbpService {
                         apiResponse.setData(industrialParkDetailPTOS1);
                     }
                     if (inParkDel.size()>0){
-                        industrialParkDetailService.asyncSaveParkDel(inParkDel);
-
+                        ApiResponse response = industrialParkDetailService.asyncSaveParkDel(inParkDel);
+                        apiResponse.setMsg(response.getMsg());
+                        if (!response.getCode().equals(200)){
+                            apiResponse.setData(null);
+                            apiResponse.setCode(response.getCode());
+                        }
                     }
                     break;
                 case "沿街商铺":
@@ -315,9 +335,13 @@ public class MbpServiceImpl implements MbpService {
                         apiResponse.setData(shopPTOS1);
                     }
                     if (shops.size()>0){
-                        mbpShopService.asyncSaveShop(shops);
+                        ApiResponse response = mbpShopService.asyncSaveShop(shops);
+                        apiResponse.setMsg(response.getMsg());
+                        if (!response.getCode().equals(200)){
+                            apiResponse.setData(null);
+                            apiResponse.setCode(response.getCode());
+                        }
                     }
-
                     break;
                 case "沿街商铺二级明细":
                     list = EasyExcel.read(inputStream)
@@ -348,9 +372,13 @@ public class MbpServiceImpl implements MbpService {
                         apiResponse.setData(shopDetailPTOS1);
                     }
                     if (shopDetails.size()>0){
-                        mbpShopDetailService.asyncSaveShopDel(shopDetails);
+                        ApiResponse response = mbpShopDetailService.asyncSaveShopDel(shopDetails);
+                        apiResponse.setMsg(response.getMsg());
+                        if (!response.getCode().equals(200)){
+                            apiResponse.setData(null);
+                            apiResponse.setCode(response.getCode());
+                        }
                     }
-
                     break;
                 default:
                     apiResponse.setCode(400);

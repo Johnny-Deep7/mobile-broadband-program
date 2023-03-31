@@ -136,17 +136,26 @@ public class MbpHotelServiceImpl implements MbpHotelService {
 
     }
 
-    @SneakyThrows(Exception.class)
     @Transactional
-    public void asyncSaveHotel(List<HotelPTO> hotelPTOS) {
+    public ApiResponse asyncSaveHotel(List<HotelPTO> hotelPTOS) {
         log.info("酒店宾馆批量存储开始，存储条数{}",hotelPTOS.size());
-        Integer saveCount=hotelMapper.insertBatchSomeColumn(hotelPTOS);
-        if(saveCount<0){
-            log.error("酒店宾馆保存失败");
-            return;
+        ApiResponse apiResponse = ApiResponse.ok();
+        try{
+            Integer saveCount=hotelMapper.insertBatchSomeColumn(hotelPTOS);
+            if(saveCount<=0){
+                apiResponse.setMsg("酒店宾馆保存失败");
+                apiResponse.setCode(400);
+                return apiResponse;
+            }
+            log.info("酒店宾馆保存成功,成功条数：{"+saveCount+"}");
+            hotelPTOS.clear();
+        }catch (Exception e){
+            apiResponse.setMsg(e.getMessage());
+            apiResponse.setCode(400);
+            return apiResponse;
         }
-        log.info("酒店宾馆保存成功,成功条数：{},批次标记:{}",saveCount);
-        hotelPTOS.clear();
+        return apiResponse;
+
     }
 
 }

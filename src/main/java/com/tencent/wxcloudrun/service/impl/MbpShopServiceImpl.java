@@ -123,16 +123,25 @@ public class MbpShopServiceImpl implements MbpShopService {
         return shopMapper.selectList(wrapper);
     }
 
-    @SneakyThrows(Exception.class)
     @Transactional
-    public void asyncSaveShop(List<ShopPTO> shopPTOS) {
+    public ApiResponse asyncSaveShop(List<ShopPTO> shopPTOS) {
         log.info("沿街商铺批量存储开始，存储条数{}",shopPTOS.size());
-        Integer saveCount=shopMapper.insertBatchSomeColumn(shopPTOS);
-        if(saveCount<0){
-            log.error("沿街商铺保存失败");
-            return;
+        ApiResponse apiResponse = ApiResponse.ok();
+        try{
+            Integer saveCount=shopMapper.insertBatchSomeColumn(shopPTOS);
+            if(saveCount<=0){
+                apiResponse.setMsg("沿街商铺保存失败");
+                apiResponse.setCode(400);
+                return apiResponse;
+            }
+            apiResponse.setMsg("沿街商铺保存成功,成功条数：{"+saveCount+"}");
+            shopPTOS.clear();
+        }catch (Exception e){
+            apiResponse.setMsg(e.getMessage());
+            apiResponse.setCode(400);
+            return apiResponse;
         }
-        log.info("沿街商铺保存成功,成功条数：{},批次标记:{}",saveCount);
-        shopPTOS.clear();
+        return apiResponse;
+
     }
 }

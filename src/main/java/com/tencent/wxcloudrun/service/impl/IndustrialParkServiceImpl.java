@@ -135,16 +135,25 @@ public class IndustrialParkServiceImpl implements IndustrialParkService {
         return industrialParkMapper.selectList(wrapper);
     }
 
-    @SneakyThrows(Exception.class)
     @Transactional
-    public void asyncSaveInpark(List<IndustrialParkPTO> industrialParkPTOS) {
+    public ApiResponse asyncSaveInpark(List<IndustrialParkPTO> industrialParkPTOS) {
         log.info("产业园区批量存储开始，存储条数{}",industrialParkPTOS.size());
-        Integer saveCount=industrialParkMapper.insertBatchSomeColumn(industrialParkPTOS);
-        if(saveCount<0){
-            log.error("产业园区保存失败");
-            return;
+        ApiResponse apiResponse = ApiResponse.ok();
+        try {
+            Integer saveCount=industrialParkMapper.insertBatchSomeColumn(industrialParkPTOS);
+            if(saveCount<=0){
+                apiResponse.setMsg("产业园区保存失败");
+                apiResponse.setCode(400);
+                return apiResponse;
+            }
+            apiResponse.setMsg("产业园区保存成功,成功条数：{"+saveCount+"}");
+            industrialParkPTOS.clear();
+        }catch (Exception e){
+            apiResponse.setMsg(e.getMessage());
+            apiResponse.setCode(400);
+            return apiResponse;
         }
-        log.info("产业园区保存成功,成功条数：{},批次标记:{}",saveCount);
-        industrialParkPTOS.clear();
+        return apiResponse;
+
     }
 }

@@ -127,16 +127,25 @@ public class MbpShopDetailServiceImpl implements MbpShopDetailService {
         wrapper.select("id", "shop_name");
         return shopDetailMapper.selectList(wrapper);
     }
-    @SneakyThrows(Exception.class)
     @Transactional
-    public void asyncSaveShopDel(List<ShopDetailPTO> shopDetailPTOS) {
+    public ApiResponse asyncSaveShopDel(List<ShopDetailPTO> shopDetailPTOS) {
         log.info("沿街商铺二级菜单批量存储开始，存储条数{}",shopDetailPTOS.size());
-        Integer saveCount=shopDetailMapper.insertBatchSomeColumn(shopDetailPTOS);
-        if(saveCount<0){
-            log.error("沿街商铺二级菜单保存失败");
-            return;
+        ApiResponse apiResponse = ApiResponse.ok();
+        try{
+            Integer saveCount=shopDetailMapper.insertBatchSomeColumn(shopDetailPTOS);
+            if(saveCount<=0){
+                apiResponse.setMsg("沿街商铺二级菜单保存失败");
+                apiResponse.setCode(400);
+                return apiResponse;
+            }
+            apiResponse.setMsg("沿街商铺二级菜单保存成功,成功条数：{"+saveCount+"}");
+            shopDetailPTOS.clear();
+        }catch (Exception e){
+            apiResponse.setMsg(e.getMessage());
+            apiResponse.setCode(400);
+            return apiResponse;
         }
-        log.info("沿街商铺二级菜单保存成功,成功条数：{},批次标记:{}",saveCount);
-        shopDetailPTOS.clear();
+        return apiResponse;
+
     }
 }

@@ -128,16 +128,25 @@ public class MbpBuildingDetailServiceImpl implements MbpBuildingDetailService {
         return commercialBuildingDetailMapper.selectList(wrapper);
     }
 
-    @SneakyThrows(Exception.class)
     @Transactional
-    public void asyncSaveBuildingDel(List<CommercialBuildingDetailPTO> commercialBuildingDetailPTOS) {
-        log.info("产业园区批量存储开始，存储条数{}",commercialBuildingDetailPTOS.size());
-        Integer saveCount=commercialBuildingDetailMapper.insertBatchSomeColumn(commercialBuildingDetailPTOS);
-        if(saveCount<0){
-            log.error("产业园区保存失败");
-            return;
+    public ApiResponse asyncSaveBuildingDel(List<CommercialBuildingDetailPTO> commercialBuildingDetailPTOS) {
+        log.info("商业楼宇批量存储开始，存储条数{}",commercialBuildingDetailPTOS.size());
+        ApiResponse apiResponse = ApiResponse.ok();
+        try {
+            Integer saveCount=commercialBuildingDetailMapper.insertBatchSomeColumn(commercialBuildingDetailPTOS);
+            if(saveCount<=0){
+                apiResponse.setMsg("商业楼宇保存失败");
+                apiResponse.setCode(400);
+                return apiResponse;
+            }
+            apiResponse.setMsg("商业楼宇保存成功,成功条数：{"+saveCount+"}");
+            commercialBuildingDetailPTOS.clear();
+        }catch (Exception e){
+            apiResponse.setMsg(e.getMessage());
+            apiResponse.setCode(400);
+            return apiResponse;
         }
-        log.info("产业园区保存成功,成功条数：{},批次标记:{}",saveCount);
-        commercialBuildingDetailPTOS.clear();
+        return apiResponse;
+
     }
 }

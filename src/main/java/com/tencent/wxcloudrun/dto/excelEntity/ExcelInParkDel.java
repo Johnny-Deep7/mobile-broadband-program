@@ -18,7 +18,7 @@ public class ExcelInParkDel {
     @ExcelProperty("客户经理联系电话")
     private String contactWay;
 
-    @ExcelProperty(" 产业园区")
+    @ExcelProperty("产业园区")
     private String industryPark;
 
     @ExcelProperty("所在楼层")
