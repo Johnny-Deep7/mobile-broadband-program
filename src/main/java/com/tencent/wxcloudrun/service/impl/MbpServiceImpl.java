@@ -12,6 +12,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,10 +49,9 @@ public class MbpServiceImpl implements MbpService {
     @Resource
     private MbpShopDetailServiceImpl mbpShopDetailService;
 
-    private static ApiResponse apiResponse = ApiResponse.ok();
-
     @Override
     public ApiResponse parsingTable(MultipartFile multipartFile, String marketType, Integer id) {
+        ApiResponse apiResponse = new ApiResponse();
         File file = null;
         if (multipartFile != null) {
             try {
@@ -59,8 +59,8 @@ public class MbpServiceImpl implements MbpService {
                 if (!file.exists() || file.length() == 0) {
                     throw new RuntimeException("文件为空！");
                 }
-                apiResponse = parseExcel(file, marketType, id);
-                return apiResponse;
+                return parseExcel(file, marketType, id);
+
 
             } catch (Exception e) {
                 throw new RuntimeException("文件解析失败！");
@@ -120,6 +120,7 @@ public class MbpServiceImpl implements MbpService {
     }
 
     public ApiResponse parseExcel(File file, String marketType, Integer id) {
+        ApiResponse apiResponse = ApiResponse.ok();
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(file);
