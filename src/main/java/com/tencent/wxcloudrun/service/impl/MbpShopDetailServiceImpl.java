@@ -3,14 +3,11 @@ package com.tencent.wxcloudrun.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.dto.ShopDetail;
 import com.tencent.wxcloudrun.mapper.ShopDetailMapper;
-import com.tencent.wxcloudrun.pto.CommercialBuildingDetailPTO;
 import com.tencent.wxcloudrun.pto.ShopDetailPTO;
-import com.tencent.wxcloudrun.pto.ShopPTO;
 import com.tencent.wxcloudrun.service.MbpShopDetailService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -124,20 +121,11 @@ public class MbpShopDetailServiceImpl implements MbpShopDetailService {
     }
 
     @Override
-    public ApiResponse queryAllNameAndID() {
-        ApiResponse apiResponse = new ApiResponse();
+    public List<ShopDetailPTO> queryAllNameAndID(Integer id) {
         QueryWrapper<ShopDetailPTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("SHOP_ID",id);
         wrapper.select("id", "shop_name");
-        List<ShopDetailPTO> list = shopDetailMapper.selectList(wrapper);
-        if (list.size() != 0 && CollectionUtils.isNotEmpty(list)) {
-            apiResponse.setData(list);
-            apiResponse.setCode(200);
-            apiResponse.setMsg("查询成功");
-        } else {
-            apiResponse.setCode(400);
-            apiResponse.setMsg("查询失败");
-        }
-        return apiResponse;
+        return shopDetailMapper.selectList(wrapper);
     }
     @SneakyThrows(Exception.class)
     @Transactional

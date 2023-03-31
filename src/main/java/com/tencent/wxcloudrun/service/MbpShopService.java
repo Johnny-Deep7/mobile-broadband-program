@@ -3,6 +3,9 @@ package com.tencent.wxcloudrun.service;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.dto.ShopDTO;
+import com.tencent.wxcloudrun.pto.ShopPTO;
+
+import java.util.List;
 
 public interface MbpShopService {
     public ApiResponse createShop(ShopDTO shopDTO);
@@ -13,5 +16,5 @@ public interface MbpShopService {
 
     public ApiResponse updateShop(ShopDTO shopDTO);
 
-    public ApiResponse queryAllNameAndID();
+    public List<ShopPTO> queryAllNameAndID();
 }

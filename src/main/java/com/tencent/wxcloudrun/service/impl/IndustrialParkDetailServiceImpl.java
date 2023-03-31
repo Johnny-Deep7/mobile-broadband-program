@@ -9,6 +9,7 @@ import com.tencent.wxcloudrun.dto.IndustrialParkDetail;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.mapper.IndustrialParkDetailMapper;
 import com.tencent.wxcloudrun.pto.IndustrialParkDetailPTO;
+import com.tencent.wxcloudrun.pto.IndustrialParkPTO;
 import com.tencent.wxcloudrun.service.IndustrialParkDetailService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -120,20 +121,11 @@ public class IndustrialParkDetailServiceImpl implements IndustrialParkDetailServ
     }
 
     @Override
-    public ApiResponse queryAllNameAndID() {
-        ApiResponse apiResponse = new ApiResponse();
+    public List<IndustrialParkDetailPTO> queryAllNameAndID(Integer id) {
         QueryWrapper<IndustrialParkDetailPTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("PARK_ID",id);
         wrapper.select("id", "enterprise_name");
-        List<IndustrialParkDetailPTO> list = industrialParkDetailMapper.selectList(wrapper);
-        if (list.size() != 0 && CollectionUtils.isNotEmpty(list)) {
-            apiResponse.setData(list);
-            apiResponse.setCode(200);
-            apiResponse.setMsg("查询成功");
-        } else {
-            apiResponse.setCode(400);
-            apiResponse.setMsg("查询失败");
-        }
-        return apiResponse;
+        return industrialParkDetailMapper.selectList(wrapper);
     }
 
     @SneakyThrows(Exception.class)

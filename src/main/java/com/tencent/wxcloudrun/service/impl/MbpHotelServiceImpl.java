@@ -130,7 +130,6 @@ public class MbpHotelServiceImpl implements MbpHotelService {
 
     @Override
     public List<HotelPTO> queryAllNameAndID() {
-        ApiResponse apiResponse = new ApiResponse();
         QueryWrapper<HotelPTO> wrapper = new QueryWrapper<>();
         wrapper.select("id", "hotel_name");
         return hotelMapper.selectList(wrapper);

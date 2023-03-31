@@ -10,6 +10,7 @@ import com.tencent.wxcloudrun.dto.MarketingPlanDTO;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.dto.RequestEntity;
 import com.tencent.wxcloudrun.mapper.MarketingPlanMapper;
+import com.tencent.wxcloudrun.pto.IndustrialParkDetailPTO;
 import com.tencent.wxcloudrun.pto.MarketingPlanPTO;
 import com.tencent.wxcloudrun.service.MarketingPlanService;
 import lombok.SneakyThrows;
@@ -111,20 +112,10 @@ public class MarketingPlanServiceImpl implements MarketingPlanService {
     }
 
     @Override
-    public ApiResponse queryAllNameAndID() {
-        ApiResponse apiResponse = new ApiResponse();
+    public List<MarketingPlanPTO> queryAllNameAndID() {
         QueryWrapper<MarketingPlanPTO> wrapper = new QueryWrapper<>();
         wrapper.select("id", "name");
-        List<MarketingPlanPTO> list = marketingPlanMapper.selectList(wrapper);
-        if (list.size() != 0 && CollectionUtils.isNotEmpty(list)) {
-            apiResponse.setData(list);
-            apiResponse.setCode(200);
-            apiResponse.setMsg("查询成功");
-        } else {
-            apiResponse.setCode(400);
-            apiResponse.setMsg("查询失败");
-        }
-        return apiResponse;
+        return marketingPlanMapper.selectList(wrapper);
     }
 
     @SneakyThrows(Exception.class)

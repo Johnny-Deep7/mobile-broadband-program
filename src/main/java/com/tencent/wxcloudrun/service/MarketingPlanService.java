@@ -7,10 +7,12 @@ import com.tencent.wxcloudrun.dto.RequestEntity;
 import com.tencent.wxcloudrun.pto.IndustrialParkPTO;
 import com.tencent.wxcloudrun.pto.MarketingPlanPTO;
 
+import java.util.List;
+
 public interface MarketingPlanService {
     public ApiResponse create(MarketingPlanPTO marketingPlanPTO);
     public ApiResponse query(PageVo<MarketingPlanDTO> pageVo);
     public ApiResponse delete(Integer id);
     public ApiResponse update(MarketingPlanPTO marketingPlanPTO);
-    public ApiResponse queryAllNameAndID();
+    public List<MarketingPlanPTO> queryAllNameAndID();
 }

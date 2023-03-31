@@ -8,6 +8,7 @@ import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.dto.ShopDTO;
 import com.tencent.wxcloudrun.mapper.ShopMapper;
+import com.tencent.wxcloudrun.pto.ShopDetailPTO;
 import com.tencent.wxcloudrun.pto.ShopPTO;
 import com.tencent.wxcloudrun.service.MbpShopService;
 import lombok.SneakyThrows;
@@ -116,20 +117,10 @@ public class MbpShopServiceImpl implements MbpShopService {
         return apiResponse;
     }
     @Override
-    public ApiResponse queryAllNameAndID() {
-        ApiResponse apiResponse = new ApiResponse();
+    public List<ShopPTO> queryAllNameAndID() {
         QueryWrapper<ShopPTO> wrapper = new QueryWrapper<>();
         wrapper.select("id", "cell_name");
-        List<ShopPTO> list = shopMapper.selectList(wrapper);
-        if (list.size() != 0 && CollectionUtils.isNotEmpty(list)) {
-            apiResponse.setData(list);
-            apiResponse.setCode(200);
-            apiResponse.setMsg("查询成功");
-        } else {
-            apiResponse.setCode(400);
-            apiResponse.setMsg("查询失败");
-        }
-        return apiResponse;
+        return shopMapper.selectList(wrapper);
     }
 
     @SneakyThrows(Exception.class)

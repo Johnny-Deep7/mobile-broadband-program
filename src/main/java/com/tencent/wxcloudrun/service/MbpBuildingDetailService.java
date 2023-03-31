@@ -3,6 +3,9 @@ package com.tencent.wxcloudrun.service;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.CommercialBuildingDetail;
 import com.tencent.wxcloudrun.dto.PageVo;
+import com.tencent.wxcloudrun.pto.CommercialBuildingDetailPTO;
+
+import java.util.List;
 
 public interface MbpBuildingDetailService {
     public ApiResponse createBuildingDetail(CommercialBuildingDetail commercialBuildingDetail);
@@ -13,5 +16,5 @@ public interface MbpBuildingDetailService {
 
     public ApiResponse updateBuildingDetail(CommercialBuildingDetail commercialBuildingDetail);
 
-    public ApiResponse queryAllNameAndID();
+    public List<CommercialBuildingDetailPTO> queryAllNameAndID(Integer id);
 }

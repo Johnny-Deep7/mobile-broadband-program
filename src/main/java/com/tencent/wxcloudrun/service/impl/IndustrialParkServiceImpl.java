@@ -129,20 +129,10 @@ public class IndustrialParkServiceImpl implements IndustrialParkService {
     }
 
     @Override
-    public ApiResponse queryAllNameAndID() {
-        ApiResponse apiResponse = new ApiResponse();
+    public List<IndustrialParkPTO> queryAllNameAndID() {
         QueryWrapper<IndustrialParkPTO> wrapper = new QueryWrapper<>();
         wrapper.select("id", "hotel_name");
-        List<IndustrialParkPTO> list = industrialParkMapper.selectList(wrapper);
-        if (list.size() != 0 && CollectionUtils.isNotEmpty(list)) {
-            apiResponse.setData(list);
-            apiResponse.setCode(200);
-            apiResponse.setMsg("查询成功");
-        } else {
-            apiResponse.setCode(400);
-            apiResponse.setMsg("查询失败");
-        }
-        return apiResponse;
+        return industrialParkMapper.selectList(wrapper);
     }
 
     @SneakyThrows(Exception.class)

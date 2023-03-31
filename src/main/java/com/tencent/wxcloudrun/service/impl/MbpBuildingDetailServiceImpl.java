@@ -121,20 +121,11 @@ public class MbpBuildingDetailServiceImpl implements MbpBuildingDetailService {
     }
 
     @Override
-    public ApiResponse queryAllNameAndID() {
-        ApiResponse apiResponse = new ApiResponse();
+    public List<CommercialBuildingDetailPTO> queryAllNameAndID(Integer id) {
         QueryWrapper<CommercialBuildingDetailPTO> wrapper = new QueryWrapper<>();
-        wrapper.select("id", "enterpriseName");
-        List<CommercialBuildingDetailPTO> list = commercialBuildingDetailMapper.selectList(wrapper);
-        if (list.size() != 0 && CollectionUtils.isNotEmpty(list)) {
-            apiResponse.setData(list);
-            apiResponse.setCode(200);
-            apiResponse.setMsg("查询成功");
-        } else {
-            apiResponse.setCode(400);
-            apiResponse.setMsg("查询失败");
-        }
-        return apiResponse;
+        wrapper.eq("BUILDING_ID",id);
+        wrapper.select("id", "enterprise_name");
+        return commercialBuildingDetailMapper.selectList(wrapper);
     }
 
     @SneakyThrows(Exception.class)
