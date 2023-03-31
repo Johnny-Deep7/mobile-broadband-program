@@ -14,5 +14,5 @@ public class LoginDTO {
     String phoneNumber;
     String passWord;
     @Builder.Default
-    Boolean isAdmin = false;
+    String isAdministrator = "false";
 }

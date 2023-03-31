@@ -19,5 +19,5 @@ public class LoginPTO {
     String passWord;
     @TableField("IS_ADMINISTRATOR")
     @Builder.Default
-    Boolean isAdmin = false;
+    String isAdministrator = "false";
 }

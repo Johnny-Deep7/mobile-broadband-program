@@ -39,7 +39,7 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public ApiResponse login(LoginPTO loginPTO) {
         String passWord = loginPTO.getPassWord();
-        Boolean isAdmin = loginPTO.getIsAdmin();
+        String isAdmin = loginPTO.getIsAdministrator();
         ApiResponse apiResponse = new ApiResponse();
         QueryWrapper<LoginPTO> queryWrapper = new QueryWrapper<>();
         if (StringUtils.isNotEmpty(loginPTO.getPhoneNumber())) {
@@ -52,7 +52,7 @@ public class LoginServiceImpl implements LoginService {
             apiResponse.setMsg("登录失败，密码为空");
             return apiResponse;
         }
-        if (passWord.equals(loginPTO1.getPassWord()) && isAdmin.equals(loginPTO1.getIsAdmin())){
+        if (passWord.equals(loginPTO1.getPassWord()) && isAdmin.equals(loginPTO1.getIsAdministrator())){
             apiResponse.setCode(200);
             apiResponse.setMsg("登录成功");
         } else {
@@ -73,10 +73,10 @@ public class LoginServiceImpl implements LoginService {
             queryResponse.setIsExist(Boolean.TRUE);
             if (loginPTO1.getPassWord() == null) {
                 queryResponse.setIsFirstLogin(Boolean.TRUE);
-                queryResponse.setIsAdmin(loginPTO.getIsAdmin());
+                queryResponse.setIsAdmin(loginPTO.getIsAdministrator());
             } else {
                 queryResponse.setIsFirstLogin(Boolean.FALSE);
-                queryResponse.setIsAdmin(loginPTO.getIsAdmin());
+                queryResponse.setIsAdmin(loginPTO.getIsAdministrator());
             }
         } else {
             queryResponse.setIsExist(Boolean.FALSE);

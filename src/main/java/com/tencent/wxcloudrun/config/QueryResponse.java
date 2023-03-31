@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 public class QueryResponse {
     private Boolean isExist;
     private Boolean isFirstLogin;
-    private Boolean isAdmin;
+    private String isAdmin;
 }
