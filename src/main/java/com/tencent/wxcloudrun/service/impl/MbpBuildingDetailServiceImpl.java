@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -116,6 +117,23 @@ public class MbpBuildingDetailServiceImpl implements MbpBuildingDetailService {
         }else{
             apiResponse.setCode(400);
             apiResponse.setMsg("添加失败");
+        }
+        return apiResponse;
+    }
+
+    public ApiResponse updateBuildingDetailList(List<CommercialBuildingDetail> commercialBuildingDetailList){
+        List<CommercialBuildingDetailPTO> commercialBuildingDetailPTOList = new ArrayList<>();
+        BeanUtils.copyProperties(commercialBuildingDetailList,commercialBuildingDetailPTOList);
+        for(CommercialBuildingDetailPTO commercialBuildingDetailPTO : commercialBuildingDetailPTOList){
+            int i = commercialBuildingDetailMapper.updateById(commercialBuildingDetailPTO);
+            if(i>0){
+                apiResponse.setCode(200);
+                apiResponse.setMsg("添加成功");
+            }else{
+                apiResponse.setCode(400);
+                apiResponse.setMsg("添加失败");
+                break;
+            }
         }
         return apiResponse;
     }

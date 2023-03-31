@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 @RestController
@@ -72,6 +73,12 @@ public class MbpController {
         return routeService.update(requestEntity);
     }
 
+    @PutMapping(value = "/listUpdate")
+    public ApiResponse update(@RequestBody List<RequestEntity> requestEntity) {
+        log.info("更新数据开始！");
+        return routeService.listUpdate(requestEntity);
+    }
+
     @PostMapping(value = "/createBuildingDetail")
     public ApiResponse createBuildingDetail(@RequestBody CommercialBuildingDetail commercialBuildingDetail) {
         log.info("添加数据开始！");
@@ -95,6 +102,12 @@ public class MbpController {
     public ApiResponse updateBuildingDetail(@RequestBody CommercialBuildingDetail commercialBuildingDetail) {
         log.info("更新数据开始！");
         return mbpBuildingDetailServiceImpl.updateBuildingDetail(commercialBuildingDetail);
+    }
+
+    @PutMapping(value = "/updateBuildingDetailList")
+    public ApiResponse updateBuildingDetailList(@RequestBody List<CommercialBuildingDetail> commercialBuildingDetailList) {
+        log.info("更新数据开始！");
+        return mbpBuildingDetailServiceImpl.updateBuildingDetailList(commercialBuildingDetailList);
     }
 
     @PostMapping(value = "/createIndustrialParkDetail")
@@ -125,6 +138,12 @@ public class MbpController {
         return industrialParkDetailService.update(industrialParkDetailPTO);
     }
 
+    @PutMapping(value = "/updateIndustrialParkDetailList")
+    public ApiResponse updateBuildingDetail(@RequestBody List<IndustrialParkDetail> industrialParkDetailList) {
+        log.info("更新数据开始！");
+        return industrialParkDetailService.updateIndustrialParkDetailList(industrialParkDetailList);
+    }
+
     @PostMapping(value = "/createShop")
     public ApiResponse createShop(@RequestBody ShopDTO shopDTO) {
         log.info("添加数据开始！");
@@ -150,6 +169,12 @@ public class MbpController {
         return mbpShopService.updateShop(shopDTO);
     }
 
+    @PutMapping(value = "/updateShopList")
+    public ApiResponse updateShopList(@RequestBody List<ShopDTO> shopDTOList) {
+        log.info("更新数据开始！");
+        return mbpShopService.updateShopList(shopDTOList);
+    }
+
     @PostMapping(value = "/createShopDetail")
     public ApiResponse createShopDetail(@RequestBody ShopDetail shopDetail) {
         log.info("添加数据开始！");
@@ -173,6 +198,12 @@ public class MbpController {
     public ApiResponse updateShopDetail(@RequestBody ShopDetail shopDetail) {
         log.info("更新数据开始！");
         return mbpShopDetailService.updateShopDetail(shopDetail);
+    }
+
+    @PutMapping(value = "/updateShopDetailList")
+    public ApiResponse updateShopDetailList(@RequestBody List<ShopDetail> shopDetailList) {
+        log.info("更新数据开始！");
+        return mbpShopDetailService.updateShopDetailList(shopDetailList);
     }
 
     @PostMapping(value = "/createMarketingPlan")

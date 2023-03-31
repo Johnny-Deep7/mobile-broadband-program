@@ -3,21 +3,19 @@ package com.tencent.wxcloudrun.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.dto.ShopDTO;
 import com.tencent.wxcloudrun.mapper.ShopMapper;
-import com.tencent.wxcloudrun.pto.ShopDetailPTO;
 import com.tencent.wxcloudrun.pto.ShopPTO;
 import com.tencent.wxcloudrun.service.MbpShopService;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -116,6 +114,26 @@ public class MbpShopServiceImpl implements MbpShopService {
         }
         return apiResponse;
     }
+
+    @Override
+    public ApiResponse updateShopList(List<ShopDTO> ShopDTOList){
+        ApiResponse apiResponse = new ApiResponse();
+        List<ShopPTO> shopPTOList = new ArrayList<>();
+        BeanUtils.copyProperties(ShopDTOList,shopPTOList);
+        for(ShopPTO shopPTO : shopPTOList){
+            int i = shopMapper.updateById(shopPTO);
+            if(i>0){
+                apiResponse.setCode(200);
+                apiResponse.setMsg("添加成功");
+            }else{
+                apiResponse.setCode(400);
+                apiResponse.setMsg("添加失败");
+                break;
+            }
+        }
+        return apiResponse;
+    }
+
     @Override
     public List<ShopPTO> queryAllNameAndID() {
         QueryWrapper<ShopPTO> wrapper = new QueryWrapper<>();

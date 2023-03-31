@@ -1,8 +1,6 @@
 package com.tencent.wxcloudrun.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.*;
 import com.tencent.wxcloudrun.mapper.CommercialBuildingDetailMapper;
@@ -10,10 +8,12 @@ import com.tencent.wxcloudrun.mapper.ShopDetailMapper;
 import com.tencent.wxcloudrun.mapper.ShopMapper;
 import com.tencent.wxcloudrun.pto.*;
 import com.tencent.wxcloudrun.service.impl.MbpHotelServiceImpl;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MbpRouteService {
@@ -127,6 +127,47 @@ public class MbpRouteService {
                 IndustrialParkPTO industrialParkPTO = new IndustrialParkPTO();
                 BeanUtils.copyProperties(requestEntity,industrialParkPTO);
                 apiResponse = industrialParkService.update(industrialParkPTO);
+                break;
+        }
+        return apiResponse;
+    }
+
+    public ApiResponse listUpdate(List<RequestEntity> requestEntity) {
+        if (StringUtils.isBlank(requestEntity.get(0).getMarketType())) {
+            apiResponse.setCode(400);
+            apiResponse.setMsg("场景类型为空，无法修改");
+            return apiResponse;
+        }
+        switch (requestEntity.get(0).getMarketType()){
+            case "酒店宾馆" :
+                List<HotelPTO> hotelPTOList = new ArrayList<>();
+                BeanUtils.copyProperties(requestEntity,hotelPTOList);
+                for(HotelPTO hotelPTO : hotelPTOList){
+                    apiResponse = mbpHotelService.update(hotelPTO);
+                    if(200 != apiResponse.getCode()){
+                        break;
+                    }
+                }
+                break;
+            case "商务楼宇" :
+                List<CommercialBuildingPTO> commercialBuildingPTOList = new ArrayList<>();
+                BeanUtils.copyProperties(requestEntity,commercialBuildingPTOList);
+                for(CommercialBuildingPTO commercialBuildingPTO : commercialBuildingPTOList){
+                    apiResponse = mbpBuildingService.update(commercialBuildingPTO);
+                    if(200 != apiResponse.getCode()){
+                        break;
+                    }
+                }
+                break;
+            case "产业园区" :
+                List<IndustrialParkPTO> industrialParkPTOList = new ArrayList<>();
+                BeanUtils.copyProperties(requestEntity,industrialParkPTOList);
+                for(IndustrialParkPTO industrialParkPTO : industrialParkPTOList){
+                    apiResponse = industrialParkService.update(industrialParkPTO);
+                    if(200 != apiResponse.getCode()){
+                        break;
+                    }
+                }
                 break;
         }
         return apiResponse;

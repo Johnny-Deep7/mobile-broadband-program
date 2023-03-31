@@ -7,6 +7,7 @@ import com.tencent.wxcloudrun.pto.ShopPTO;
 
 import java.util.List;
 
+
 public interface MbpShopService {
     public ApiResponse createShop(ShopDTO shopDTO);
 
@@ -17,4 +18,6 @@ public interface MbpShopService {
     public ApiResponse updateShop(ShopDTO shopDTO);
 
     public List<ShopPTO> queryAllNameAndID();
+
+    public ApiResponse updateShopList(List<ShopDTO> ShopDTOList);
 }

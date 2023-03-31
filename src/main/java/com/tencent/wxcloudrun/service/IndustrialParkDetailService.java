@@ -4,8 +4,6 @@ import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.IndustrialParkDetail;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.pto.IndustrialParkDetailPTO;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 
 public interface IndustrialParkDetailService {
@@ -14,4 +12,5 @@ public interface IndustrialParkDetailService {
     public ApiResponse delete(Integer id);
     public ApiResponse update(IndustrialParkDetailPTO industrialParkDetailPTO);
     public List<IndustrialParkDetailPTO> queryAllNameAndID(Integer id);
+    public ApiResponse updateIndustrialParkDetailList(List<IndustrialParkDetail> IndustrialParkDetailList);
 }

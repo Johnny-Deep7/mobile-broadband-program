@@ -9,7 +9,6 @@ import com.tencent.wxcloudrun.dto.IndustrialParkDetail;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.mapper.IndustrialParkDetailMapper;
 import com.tencent.wxcloudrun.pto.IndustrialParkDetailPTO;
-import com.tencent.wxcloudrun.pto.IndustrialParkPTO;
 import com.tencent.wxcloudrun.service.IndustrialParkDetailService;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -116,6 +116,24 @@ public class IndustrialParkDetailServiceImpl implements IndustrialParkDetailServ
         } else {
             apiResponse.setCode(400);
             apiResponse.setMsg("修改失败");
+        }
+        return apiResponse;
+    }
+    @Override
+    public ApiResponse updateIndustrialParkDetailList(List<IndustrialParkDetail> IndustrialParkDetailList){
+        ApiResponse apiResponse = new ApiResponse();
+        List<IndustrialParkDetailPTO> IndustrialParkDetailPTOList = new ArrayList<>();
+        BeanUtils.copyProperties(IndustrialParkDetailList,IndustrialParkDetailPTOList);
+        for(IndustrialParkDetailPTO industrialParkDetailPTO : IndustrialParkDetailPTOList){
+            int i = industrialParkDetailMapper.updateById(industrialParkDetailPTO);
+            if(i>0){
+                apiResponse.setCode(200);
+                apiResponse.setMsg("添加成功");
+            }else{
+                apiResponse.setCode(400);
+                apiResponse.setMsg("添加失败");
+                break;
+            }
         }
         return apiResponse;
     }
