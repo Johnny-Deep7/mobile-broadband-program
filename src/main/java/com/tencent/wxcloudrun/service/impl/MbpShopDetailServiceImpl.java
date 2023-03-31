@@ -9,14 +9,13 @@ import com.tencent.wxcloudrun.dto.ShopDetail;
 import com.tencent.wxcloudrun.mapper.ShopDetailMapper;
 import com.tencent.wxcloudrun.pto.ShopDetailPTO;;
 import com.tencent.wxcloudrun.service.MbpShopDetailService;
-import lombok.SneakyThrows;
+import com.tencent.wxcloudrun.utils.CopyListUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -124,16 +123,15 @@ public class MbpShopDetailServiceImpl implements MbpShopDetailService {
     @Override
     public ApiResponse updateShopDetailList(List<ShopDetail> shopDTODetailList){
         ApiResponse apiResponse = new ApiResponse();
-        List<ShopDetailPTO> shopDetailPTOList = new ArrayList<>();
-        BeanUtils.copyProperties(shopDTODetailList,shopDetailPTOList);
+        List<ShopDetailPTO> shopDetailPTOList = CopyListUtils.convertList2List(shopDTODetailList,ShopDetailPTO.class);
         for(ShopDetailPTO shopDetailPTO : shopDetailPTOList){
             int i = shopDetailMapper.updateById(shopDetailPTO);
             if(i>0){
                 apiResponse.setCode(200);
-                apiResponse.setMsg("添加成功");
+                apiResponse.setMsg("更新成功");
             }else{
                 apiResponse.setCode(400);
-                apiResponse.setMsg("添加失败");
+                apiResponse.setMsg("更新失败");
                 break;
             }
         }

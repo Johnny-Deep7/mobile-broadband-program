@@ -6,7 +6,7 @@ import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
-public class CopyList {
+public class CopyListUtils {
     /**
      * @param input 输入集合
      * @param clzz  输出集合类型

@@ -1,19 +1,13 @@
 package com.tencent.wxcloudrun.service.impl;
 
 import com.alibaba.excel.EasyExcel;
-import com.tencent.wxcloudrun.MbpType;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.excelEntity.*;
 import com.tencent.wxcloudrun.pto.*;
 import com.tencent.wxcloudrun.service.MbpService;
-import com.tencent.wxcloudrun.utils.CopyList;
+import com.tencent.wxcloudrun.utils.CopyListUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.formula.functions.T;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.checkerframework.checker.units.qual.A;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -136,7 +130,7 @@ public class MbpServiceImpl implements MbpService {
                             .headRowNumber(1)
                             // 异步读取
                             .doReadSync();
-                    List<HotelPTO> hotels = CopyList.convertList2List(list, HotelPTO.class);
+                    List<HotelPTO> hotels = CopyListUtils.convertList2List(list, HotelPTO.class);
                     List<HotelPTO> hotelPTOS = mbpHotelService.queryAllNameAndID();
                     // 查找到excel中的 hotelName相同的记录
                     List<HotelPTO> hotelPTOS1 = hotelPTOS.stream()
@@ -172,7 +166,7 @@ public class MbpServiceImpl implements MbpService {
                             .headRowNumber(1)
                             // 异步读取
                             .doReadSync();
-                    List<CommercialBuildingPTO> buildings = CopyList.convertList2List(list, CommercialBuildingPTO.class);
+                    List<CommercialBuildingPTO> buildings = CopyListUtils.convertList2List(list, CommercialBuildingPTO.class);
                     List<CommercialBuildingPTO> commercialBuildingPTOS = mbpBuildingService.queryAllNameAndID();
                     // 查找到excel中的 hotelName相同的记录
                     List<CommercialBuildingPTO> commercialBuildingPTOS1 = commercialBuildingPTOS.stream()
@@ -208,7 +202,7 @@ public class MbpServiceImpl implements MbpService {
                             .headRowNumber(1)
                             // 异步读取
                             .doReadSync();
-                    List<CommercialBuildingDetailPTO> buildingDels = CopyList.convertList2List(list, CommercialBuildingDetailPTO.class);
+                    List<CommercialBuildingDetailPTO> buildingDels = CopyListUtils.convertList2List(list, CommercialBuildingDetailPTO.class);
                     buildingDels.forEach(build->build.setBuildingId(id));
                     List<CommercialBuildingDetailPTO> commercialBuildingDetailPTOS = mbpBuildingDetailService.queryAllNameAndID(id);
                     // 查找到excel中的 hotelName相同的记录
@@ -245,7 +239,7 @@ public class MbpServiceImpl implements MbpService {
                             .headRowNumber(1)
                             // 异步读取
                             .doReadSync();
-                    List<IndustrialParkPTO> inPark = CopyList.convertList2List(list, IndustrialParkPTO.class);
+                    List<IndustrialParkPTO> inPark = CopyListUtils.convertList2List(list, IndustrialParkPTO.class);
                     List<IndustrialParkPTO> industrialParkPTOS = industrialParkService.queryAllNameAndID();
                     // 查找到excel中的 hotelName相同的记录
                     List<IndustrialParkPTO> industrialParkPTOS1 = industrialParkPTOS.stream()
@@ -281,7 +275,7 @@ public class MbpServiceImpl implements MbpService {
                             .headRowNumber(1)
                             // 异步读取
                             .doReadSync();
-                    List<IndustrialParkDetailPTO> inParkDel = CopyList.convertList2List(list, IndustrialParkDetailPTO.class);
+                    List<IndustrialParkDetailPTO> inParkDel = CopyListUtils.convertList2List(list, IndustrialParkDetailPTO.class);
                     inParkDel.forEach(inpark->inpark.setParkId(id));
                     List<IndustrialParkDetailPTO> industrialParkDetailPTOS = industrialParkDetailService.queryAllNameAndID(id);
                     // 查找到excel中的 hotelName相同的记录
@@ -318,7 +312,7 @@ public class MbpServiceImpl implements MbpService {
                             .headRowNumber(1)
                             // 异步读取
                             .doReadSync();
-                    List<ShopPTO> shops = CopyList.convertList2List(list, ShopPTO.class);
+                    List<ShopPTO> shops = CopyListUtils.convertList2List(list, ShopPTO.class);
                     List<ShopPTO> shopPTOS = mbpShopService.queryAllNameAndID();
                     // 查找到excel中的 hotelName相同的记录
                     List<ShopPTO> shopPTOS1 = shopPTOS.stream()
@@ -354,7 +348,7 @@ public class MbpServiceImpl implements MbpService {
                             .headRowNumber(1)
                             // 异步读取
                             .doReadSync();
-                    List<ShopDetailPTO> shopDetails = CopyList.convertList2List(list, ShopDetailPTO.class);
+                    List<ShopDetailPTO> shopDetails = CopyListUtils.convertList2List(list, ShopDetailPTO.class);
                     shopDetails.forEach(shop -> shop.setShopId(id));
                     List<ShopDetailPTO> shopDetailPTOS = mbpShopDetailService.queryAllNameAndID(id);
                     // 查找到excel中的 hotelName相同的记录
