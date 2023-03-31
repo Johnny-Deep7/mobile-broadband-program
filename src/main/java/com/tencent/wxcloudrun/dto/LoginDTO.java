@@ -13,6 +13,5 @@ import lombok.NoArgsConstructor;
 public class LoginDTO {
     String phoneNumber;
     String passWord;
-    @Builder.Default
-    String isAdministrator = "false";
+    String isAdministrator;
 }

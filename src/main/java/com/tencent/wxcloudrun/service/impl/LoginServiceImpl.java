@@ -47,9 +47,9 @@ public class LoginServiceImpl implements LoginService {
         }
         LoginPTO loginPTO1 = loginMapper.selectOne(queryWrapper);
         if (loginPTO1.getPassWord() == null) {
-            loginMapper.update(loginPTO, queryWrapper);
+            loginMapper.updateById(loginPTO);
             apiResponse.setCode(200);
-            apiResponse.setMsg("登录失败，密码为空");
+            apiResponse.setMsg("第一次登录，密码设置成功");
             return apiResponse;
         }
         if (passWord.equals(loginPTO1.getPassWord()) && isAdmin.equals(loginPTO1.getIsAdministrator())){
@@ -86,7 +86,16 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public ApiResponse delete(Integer id) {
-        return null;
+        ApiResponse apiResponse = new ApiResponse();
+        int i = loginMapper.deleteById(id);
+        if(i>0){
+            apiResponse.setCode(200);
+            apiResponse.setMsg("删除成功");
+        }else{
+            apiResponse.setCode(400);
+            apiResponse.setMsg("删除失败");
+        }
+        return apiResponse;
     }
 
     @Override
