@@ -68,7 +68,7 @@ public class ShopDetailPTO implements Serializable {
     @TableField("TALK_STATUS")
     private String talkStatus;
     //    走访日期
-    @TableField("VISI_TDATE")
+    @TableField("VISIT_TDATE")
     private String visitDate;
     //    走访情况
     @TableField("VISIT_INFORMATION")
