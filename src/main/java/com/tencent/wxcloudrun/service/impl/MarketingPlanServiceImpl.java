@@ -33,7 +33,9 @@ public class MarketingPlanServiceImpl implements MarketingPlanService {
     public ApiResponse create(MarketingPlanPTO marketingPlanPTO) {
         ApiResponse apiResponse = ApiResponse.ok();
         QueryWrapper<MarketingPlanPTO> wrapper = new QueryWrapper<>();
-        if(ObjectUtils.isNotEmpty(wrapper.eq("name",marketingPlanPTO.getName()))){
+        wrapper.eq("name",marketingPlanPTO.getName());
+        Long count = marketingPlanMapper.selectCount(wrapper);
+        if(0 != count){
             apiResponse.setCode(400);
             apiResponse.setMsg("营销计划名称重复");
             return apiResponse;

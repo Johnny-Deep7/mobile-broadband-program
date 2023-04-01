@@ -6,6 +6,7 @@ import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.config.QueryResponse;
 import com.tencent.wxcloudrun.mapper.LoginMapper;
 import com.tencent.wxcloudrun.pto.LoginPTO;
+import com.tencent.wxcloudrun.pto.MarketingPlanPTO;
 import com.tencent.wxcloudrun.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,14 @@ public class LoginServiceImpl implements LoginService {
         if (!isValidPhoneNumber(loginPTO.getPhoneNumber())) {
             apiResponse.setCode(400);
             apiResponse.setMsg("手机号码不符合规则");
+            return apiResponse;
+        }
+        QueryWrapper<LoginPTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("phone_number",loginPTO.getPhoneNumber());
+        Long count = loginMapper.selectCount(wrapper);
+        if(0 != count){
+            apiResponse.setCode(400);
+            apiResponse.setMsg("手机号已注册");
             return apiResponse;
         }
         int i = loginMapper.insert(loginPTO);
