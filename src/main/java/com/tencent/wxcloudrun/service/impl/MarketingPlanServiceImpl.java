@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tencent.wxcloudrun.MbpType;
@@ -31,7 +32,12 @@ public class MarketingPlanServiceImpl implements MarketingPlanService {
     @Override
     public ApiResponse create(MarketingPlanPTO marketingPlanPTO) {
         ApiResponse apiResponse = ApiResponse.ok();
-
+        QueryWrapper<MarketingPlanPTO> wrapper = new QueryWrapper<>();
+        if(ObjectUtils.isNotEmpty(wrapper.eq("name",marketingPlanPTO.getName()))){
+            apiResponse.setCode(400);
+            apiResponse.setMsg("营销计划名称重复");
+            return apiResponse;
+        }
         int i = marketingPlanMapper.insert(marketingPlanPTO);
         if(i>0){
             apiResponse.setCode(200);
