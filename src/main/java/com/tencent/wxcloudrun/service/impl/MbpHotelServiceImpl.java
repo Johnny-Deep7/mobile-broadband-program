@@ -150,7 +150,10 @@ public class MbpHotelServiceImpl implements MbpHotelService {
             log.info("酒店宾馆保存成功,成功条数：{"+saveCount+"}");
             hotelPTOS.clear();
         }catch (Exception e){
-            apiResponse.setMsg(e.getMessage());
+            String message = e.getMessage();
+            int i = message.indexOf("###",10);
+            String substring = message.substring(0, i);
+            apiResponse.setMsg(substring);
             apiResponse.setCode(400);
             return apiResponse;
         }

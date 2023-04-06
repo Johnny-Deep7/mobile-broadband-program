@@ -149,7 +149,10 @@ public class IndustrialParkServiceImpl implements IndustrialParkService {
             apiResponse.setMsg("产业园区保存成功,成功条数：{"+saveCount+"}");
             industrialParkPTOS.clear();
         }catch (Exception e){
-            apiResponse.setMsg(e.getMessage());
+            String message = e.getMessage();
+            int i = message.indexOf("###",10);
+            String substring = message.substring(0, i);
+            apiResponse.setMsg(substring);
             apiResponse.setCode(400);
             return apiResponse;
         }
