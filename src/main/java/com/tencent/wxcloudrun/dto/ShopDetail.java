@@ -31,6 +31,4 @@ public class ShopDetail implements Serializable {
     private String visitDate;
     private String visitInformation;
     private Integer shopId;
-    private Date writeTime;
-    private Date modifyTime;
 }

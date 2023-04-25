@@ -32,6 +32,4 @@ public class ShopDTO implements Serializable {
     private String talkStatus;
     private String visitDate;
     private String visitInformation;
-    private Date writeTime;
-    private Date modifyTime;
 }

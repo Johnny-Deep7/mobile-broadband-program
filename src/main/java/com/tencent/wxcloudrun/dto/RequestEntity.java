@@ -40,6 +40,4 @@ public class RequestEntity implements Serializable {
     private String propertyName;
     private String isProperty;
     private String marketType;
-    private Date writeTime;
-    private Date modifyTime;
 }

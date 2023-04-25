@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 
@@ -48,12 +51,13 @@ public class MbpController {
         return mbpService.parsingTable(file,marketType,id);
     }
 
-    @PostMapping(value = "/downloadTable")
+    @GetMapping(value = "/downloadTable")
     public ApiResponse downloadTable(@RequestParam(required = false,value = "substation") String substation,
-                                    @RequestParam(required = false,value = "customerManager")String customerManager,
-                                    @RequestParam(required = false,value = "startTime") String startTime,
-                                     @RequestParam(required = false,value = "endTime")String endTime) {
+                                     @RequestParam(required = false,value = "customerManager")String customerManager,
+                                     @RequestParam(required = false,value = "startTime") String startTime,
+                                     @RequestParam(required = false,value = "endTime")String endTime) throws IOException {
         log.info("导出数据开始！");
+
         return mbpService.downloadTable(substation,customerManager,startTime,endTime);
     }
 

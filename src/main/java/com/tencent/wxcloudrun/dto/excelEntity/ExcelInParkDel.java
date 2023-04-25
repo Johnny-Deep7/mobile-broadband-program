@@ -69,6 +69,12 @@ public class ExcelInParkDel {
     @ExcelProperty("走访情况")
     private String visitInformation;
 
+    @ExcelProperty("创建时间")
+    private String writeTime;
+
+    @ExcelProperty("修改时间")
+    private String modifyTime;
+
     public String getGroupNumber() {
         return groupNumber;
     }

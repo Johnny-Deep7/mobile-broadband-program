@@ -35,6 +35,4 @@ public class IndustrialParkDetail implements Serializable {
     private String visitDate;
     private String visitInformation;
     private Integer parkId;
-    private Date writeTime;
-    private Date modifyTime;
 }

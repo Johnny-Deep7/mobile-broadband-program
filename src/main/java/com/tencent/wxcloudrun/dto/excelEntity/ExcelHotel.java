@@ -62,6 +62,11 @@ public class ExcelHotel {
     //走访情况
     @ExcelProperty(value = "走访情况")
     private String visitInformation;
+    @ExcelProperty("创建时间")
+    private String writeTime;
+
+    @ExcelProperty("修改时间")
+    private String modifyTime;
 
     public String getSubstation() {
         return substation;

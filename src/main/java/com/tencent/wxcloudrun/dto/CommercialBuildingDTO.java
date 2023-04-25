@@ -38,6 +38,4 @@ public class CommercialBuildingDTO implements Serializable {
     private String gimsCover;
     private String propertyName;
     private String isProperty;
-    private Date writeTime;
-    private Date modifyTime;
 }

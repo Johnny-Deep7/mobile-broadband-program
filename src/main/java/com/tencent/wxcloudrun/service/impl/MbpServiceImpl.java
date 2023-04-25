@@ -1,6 +1,11 @@
 package com.tencent.wxcloudrun.service.impl;
 
 import com.alibaba.excel.EasyExcel;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.write.metadata.WriteSheet;
+import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.excelEntity.*;
 import com.tencent.wxcloudrun.pto.*;
@@ -8,15 +13,22 @@ import com.tencent.wxcloudrun.service.MbpService;
 import com.tencent.wxcloudrun.utils.CopyListUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.formula.functions.T;
+import org.apache.poi.util.IOUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import static java.lang.System.currentTimeMillis;
 
 @Service
 @Slf4j
@@ -65,12 +77,206 @@ public class MbpServiceImpl implements MbpService {
     }
 
     @Override
-    public ApiResponse downloadTable(String marketType, String customerManager, String startTime, String endTime) {
+    public ApiResponse downloadTable(String substation, String customerManager,
+                                     String startTime, String endTime) throws IOException {
         ApiResponse apiResponse = new ApiResponse();
-        File file = null;
 
+        //酒店宾馆
+        QueryWrapper<HotelPTO> wrapperHotel = new QueryWrapper<>();
+        if (StringUtils.isNotBlank(substation)){
+            wrapperHotel.eq("substation",substation);
+        }
+        if (StringUtils.isNotBlank(customerManager)){
+            wrapperHotel.eq("customer_manager",customerManager);
+        }
+        if (StringUtils.isNotBlank(startTime)){
+            wrapperHotel.ge("modify_time",startTime);
+        }
+        if (StringUtils.isNotBlank(endTime)){
+            wrapperHotel.le("modify_time",endTime);
+        }
+        wrapperHotel.orderByDesc("id");
+
+        //商务楼宇
+        QueryWrapper<CommercialBuildingPTO> wrapperCommercialBuilding = new QueryWrapper<>();
+        if (StringUtils.isNotBlank(substation)){
+            wrapperCommercialBuilding.eq("substation",substation);
+        }
+        if (StringUtils.isNotBlank(customerManager)){
+            wrapperCommercialBuilding.eq("customer_manager",customerManager);
+        }
+        if (StringUtils.isNotBlank(startTime)){
+            wrapperCommercialBuilding.ge("modify_time",startTime);
+        }
+        if (StringUtils.isNotBlank(endTime)){
+            wrapperCommercialBuilding.le("modify_time",endTime);
+        }
+        wrapperCommercialBuilding.orderByDesc("id");
+
+        //产业园区
+        QueryWrapper<IndustrialParkPTO> wrapperIndustrialPark = new QueryWrapper<>();
+        if (StringUtils.isNotBlank(substation)){
+            wrapperIndustrialPark.eq("substation",substation);
+        }
+        if (StringUtils.isNotBlank(customerManager)){
+            wrapperIndustrialPark.eq("customer_manager",customerManager);
+        }
+        if (StringUtils.isNotBlank(startTime)){
+            wrapperIndustrialPark.ge("modify_time",startTime);
+        }
+        if (StringUtils.isNotBlank(endTime)){
+            wrapperIndustrialPark.le("modify_time",endTime);
+        }
+        wrapperIndustrialPark.orderByDesc("id");
+
+        //商务楼宇二级
+        QueryWrapper<CommercialBuildingDetailPTO> wrapperCommercialBuildingDetail = new QueryWrapper<>();
+        if (StringUtils.isNotBlank(substation)){
+            wrapperCommercialBuildingDetail.eq("substation",substation);
+        }
+        if (StringUtils.isNotBlank(customerManager)){
+            wrapperCommercialBuildingDetail.eq("customer_manager",customerManager);
+        }
+        if (StringUtils.isNotBlank(startTime)){
+            wrapperCommercialBuildingDetail.ge("modify_time",startTime);
+        }
+        if (StringUtils.isNotBlank(endTime)){
+            wrapperCommercialBuildingDetail.le("modify_time",endTime);
+        }
+        wrapperCommercialBuildingDetail.orderByDesc("id");
+
+        //产业园区二级
+        QueryWrapper<IndustrialParkDetailPTO> wrapperIndustrialParkDetail = new QueryWrapper<>();
+        if (StringUtils.isNotBlank(substation)){
+            wrapperIndustrialParkDetail.eq("substation",substation);
+        }
+        if (StringUtils.isNotBlank(customerManager)){
+            wrapperIndustrialParkDetail.eq("customer_manager",customerManager);
+        }
+        if (StringUtils.isNotBlank(startTime)){
+            wrapperIndustrialParkDetail.ge("modify_time",startTime);
+        }
+        if (StringUtils.isNotBlank(endTime)){
+            wrapperIndustrialParkDetail.le("modify_time",endTime);
+        }
+        wrapperIndustrialParkDetail.orderByDesc("id");
+
+        //沿街商铺
+        QueryWrapper<ShopPTO> wrapperShop = new QueryWrapper<>();
+        if (StringUtils.isNotBlank(substation)){
+            wrapperShop.eq("substation",substation);
+        }
+        if (StringUtils.isNotBlank(customerManager)){
+            wrapperShop.eq("customer_manager",customerManager);
+        }
+        if (StringUtils.isNotBlank(startTime)){
+            wrapperShop.ge("modify_time",startTime);
+        }
+        if (StringUtils.isNotBlank(endTime)){
+            wrapperShop.le("modify_time",endTime);
+        }
+        wrapperShop.orderByDesc("id");
+
+        //沿街商铺二级
+        QueryWrapper<ShopDetailPTO> wrapperShopDetail = new QueryWrapper<>();
+        if (StringUtils.isNotBlank(substation)){
+            wrapperShopDetail.eq("substation",substation);
+        }
+        if (StringUtils.isNotBlank(customerManager)){
+            wrapperShopDetail.eq("customer_manager",customerManager);
+        }
+        if (StringUtils.isNotBlank(startTime)){
+            wrapperShopDetail.ge("modify_time",startTime);
+        }
+        if (StringUtils.isNotBlank(endTime)){
+            wrapperShopDetail.le("modify_time",endTime);
+        }
+        wrapperShopDetail.orderByDesc("id");
+        String excelFileName = URLEncoder.encode("吴中调查情况表", "UTF-8")
+                .replaceAll("\\+", "%20");
+        EasyExcel.write(excelFileName,HotelPTO.class).sheet("酒店宾馆").doWrite((List) wrapperHotel);
+        EasyExcel.write(excelFileName,CommercialBuildingPTO.class).sheet("商务楼宇").doWrite((List) wrapperHotel);
+        EasyExcel.write(excelFileName,IndustrialParkPTO.class).sheet("产业园区").doWrite((List) wrapperHotel);
+        EasyExcel.write(excelFileName,CommercialBuildingDetailPTO.class).sheet("商务楼宇二级明细").doWrite((List) wrapperHotel);
+        EasyExcel.write(excelFileName,IndustrialParkDetailPTO.class).sheet("产业园区二级明细").doWrite((List) wrapperHotel);
+        EasyExcel.write(excelFileName,ShopPTO.class).sheet("沿街商铺").doWrite((List) wrapperHotel);
+        EasyExcel.write(excelFileName,ShopDetailPTO.class).sheet("沿街商铺二级明细").doWrite((List) wrapperHotel);
+        //获取模板(模板你可以放在任何位置，前提是你能获取到。这里放在resource下)
+//        ClassPathResource couponOrderTemplateResource = new ClassPathResource("userInfo.xlsx");
+//
+//        response.setContentType("application/vnd.ms-excel");
+//        response.setCharacterEncoding("utf-8");
+//        String excelFileName = URLEncoder.encode("吴中调查情况表", "UTF-8")
+//                .replaceAll("\\+", "%20");
+//        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
+//        // attachment这个代表要下载的，如果去掉就直接打开了(attachment-作为附件下载,inline-在线打开)
+//        // excelFileName是文件名，另存为或者下载时，为默认的文件名
+//        response.setHeader("Content-disposition","attachment;filename=" + excelFileName + ".xlsx");
+//        response.setHeader("Content-Type","application/octet-stream;charset=utf-8");
+//
+//        InputStream templateInputStream = null;
+//
+//        ExcelWriter excelWriter = null;
+//        WriteSheet hotelSheet = null;
+//        WriteSheet CommercialBuildingSheet = null;
+//        WriteSheet CommercialBuildingDetailSheet = null;
+//        WriteSheet IndustrialParkSheet = null;
+//        WriteSheet IndustrialParkDetailSheet = null;
+//        WriteSheet ShopSheet = null;
+//        WriteSheet ShopDetailSheet = null;
+//
+//        ServletOutputStream outputStream = null;
+//
+//        try {
+//            outputStream = response.getOutputStream();
+//            templateInputStream = couponOrderTemplateResource.getInputStream();
+//        } catch (IOException e) {
+//            log.error("获取模板失败");
+//        }
+//
+//        // 这里注意 入参用了forceNewRow 代表在写入list的时候不管list下面有没有空行 都会创建一行，然后下面的数据往后移动。默认 是false，会直接使用下一行，如果没有则创建。
+//        // forceNewRow 如果设置了true,有个缺点 就是他会把所有的数据都放到内存了，所以慎用
+//        // 简单的说 如果你的模板有list,且list不是最后一行，下面还有数据需要填充 就必须设置 forceNewRow=true 但是这个就会把所有数据放到内存 会很耗内存
+//        // 如果数据量大 list不是最后一行 参照下一个
+//        FillConfig fillConfig = FillConfig.builder().forceNewRow(Boolean.TRUE).build();
+//        excelWriter = EasyExcel.write(outputStream).withTemplate(templateInputStream).build();
+//
+//        //创建第一个sheet
+//        hotelSheet = EasyExcel.writerSheet("酒店宾馆").build();
+//        //填充
+//        excelWriter.fill(wrapperHotel,fillConfig,hotelSheet);
+//
+//        //创建第二个sheet
+//        CommercialBuildingSheet = EasyExcel.writerSheet("商务楼宇").build();
+//        //填充
+//        excelWriter.fill(wrapperCommercialBuilding,fillConfig,CommercialBuildingSheet);
+//
+//        IndustrialParkSheet = EasyExcel.writerSheet("产业园区").build();
+//        //填充
+//        excelWriter.fill(wrapperIndustrialPark,fillConfig,IndustrialParkSheet);
+//
+//        CommercialBuildingDetailSheet = EasyExcel.writerSheet("商务楼宇二级明细").build();
+//        //填充
+//        excelWriter.fill(wrapperCommercialBuildingDetail,fillConfig,CommercialBuildingDetailSheet);
+//
+//        IndustrialParkDetailSheet = EasyExcel.writerSheet("产业园区二级明细").build();
+//        //填充
+//        excelWriter.fill(wrapperIndustrialParkDetail,fillConfig,IndustrialParkDetailSheet);
+//
+//        ShopSheet = EasyExcel.writerSheet("沿街商铺").build();
+//        //填充
+//        excelWriter.fill(wrapperShop,fillConfig,ShopSheet);
+//
+//        ShopDetailSheet = EasyExcel.writerSheet("沿街商铺二级明细").build();
+//        //填充
+//        excelWriter.fill(wrapperShopDetail,fillConfig,ShopDetailSheet);
+//
+//        //关闭
+//        excelWriter.finish();
+//        IOUtils.closeQuietly(templateInputStream);
+//        IOUtils.closeQuietly(outputStream);
+//        IOUtils.closeQuietly((Closeable) excelWriter);
         return apiResponse;
-
     }
 
     /**
