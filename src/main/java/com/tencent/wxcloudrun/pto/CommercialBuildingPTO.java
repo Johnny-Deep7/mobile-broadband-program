@@ -94,4 +94,8 @@ public class CommercialBuildingPTO implements Serializable {
 //    物业集团是否已建
     @TableField("IS_PROPERTY")
     private String isProperty;
+    @TableField("WRITE_TIME")
+    private String writeTime;
+    @TableField("MODIFY_TIME")
+    private String modifyTime;
 }

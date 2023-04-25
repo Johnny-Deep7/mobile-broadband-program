@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -39,4 +40,6 @@ public class RequestEntity implements Serializable {
     private String propertyName;
     private String isProperty;
     private String marketType;
+    private Date writeTime;
+    private Date modifyTime;
 }

@@ -77,5 +77,8 @@ public class HotelPTO implements Serializable {
     //备注（当前攻坚主要问题 覆盖/装机/关系/政策）
     @TableField("DIFFICULT_POINT")
     private String difficultPoint;
-
+    @TableField("WRITE_TIME")
+    private String writeTime;
+    @TableField("MODIFY_TIME")
+    private String modifyTime;
 }

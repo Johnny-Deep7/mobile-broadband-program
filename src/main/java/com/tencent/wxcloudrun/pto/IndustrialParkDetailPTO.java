@@ -83,4 +83,8 @@ public class IndustrialParkDetailPTO implements Serializable {
     private String visitInformation;
     @TableField("PARK_ID")
     private Integer parkId;
+    @TableField("WRITE_TIME")
+    private String writeTime;
+    @TableField("MODIFY_TIME")
+    private String modifyTime;
 }

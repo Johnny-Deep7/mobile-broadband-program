@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 //产业园区
 @Data
@@ -33,4 +34,6 @@ public class IndustrialParkDTO implements Serializable {
     private String difficultPoint;
     private String enterpriseNumber;
     private String buildingNum;
+    private Date writeTime;
+    private Date modifyTime;
 }

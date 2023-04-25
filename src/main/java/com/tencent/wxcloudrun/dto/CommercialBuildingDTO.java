@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 //商务楼宇
 @Data
@@ -37,4 +38,6 @@ public class CommercialBuildingDTO implements Serializable {
     private String gimsCover;
     private String propertyName;
     private String isProperty;
+    private Date writeTime;
+    private Date modifyTime;
 }

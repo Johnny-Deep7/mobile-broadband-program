@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,6 +33,10 @@ public class MbpBuildingDetailServiceImpl implements MbpBuildingDetailService {
     public ApiResponse createBuildingDetail(CommercialBuildingDetail commercialBuildingDetail) {
         CommercialBuildingDetailPTO commercialBuildingDetailPTO = new CommercialBuildingDetailPTO();
         BeanUtils.copyProperties(commercialBuildingDetail,commercialBuildingDetailPTO);
+        Date writeTime = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        commercialBuildingDetailPTO.setWriteTime(format.format(writeTime));
+        commercialBuildingDetailPTO.setModifyTime(format.format(writeTime));
         int i = commercialBuildingDetailMapper.insert(commercialBuildingDetailPTO);
         if(i>0){
             apiResponse.setCode(200);
@@ -110,6 +116,9 @@ public class MbpBuildingDetailServiceImpl implements MbpBuildingDetailService {
     public ApiResponse updateBuildingDetail(CommercialBuildingDetail commercialBuildingDetail) {
         CommercialBuildingDetailPTO commercialBuildingDetailPTO = new CommercialBuildingDetailPTO();
         BeanUtils.copyProperties(commercialBuildingDetail,commercialBuildingDetailPTO);
+        Date modifyTime = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        commercialBuildingDetailPTO.setModifyTime(format.format(modifyTime));
         int i = commercialBuildingDetailMapper.updateById(commercialBuildingDetailPTO);
         if(i>0){
             apiResponse.setCode(200);
@@ -122,15 +131,10 @@ public class MbpBuildingDetailServiceImpl implements MbpBuildingDetailService {
     }
 
     public ApiResponse updateBuildingDetailList(List<CommercialBuildingDetail> commercialBuildingDetailList){
-        List<CommercialBuildingDetailPTO> commercialBuildingDetailPTOList = CopyListUtils.convertList2List(commercialBuildingDetailList, CommercialBuildingDetailPTO.class);
-        for(CommercialBuildingDetailPTO commercialBuildingDetailPTO : commercialBuildingDetailPTOList){
-            int i = commercialBuildingDetailMapper.updateById(commercialBuildingDetailPTO);
-            if(i>0){
-                apiResponse.setCode(200);
-                apiResponse.setMsg("更新成功");
-            }else{
-                apiResponse.setCode(400);
-                apiResponse.setMsg("更新失败");
+
+        for(CommercialBuildingDetail commercialBuildingDetail : commercialBuildingDetailList){
+            apiResponse = updateBuildingDetail(commercialBuildingDetail);
+            if(200 != apiResponse.getCode()){
                 break;
             }
         }

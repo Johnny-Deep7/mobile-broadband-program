@@ -81,6 +81,12 @@
             <if test="isProperty != null">
                 IS_PROPERTY
             </if>
+            <if test="writeTime != null">
+                WRITE_TIME
+            </if>
+            <if test="modifyTime != null">
+                MODIFY_TIME
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="substation != null">
@@ -157,6 +163,12 @@
             </if>
             <if test="isProperty != null">
                 #{isProperty,jdbcType=VARCHAR}
+            </if>
+            <if test="writeTime != null and writeTime != ''">
+                #{writeTime,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyTime != null and modifyTime != ''">
+                #{modifyTime,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>

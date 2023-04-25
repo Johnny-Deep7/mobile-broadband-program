@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -34,5 +35,6 @@ public class IndustrialParkDetail implements Serializable {
     private String visitDate;
     private String visitInformation;
     private Integer parkId;
-
+    private Date writeTime;
+    private Date modifyTime;
 }

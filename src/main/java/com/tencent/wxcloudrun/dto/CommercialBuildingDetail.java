@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -37,4 +38,6 @@ public class CommercialBuildingDetail implements Serializable {
     private String visitInformation;
     private String difficultPoint;
     private Integer buildingId;
+    private Date writeTime;
+    private Date modifyTime;
 }

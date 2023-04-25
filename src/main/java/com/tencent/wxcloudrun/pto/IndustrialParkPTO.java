@@ -73,4 +73,8 @@ public class IndustrialParkPTO implements Serializable {
     //    楼栋数
     @TableField("BUILDING_NUM")
     private String buildingNum;
+    @TableField("WRITE_TIME")
+    private String writeTime;
+    @TableField("MODIFY_TIME")
+    private String modifyTime;
 }

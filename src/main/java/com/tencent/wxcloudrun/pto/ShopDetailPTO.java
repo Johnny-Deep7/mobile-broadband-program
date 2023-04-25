@@ -75,4 +75,8 @@ public class ShopDetailPTO implements Serializable {
     private String visitInformation;
     @TableField("SHOP_ID")
     private Integer shopId;
+    @TableField("WRITE_TIME")
+    private String writeTime;
+    @TableField("MODIFY_TIME")
+    private String modifyTime;
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
+import com.tencent.wxcloudrun.dto.CommercialBuildingDetail;
 import com.tencent.wxcloudrun.dto.IndustrialParkDetail;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.mapper.IndustrialParkDetailMapper;
@@ -17,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,6 +32,10 @@ public class IndustrialParkDetailServiceImpl implements IndustrialParkDetailServ
     @Override
     public ApiResponse create(IndustrialParkDetailPTO industrialParkDetailPTO) {
         ApiResponse apiResponse = ApiResponse.ok();
+        Date writeTime = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        industrialParkDetailPTO.setWriteTime(format.format(writeTime));
+        industrialParkDetailPTO.setModifyTime(format.format(writeTime));
         int i = industrialParkDetailMapper.insert(industrialParkDetailPTO);
         if(i>0){
             apiResponse.setCode(200);
@@ -109,6 +116,9 @@ public class IndustrialParkDetailServiceImpl implements IndustrialParkDetailServ
     @Override
     public ApiResponse update(IndustrialParkDetailPTO industrialParkDetailPTO) {
         ApiResponse apiResponse = new ApiResponse();
+        Date modifyTime = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        industrialParkDetailPTO.setModifyTime(format.format(modifyTime));
         int i = industrialParkDetailMapper.updateById(industrialParkDetailPTO);
         if (i > 0) {
             apiResponse.setCode(200);
@@ -122,15 +132,11 @@ public class IndustrialParkDetailServiceImpl implements IndustrialParkDetailServ
     @Override
     public ApiResponse updateIndustrialParkDetailList(List<IndustrialParkDetail> IndustrialParkDetailList){
         ApiResponse apiResponse = new ApiResponse();
-        List<IndustrialParkDetailPTO> IndustrialParkDetailPTOList = CopyListUtils.convertList2List(IndustrialParkDetailList, IndustrialParkDetailPTO.class);
-        for(IndustrialParkDetailPTO industrialParkDetailPTO : IndustrialParkDetailPTOList){
-            int i = industrialParkDetailMapper.updateById(industrialParkDetailPTO);
-            if(i>0){
-                apiResponse.setCode(200);
-                apiResponse.setMsg("更新成功");
-            }else{
-                apiResponse.setCode(400);
-                apiResponse.setMsg("更新失败");
+        for(IndustrialParkDetail industrialParkDetail : IndustrialParkDetailList){
+            IndustrialParkDetailPTO industrialParkDetailPTO = new IndustrialParkDetailPTO();
+            BeanUtils.copyProperties(industrialParkDetail, industrialParkDetailPTO);
+            apiResponse = update(industrialParkDetailPTO);
+            if(200 != apiResponse.getCode()){
                 break;
             }
         }

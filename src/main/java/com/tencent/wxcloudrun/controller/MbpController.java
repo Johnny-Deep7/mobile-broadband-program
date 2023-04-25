@@ -48,6 +48,15 @@ public class MbpController {
         return mbpService.parsingTable(file,marketType,id);
     }
 
+    @PostMapping(value = "/downloadTable")
+    public ApiResponse downloadTable(@RequestParam(required = false,value = "substation") String substation,
+                                    @RequestParam(required = false,value = "customerManager")String customerManager,
+                                    @RequestParam(required = false,value = "startTime") String startTime,
+                                     @RequestParam(required = false,value = "endTime")String endTime) {
+        log.info("导出数据开始！");
+        return mbpService.downloadTable(substation,customerManager,startTime,endTime);
+    }
+
     @PostMapping(value = "/create")
     public ApiResponse create(@RequestBody RequestEntity requestEntity) {
         log.info("添加{}数据开始！",requestEntity.getMarketType());

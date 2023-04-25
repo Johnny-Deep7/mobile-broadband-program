@@ -76,5 +76,9 @@ public class ShopPTO implements Serializable {
     //    走访情况
     @TableField("VISIT_INFORMATION")
     private String visitInformation;
+    @TableField("WRITE_TIME")
+    private String writeTime;
+    @TableField("MODIFY_TIME")
+    private String modifyTime;
 }
 

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
+import com.tencent.wxcloudrun.dto.CommercialBuildingDetail;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.dto.ShopDetail;
 import com.tencent.wxcloudrun.mapper.ShopDetailMapper;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,6 +33,10 @@ public class MbpShopDetailServiceImpl implements MbpShopDetailService {
     public ApiResponse createShopDetail(ShopDetail shopDetail) {
         ShopDetailPTO shopDetailPTO = new ShopDetailPTO();
         BeanUtils.copyProperties(shopDetail, shopDetailPTO);
+        Date writeTime = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        shopDetailPTO.setWriteTime(format.format(writeTime));
+        shopDetailPTO.setModifyTime(format.format(writeTime));
         int i = shopDetailMapper.insert(shopDetailPTO);
         if(i>0){
             apiResponse.setCode(200);
@@ -109,6 +116,9 @@ public class MbpShopDetailServiceImpl implements MbpShopDetailService {
     public ApiResponse updateShopDetail(ShopDetail shopDetail) {
         ShopDetailPTO shopDetailPTO = new ShopDetailPTO();
         BeanUtils.copyProperties(shopDetail, shopDetailPTO);
+        Date modifyTime = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        shopDetailPTO.setModifyTime(format.format(modifyTime));
         int i = shopDetailMapper.updateById(shopDetailPTO);
         if(i>0){
             apiResponse.setCode(200);
@@ -123,15 +133,9 @@ public class MbpShopDetailServiceImpl implements MbpShopDetailService {
     @Override
     public ApiResponse updateShopDetailList(List<ShopDetail> shopDTODetailList){
         ApiResponse apiResponse = new ApiResponse();
-        List<ShopDetailPTO> shopDetailPTOList = CopyListUtils.convertList2List(shopDTODetailList,ShopDetailPTO.class);
-        for(ShopDetailPTO shopDetailPTO : shopDetailPTOList){
-            int i = shopDetailMapper.updateById(shopDetailPTO);
-            if(i>0){
-                apiResponse.setCode(200);
-                apiResponse.setMsg("更新成功");
-            }else{
-                apiResponse.setCode(400);
-                apiResponse.setMsg("更新失败");
+        for(ShopDetail shopDetail : shopDTODetailList){
+            apiResponse = updateShopDetail(shopDetail);
+            if(200 != apiResponse.getCode()){
                 break;
             }
         }

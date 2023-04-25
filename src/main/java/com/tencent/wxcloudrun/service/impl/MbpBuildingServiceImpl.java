@@ -19,7 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,7 +33,10 @@ public class MbpBuildingServiceImpl implements MbpBuildingService {
     @Override
     public ApiResponse create(CommercialBuildingPTO commercialBuildingPTO) {
         ApiResponse apiResponse = ApiResponse.ok();
-
+        Date writeTime = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        commercialBuildingPTO.setWriteTime(format.format(writeTime));
+        commercialBuildingPTO.setModifyTime(format.format(writeTime));
         int i = commercialBuildingMapper.insert(commercialBuildingPTO);
         if(i>0){
             apiResponse.setCode(200);
@@ -118,7 +123,9 @@ public class MbpBuildingServiceImpl implements MbpBuildingService {
     @Override
     public ApiResponse update(CommercialBuildingPTO commercialBuildingPTO) {
         ApiResponse apiResponse = new ApiResponse();
-
+        Date modifyTime = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        commercialBuildingPTO.setModifyTime(format.format(modifyTime));
         int i = commercialBuildingMapper.updateById(commercialBuildingPTO);
         if(i>0){
             apiResponse.setCode(200);

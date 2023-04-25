@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tencent.wxcloudrun.config.ApiResponse;
+import com.tencent.wxcloudrun.dto.CommercialBuildingDetail;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.dto.ShopDTO;
 import com.tencent.wxcloudrun.mapper.ShopMapper;
@@ -16,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,6 +34,10 @@ public class MbpShopServiceImpl implements MbpShopService {
     public ApiResponse createShop(ShopDTO shopDTO) {
         ShopPTO shopPTO = new ShopPTO();
         BeanUtils.copyProperties(shopDTO,shopPTO);
+        Date writeTime = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        shopPTO.setWriteTime(format.format(writeTime));
+        shopPTO.setModifyTime(format.format(writeTime));
         int i = shopMapper.insert(shopPTO);
         if(i>0){
             apiResponse.setCode(200);
@@ -105,6 +112,9 @@ public class MbpShopServiceImpl implements MbpShopService {
     public ApiResponse updateShop(ShopDTO shopDTO) {
         ShopPTO shopPTO = new ShopPTO();
         BeanUtils.copyProperties(shopDTO,shopPTO);
+        Date modifyTime = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        shopPTO.setModifyTime(format.format(modifyTime));
         int i = shopMapper.updateById(shopPTO);
         if(i>0){
             apiResponse.setCode(200);
@@ -119,15 +129,9 @@ public class MbpShopServiceImpl implements MbpShopService {
     @Override
     public ApiResponse updateShopList(List<ShopDTO> ShopDTOList){
         ApiResponse apiResponse = new ApiResponse();
-        List<ShopPTO> shopPTOList = CopyListUtils.convertList2List(ShopDTOList, ShopPTO.class);
-        for(ShopPTO shopPTO : shopPTOList){
-            int i = shopMapper.updateById(shopPTO);
-            if(i>0){
-                apiResponse.setCode(200);
-                apiResponse.setMsg("更新成功");
-            }else{
-                apiResponse.setCode(400);
-                apiResponse.setMsg("更新失败");
+        for(ShopDTO shopDTO : ShopDTOList){
+            apiResponse = updateShop(shopDTO);
+            if(200 != apiResponse.getCode()){
                 break;
             }
         }

@@ -19,7 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,7 +33,10 @@ public class MbpHotelServiceImpl implements MbpHotelService {
     @Override
     public ApiResponse create(HotelPTO hotelPTO) {
         ApiResponse apiResponse = ApiResponse.ok();
-
+        Date writeTime = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        hotelPTO.setWriteTime(format.format(writeTime));
+        hotelPTO.setModifyTime(format.format(writeTime));
         int i = hotelMapper.insert(hotelPTO);
         if(i>0){
             apiResponse.setCode(200);
@@ -117,6 +122,9 @@ public class MbpHotelServiceImpl implements MbpHotelService {
     @Override
     public ApiResponse update(HotelPTO hotelPTO) {
         ApiResponse apiResponse = new ApiResponse();
+        Date modifyTime = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        hotelPTO.setModifyTime(format.format(modifyTime));
         int i = hotelMapper.updateById(hotelPTO);
         if(i>0){
             apiResponse.setCode(200);

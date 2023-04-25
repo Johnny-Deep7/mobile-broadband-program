@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 //沿街商铺
 @Data
@@ -31,4 +32,6 @@ public class ShopDTO implements Serializable {
     private String talkStatus;
     private String visitDate;
     private String visitInformation;
+    private Date writeTime;
+    private Date modifyTime;
 }

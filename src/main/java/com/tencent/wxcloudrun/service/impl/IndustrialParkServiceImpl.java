@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,6 +32,10 @@ public class IndustrialParkServiceImpl implements IndustrialParkService {
     @Override
     public ApiResponse create(IndustrialParkPTO industrialParkPTO) {
         ApiResponse apiResponse = ApiResponse.ok();
+        Date writeTime = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        industrialParkPTO.setWriteTime(format.format(writeTime));
+        industrialParkPTO.setModifyTime(format.format(writeTime));
         int i = industrialParkMapper.insert(industrialParkPTO);
         if (i > 0) {
             apiResponse.setCode(200);
@@ -116,7 +122,9 @@ public class IndustrialParkServiceImpl implements IndustrialParkService {
     @Override
     public ApiResponse update(IndustrialParkPTO industrialParkPTO) {
         ApiResponse apiResponse = new ApiResponse();
-
+        Date modifyTime = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        industrialParkPTO.setModifyTime(format.format(modifyTime));
         int i = industrialParkMapper.updateById(industrialParkPTO);
         if (i > 0) {
             apiResponse.setCode(200);

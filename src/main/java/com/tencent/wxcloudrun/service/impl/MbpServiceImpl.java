@@ -64,6 +64,15 @@ public class MbpServiceImpl implements MbpService {
 
     }
 
+    @Override
+    public ApiResponse downloadTable(String marketType, String customerManager, String startTime, String endTime) {
+        ApiResponse apiResponse = new ApiResponse();
+        File file = null;
+
+        return apiResponse;
+
+    }
+
     /**
      * MultipartFile 转 File
      *

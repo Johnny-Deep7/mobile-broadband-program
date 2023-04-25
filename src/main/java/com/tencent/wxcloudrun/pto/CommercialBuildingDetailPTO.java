@@ -92,4 +92,8 @@ public class CommercialBuildingDetailPTO implements Serializable {
     private String difficultPoint;
     @TableField("BUILDING_ID")
     private Integer buildingId;
+    @TableField("WRITE_TIME")
+    private String writeTime;
+    @TableField("MODIFY_TIME")
+    private String modifyTime;
 }
