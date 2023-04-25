@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.service.impl;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.support.ExcelTypeEnum;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.tencent.wxcloudrun.config.ApiResponse;
@@ -224,13 +225,13 @@ public class MbpServiceImpl implements MbpService {
 
         String excelFileName = URLEncoder.encode("吴中调查情况表", "UTF-8")
                 .replaceAll("\\+", "%20");
-        EasyExcel.write(excelFileName,HotelPTO.class).sheet("酒店宾馆").doWrite(wrHotel);
-        EasyExcel.write(excelFileName,CommercialBuildingPTO.class).sheet("商务楼宇").doWrite(wrCommercialBuilding);
-        EasyExcel.write(excelFileName,IndustrialParkPTO.class).sheet("产业园区").doWrite(wrIndustrialPark);
-        EasyExcel.write(excelFileName,CommercialBuildingDetailPTO.class).sheet("商务楼宇二级明细").doWrite(wrCommercialBuildingDetail);
-        EasyExcel.write(excelFileName,IndustrialParkDetailPTO.class).sheet("产业园区二级明细").doWrite(wrIndustrialParkDetail);
-        EasyExcel.write(excelFileName,ShopPTO.class).sheet("沿街商铺").doWrite(wrShop);
-        EasyExcel.write(excelFileName,ShopDetailPTO.class).sheet("沿街商铺二级明细").doWrite(wrShopDetail);
+        EasyExcel.write(excelFileName,HotelPTO.class).excelType(ExcelTypeEnum.XLS).sheet("酒店宾馆").doWrite(wrHotel);
+        EasyExcel.write(excelFileName,CommercialBuildingPTO.class).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇").doWrite(wrCommercialBuilding);
+        EasyExcel.write(excelFileName,IndustrialParkPTO.class).excelType(ExcelTypeEnum.XLS).sheet("产业园区").doWrite(wrIndustrialPark);
+        EasyExcel.write(excelFileName,CommercialBuildingDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇二级明细").doWrite(wrCommercialBuildingDetail);
+        EasyExcel.write(excelFileName,IndustrialParkDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("产业园区二级明细").doWrite(wrIndustrialParkDetail);
+        EasyExcel.write(excelFileName,ShopPTO.class).excelType(ExcelTypeEnum.XLS).sheet("沿街商铺").doWrite(wrShop);
+        EasyExcel.write(excelFileName,ShopDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("沿街商铺二级明细").doWrite(wrShopDetail);
         //获取模板(模板你可以放在任何位置，前提是你能获取到。这里放在resource下)
 //        ClassPathResource couponOrderTemplateResource = new ClassPathResource("userInfo.xlsx");
 //
