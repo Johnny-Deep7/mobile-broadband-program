@@ -57,7 +57,6 @@ public class MbpController {
                                      @RequestParam(required = false,value = "startTime") String startTime,
                                      @RequestParam(required = false,value = "endTime")String endTime) throws IOException {
         log.info("导出数据开始！");
-
         return mbpService.downloadTable(substation,customerManager,startTime,endTime);
     }
 

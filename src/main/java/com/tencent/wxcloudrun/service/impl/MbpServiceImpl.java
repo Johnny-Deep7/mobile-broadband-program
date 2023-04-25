@@ -3,24 +3,18 @@ package com.tencent.wxcloudrun.service.impl;
 import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
-import com.alibaba.excel.ExcelWriter;
-import com.alibaba.excel.write.metadata.WriteSheet;
-import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.excelEntity.*;
+import com.tencent.wxcloudrun.mapper.*;
 import com.tencent.wxcloudrun.pto.*;
 import com.tencent.wxcloudrun.service.MbpService;
 import com.tencent.wxcloudrun.utils.CopyListUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.formula.functions.T;
-import org.apache.poi.util.IOUtils;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -55,6 +49,27 @@ public class MbpServiceImpl implements MbpService {
     @Resource
     private MbpShopDetailServiceImpl mbpShopDetailService;
 
+    @Resource
+    private HotelMapper hotelMapper;
+
+    @Resource
+    private CommercialBuildingMapper commercialBuildingMapper;
+
+    @Resource
+    private CommercialBuildingDetailMapper commercialBuildingDetailMapper;
+
+    @Resource
+    private IndustrialParkMapper industrialParkMapper;
+
+    @Resource
+    private IndustrialParkDetailMapper industrialParkDetailMapper;
+
+    @Resource
+    private ShopMapper shopMapper;
+
+    @Resource
+    private ShopDetailMapper shopDetailMapper;
+
     @Override
     public ApiResponse parsingTable(MultipartFile multipartFile, String marketType, Integer id) {
         ApiResponse apiResponse = new ApiResponse();
@@ -82,6 +97,7 @@ public class MbpServiceImpl implements MbpService {
         ApiResponse apiResponse = new ApiResponse();
 
         //酒店宾馆
+        log.info("查询酒店宾馆数据开始！");
         QueryWrapper<HotelPTO> wrapperHotel = new QueryWrapper<>();
         if (StringUtils.isNotBlank(substation)){
             wrapperHotel.eq("substation",substation);
@@ -96,8 +112,10 @@ public class MbpServiceImpl implements MbpService {
             wrapperHotel.le("modify_time",endTime);
         }
         wrapperHotel.orderByDesc("id");
+        List<HotelPTO> wrHotel = hotelMapper.selectList(wrapperHotel);
 
         //商务楼宇
+        log.info("查询商务楼宇数据开始！");
         QueryWrapper<CommercialBuildingPTO> wrapperCommercialBuilding = new QueryWrapper<>();
         if (StringUtils.isNotBlank(substation)){
             wrapperCommercialBuilding.eq("substation",substation);
@@ -112,8 +130,10 @@ public class MbpServiceImpl implements MbpService {
             wrapperCommercialBuilding.le("modify_time",endTime);
         }
         wrapperCommercialBuilding.orderByDesc("id");
+        List<CommercialBuildingPTO> wrCommercialBuilding = commercialBuildingMapper.selectList(wrapperCommercialBuilding);
 
         //产业园区
+        log.info("查询产业园区数据开始！");
         QueryWrapper<IndustrialParkPTO> wrapperIndustrialPark = new QueryWrapper<>();
         if (StringUtils.isNotBlank(substation)){
             wrapperIndustrialPark.eq("substation",substation);
@@ -128,8 +148,10 @@ public class MbpServiceImpl implements MbpService {
             wrapperIndustrialPark.le("modify_time",endTime);
         }
         wrapperIndustrialPark.orderByDesc("id");
+        List<IndustrialParkPTO> wrIndustrialPark = industrialParkMapper.selectList(wrapperIndustrialPark);
 
         //商务楼宇二级
+        log.info("查询商务楼宇二级数据开始！");
         QueryWrapper<CommercialBuildingDetailPTO> wrapperCommercialBuildingDetail = new QueryWrapper<>();
         if (StringUtils.isNotBlank(substation)){
             wrapperCommercialBuildingDetail.eq("substation",substation);
@@ -144,8 +166,10 @@ public class MbpServiceImpl implements MbpService {
             wrapperCommercialBuildingDetail.le("modify_time",endTime);
         }
         wrapperCommercialBuildingDetail.orderByDesc("id");
+        List<CommercialBuildingDetailPTO> wrCommercialBuildingDetail = commercialBuildingDetailMapper.selectList(wrapperCommercialBuildingDetail);
 
         //产业园区二级
+        log.info("查询产业园区二级数据开始！");
         QueryWrapper<IndustrialParkDetailPTO> wrapperIndustrialParkDetail = new QueryWrapper<>();
         if (StringUtils.isNotBlank(substation)){
             wrapperIndustrialParkDetail.eq("substation",substation);
@@ -160,8 +184,10 @@ public class MbpServiceImpl implements MbpService {
             wrapperIndustrialParkDetail.le("modify_time",endTime);
         }
         wrapperIndustrialParkDetail.orderByDesc("id");
+        List<IndustrialParkDetailPTO> wrIndustrialParkDetail = industrialParkDetailMapper.selectList(wrapperIndustrialParkDetail);
 
         //沿街商铺
+        log.info("查询沿街商铺数据开始！");
         QueryWrapper<ShopPTO> wrapperShop = new QueryWrapper<>();
         if (StringUtils.isNotBlank(substation)){
             wrapperShop.eq("substation",substation);
@@ -176,8 +202,10 @@ public class MbpServiceImpl implements MbpService {
             wrapperShop.le("modify_time",endTime);
         }
         wrapperShop.orderByDesc("id");
+        List<ShopPTO> wrShop = shopMapper.selectList(wrapperShop);
 
         //沿街商铺二级
+        log.info("查询沿街商铺二级数据开始！");
         QueryWrapper<ShopDetailPTO> wrapperShopDetail = new QueryWrapper<>();
         if (StringUtils.isNotBlank(substation)){
             wrapperShopDetail.eq("substation",substation);
@@ -192,15 +220,17 @@ public class MbpServiceImpl implements MbpService {
             wrapperShopDetail.le("modify_time",endTime);
         }
         wrapperShopDetail.orderByDesc("id");
+        List<ShopDetailPTO> wrShopDetail = shopDetailMapper.selectList(wrapperShopDetail);
+
         String excelFileName = URLEncoder.encode("吴中调查情况表", "UTF-8")
                 .replaceAll("\\+", "%20");
-        EasyExcel.write(excelFileName,HotelPTO.class).sheet("酒店宾馆").doWrite((List) wrapperHotel);
-        EasyExcel.write(excelFileName,CommercialBuildingPTO.class).sheet("商务楼宇").doWrite((List) wrapperHotel);
-        EasyExcel.write(excelFileName,IndustrialParkPTO.class).sheet("产业园区").doWrite((List) wrapperHotel);
-        EasyExcel.write(excelFileName,CommercialBuildingDetailPTO.class).sheet("商务楼宇二级明细").doWrite((List) wrapperHotel);
-        EasyExcel.write(excelFileName,IndustrialParkDetailPTO.class).sheet("产业园区二级明细").doWrite((List) wrapperHotel);
-        EasyExcel.write(excelFileName,ShopPTO.class).sheet("沿街商铺").doWrite((List) wrapperHotel);
-        EasyExcel.write(excelFileName,ShopDetailPTO.class).sheet("沿街商铺二级明细").doWrite((List) wrapperHotel);
+        EasyExcel.write(excelFileName,HotelPTO.class).sheet("酒店宾馆").doWrite(wrHotel);
+        EasyExcel.write(excelFileName,CommercialBuildingPTO.class).sheet("商务楼宇").doWrite(wrCommercialBuilding);
+        EasyExcel.write(excelFileName,IndustrialParkPTO.class).sheet("产业园区").doWrite(wrIndustrialPark);
+        EasyExcel.write(excelFileName,CommercialBuildingDetailPTO.class).sheet("商务楼宇二级明细").doWrite(wrCommercialBuildingDetail);
+        EasyExcel.write(excelFileName,IndustrialParkDetailPTO.class).sheet("产业园区二级明细").doWrite(wrIndustrialParkDetail);
+        EasyExcel.write(excelFileName,ShopPTO.class).sheet("沿街商铺").doWrite(wrShop);
+        EasyExcel.write(excelFileName,ShopDetailPTO.class).sheet("沿街商铺二级明细").doWrite(wrShopDetail);
         //获取模板(模板你可以放在任何位置，前提是你能获取到。这里放在resource下)
 //        ClassPathResource couponOrderTemplateResource = new ClassPathResource("userInfo.xlsx");
 //
