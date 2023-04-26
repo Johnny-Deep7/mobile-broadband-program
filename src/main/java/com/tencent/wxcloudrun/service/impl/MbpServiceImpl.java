@@ -1,7 +1,10 @@
 package com.tencent.wxcloudrun.service.impl;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.support.ExcelTypeEnum;
+import com.alibaba.excel.write.metadata.WriteSheet;
+import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.tencent.wxcloudrun.config.ApiResponse;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
@@ -94,149 +98,174 @@ public class MbpServiceImpl implements MbpService {
     }
 
     @Override
-    public ApiResponse downloadTable(HttpServletResponse response, String substation, String customerManager,
+    public ApiResponse downloadTable(HttpServletResponse response, String marketType, String substation, String customerManager,
                                      String startTime, String endTime) throws IOException {
         ApiResponse apiResponse = new ApiResponse();
-
-        //酒店宾馆
-        log.info("查询酒店宾馆数据开始！");
-        QueryWrapper<HotelPTO> wrapperHotel = new QueryWrapper<>();
-        if (StringUtils.isNotBlank(substation)){
-            wrapperHotel.eq("substation",substation);
+        if(StringUtils.isBlank(marketType) || ("沿街商铺".equals(marketType) && StringUtils.isBlank(customerManager))){
+            apiResponse.setCode(400);
+            apiResponse.setMsg("场景不可为空，请注意沿街商铺不可选客户经理");
+            return apiResponse;
         }
-        if (StringUtils.isNotBlank(customerManager)){
-            wrapperHotel.eq("customer_manager",customerManager);
-        }
-        if (StringUtils.isNotBlank(startTime)){
-            wrapperHotel.ge("modify_time",startTime);
-        }
-        if (StringUtils.isNotBlank(endTime)){
-            wrapperHotel.le("modify_time",endTime);
-        }
-        wrapperHotel.orderByDesc("id");
-        List<HotelPTO> wrHotel = hotelMapper.selectList(wrapperHotel);
-
-        //商务楼宇
-        log.info("查询商务楼宇数据开始！");
-        QueryWrapper<CommercialBuildingPTO> wrapperCommercialBuilding = new QueryWrapper<>();
-        if (StringUtils.isNotBlank(substation)){
-            wrapperCommercialBuilding.eq("substation",substation);
-        }
-        if (StringUtils.isNotBlank(customerManager)){
-            wrapperCommercialBuilding.eq("customer_manager",customerManager);
-        }
-        if (StringUtils.isNotBlank(startTime)){
-            wrapperCommercialBuilding.ge("modify_time",startTime);
-        }
-        if (StringUtils.isNotBlank(endTime)){
-            wrapperCommercialBuilding.le("modify_time",endTime);
-        }
-        wrapperCommercialBuilding.orderByDesc("id");
-        List<CommercialBuildingPTO> wrCommercialBuilding = commercialBuildingMapper.selectList(wrapperCommercialBuilding);
-
-        //产业园区
-        log.info("查询产业园区数据开始！");
-        QueryWrapper<IndustrialParkPTO> wrapperIndustrialPark = new QueryWrapper<>();
-        if (StringUtils.isNotBlank(substation)){
-            wrapperIndustrialPark.eq("substation",substation);
-        }
-        if (StringUtils.isNotBlank(customerManager)){
-            wrapperIndustrialPark.eq("customer_manager",customerManager);
-        }
-        if (StringUtils.isNotBlank(startTime)){
-            wrapperIndustrialPark.ge("modify_time",startTime);
-        }
-        if (StringUtils.isNotBlank(endTime)){
-            wrapperIndustrialPark.le("modify_time",endTime);
-        }
-        wrapperIndustrialPark.orderByDesc("id");
-        List<IndustrialParkPTO> wrIndustrialPark = industrialParkMapper.selectList(wrapperIndustrialPark);
-
-        //商务楼宇二级
-        log.info("查询商务楼宇二级数据开始！");
-        QueryWrapper<CommercialBuildingDetailPTO> wrapperCommercialBuildingDetail = new QueryWrapper<>();
-        if (StringUtils.isNotBlank(substation)){
-            wrapperCommercialBuildingDetail.eq("substation",substation);
-        }
-        if (StringUtils.isNotBlank(customerManager)){
-            wrapperCommercialBuildingDetail.eq("customer_manager",customerManager);
-        }
-        if (StringUtils.isNotBlank(startTime)){
-            wrapperCommercialBuildingDetail.ge("modify_time",startTime);
-        }
-        if (StringUtils.isNotBlank(endTime)){
-            wrapperCommercialBuildingDetail.le("modify_time",endTime);
-        }
-        wrapperCommercialBuildingDetail.orderByDesc("id");
-        List<CommercialBuildingDetailPTO> wrCommercialBuildingDetail = commercialBuildingDetailMapper.selectList(wrapperCommercialBuildingDetail);
-
-        //产业园区二级
-        log.info("查询产业园区二级数据开始！");
-        QueryWrapper<IndustrialParkDetailPTO> wrapperIndustrialParkDetail = new QueryWrapper<>();
-        if (StringUtils.isNotBlank(substation)){
-            wrapperIndustrialParkDetail.eq("substation",substation);
-        }
-        if (StringUtils.isNotBlank(customerManager)){
-            wrapperIndustrialParkDetail.eq("customer_manager",customerManager);
-        }
-        if (StringUtils.isNotBlank(startTime)){
-            wrapperIndustrialParkDetail.ge("modify_time",startTime);
-        }
-        if (StringUtils.isNotBlank(endTime)){
-            wrapperIndustrialParkDetail.le("modify_time",endTime);
-        }
-        wrapperIndustrialParkDetail.orderByDesc("id");
-        List<IndustrialParkDetailPTO> wrIndustrialParkDetail = industrialParkDetailMapper.selectList(wrapperIndustrialParkDetail);
-
-        //沿街商铺
-        log.info("查询沿街商铺数据开始！");
-        QueryWrapper<ShopPTO> wrapperShop = new QueryWrapper<>();
-        if (StringUtils.isNotBlank(substation)){
-            wrapperShop.eq("substation",substation);
-        }
-        if (StringUtils.isNotBlank(customerManager)){
-            wrapperShop.eq("customer_manager",customerManager);
-        }
-        if (StringUtils.isNotBlank(startTime)){
-            wrapperShop.ge("modify_time",startTime);
-        }
-        if (StringUtils.isNotBlank(endTime)){
-            wrapperShop.le("modify_time",endTime);
-        }
-        wrapperShop.orderByDesc("id");
-        List<ShopPTO> wrShop = shopMapper.selectList(wrapperShop);
-
-        //沿街商铺二级
-        log.info("查询沿街商铺二级数据开始！");
-        QueryWrapper<ShopDetailPTO> wrapperShopDetail = new QueryWrapper<>();
-        if (StringUtils.isNotBlank(substation)){
-            wrapperShopDetail.eq("substation",substation);
-        }
-        if (StringUtils.isNotBlank(customerManager)){
-            wrapperShopDetail.eq("customer_manager",customerManager);
-        }
-        if (StringUtils.isNotBlank(startTime)){
-            wrapperShopDetail.ge("modify_time",startTime);
-        }
-        if (StringUtils.isNotBlank(endTime)){
-            wrapperShopDetail.le("modify_time",endTime);
-        }
-        wrapperShopDetail.orderByDesc("id");
-        List<ShopDetailPTO> wrShopDetail = shopDetailMapper.selectList(wrapperShopDetail);
-
         String excelFileName = URLEncoder.encode("吴中调查情况表", "UTF-8")
                 .replaceAll("\\+", "%20");
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setCharacterEncoding("utf-8");
         response.setHeader("Content-disposition", "attachment;filename=" + excelFileName + ".xls");
-        EasyExcel.write(response.getOutputStream(),HotelPTO.class).excelType(ExcelTypeEnum.XLS).sheet("酒店宾馆").doWrite(wrHotel);
-        EasyExcel.write(response.getOutputStream(),CommercialBuildingPTO.class).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇").doWrite(wrCommercialBuilding);
-        EasyExcel.write(response.getOutputStream(),IndustrialParkPTO.class).excelType(ExcelTypeEnum.XLS).sheet("产业园区").doWrite(wrIndustrialPark);
-        EasyExcel.write(response.getOutputStream(),CommercialBuildingDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇二级明细").doWrite(wrCommercialBuildingDetail);
-        EasyExcel.write(response.getOutputStream(),IndustrialParkDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("产业园区二级明细").doWrite(wrIndustrialParkDetail);
-        EasyExcel.write(response.getOutputStream(),ShopPTO.class).excelType(ExcelTypeEnum.XLS).sheet("沿街商铺").doWrite(wrShop);
-        EasyExcel.write(response.getOutputStream(),ShopDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("沿街商铺二级明细").doWrite(wrShopDetail);
-        //获取模板(模板你可以放在任何位置，前提是你能获取到。这里放在resource下)
+        switch (marketType){
+            case "酒店宾馆":
+                log.info("查询酒店宾馆数据开始！");
+                QueryWrapper<HotelPTO> wrapperHotel = new QueryWrapper<>();
+                if (StringUtils.isNotBlank(substation)){
+                    wrapperHotel.eq("substation",substation);
+                }
+                if (StringUtils.isNotBlank(customerManager)){
+                    wrapperHotel.eq("customer_manager",customerManager);
+                }
+                if (StringUtils.isNotBlank(startTime)){
+                    wrapperHotel.ge("modify_time",startTime);
+                }
+                if (StringUtils.isNotBlank(endTime)){
+                    wrapperHotel.le("modify_time",endTime);
+                }
+                List<HotelPTO> wrHotel = hotelMapper.selectList(wrapperHotel);
+                EasyExcel.write(response.getOutputStream(),HotelPTO.class).excelType(ExcelTypeEnum.XLS).sheet("酒店宾馆").doWrite(wrHotel);
+                break;
+            case "商务楼宇":
+                log.info("查询商务楼宇数据开始！");
+                QueryWrapper<CommercialBuildingPTO> wrapperCommercialBuilding = new QueryWrapper<>();
+                if (StringUtils.isNotBlank(substation)){
+                    wrapperCommercialBuilding.eq("substation",substation);
+                }
+                if (StringUtils.isNotBlank(customerManager)){
+                    wrapperCommercialBuilding.eq("customer_manager",customerManager);
+                }
+                if (StringUtils.isNotBlank(startTime)){
+                    wrapperCommercialBuilding.ge("modify_time",startTime);
+                }
+                if (StringUtils.isNotBlank(endTime)){
+                    wrapperCommercialBuilding.le("modify_time",endTime);
+                }
+                List<CommercialBuildingPTO> wrCommercialBuilding = commercialBuildingMapper.selectList(wrapperCommercialBuilding);
+                EasyExcel.write(response.getOutputStream(),CommercialBuildingPTO.class).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇").doWrite(wrCommercialBuilding);
+                break;
+            case " 商务楼宇二级明细 ":
+                log.info("查询商务楼宇二级数据开始！");
+                QueryWrapper<CommercialBuildingDetailPTO> wrapperCommercialBuildingDetail = new QueryWrapper<>();
+                if (StringUtils.isNotBlank(substation)){
+                    wrapperCommercialBuildingDetail.eq("substation",substation);
+                }
+                if (StringUtils.isNotBlank(customerManager)){
+                    wrapperCommercialBuildingDetail.eq("customer_manager",customerManager);
+                }
+                if (StringUtils.isNotBlank(startTime)){
+                    wrapperCommercialBuildingDetail.ge("modify_time",startTime);
+                }
+                if (StringUtils.isNotBlank(endTime)){
+                    wrapperCommercialBuildingDetail.le("modify_time",endTime);
+                }
+                List<CommercialBuildingDetailPTO> wrCommercialBuildingDetail = commercialBuildingDetailMapper.selectList(wrapperCommercialBuildingDetail);
+                EasyExcel.write(response.getOutputStream(),CommercialBuildingDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇二级明细").doWrite(wrCommercialBuildingDetail);
+                break;
+            case "产业园区":
+                log.info("查询产业园区数据开始！");
+                QueryWrapper<IndustrialParkPTO> wrapperIndustrialPark = new QueryWrapper<>();
+                if (StringUtils.isNotBlank(substation)){
+                    wrapperIndustrialPark.eq("substation",substation);
+                }
+                if (StringUtils.isNotBlank(customerManager)){
+                    wrapperIndustrialPark.eq("customer_manager",customerManager);
+                }
+                if (StringUtils.isNotBlank(startTime)){
+                    wrapperIndustrialPark.ge("modify_time",startTime);
+                }
+                if (StringUtils.isNotBlank(endTime)){
+                    wrapperIndustrialPark.le("modify_time",endTime);
+                }
+                List<IndustrialParkPTO> wrIndustrialPark = industrialParkMapper.selectList(wrapperIndustrialPark);
+                EasyExcel.write(response.getOutputStream(),IndustrialParkPTO.class).excelType(ExcelTypeEnum.XLS).sheet("产业园区").doWrite(wrIndustrialPark);
+                break;
+            case "产业园区二级明细":
+                log.info("查询产业园区二级数据开始！");
+                QueryWrapper<IndustrialParkDetailPTO> wrapperIndustrialParkDetail = new QueryWrapper<>();
+                if (StringUtils.isNotBlank(substation)){
+                    wrapperIndustrialParkDetail.eq("substation",substation);
+                }
+                if (StringUtils.isNotBlank(customerManager)){
+                    wrapperIndustrialParkDetail.eq("customer_manager",customerManager);
+                }
+                if (StringUtils.isNotBlank(startTime)){
+                    wrapperIndustrialParkDetail.ge("modify_time",startTime);
+                }
+                if (StringUtils.isNotBlank(endTime)){
+                    wrapperIndustrialParkDetail.le("modify_time",endTime);
+                }
+                List<IndustrialParkDetailPTO> wrIndustrialParkDetail = industrialParkDetailMapper.selectList(wrapperIndustrialParkDetail);
+                EasyExcel.write(response.getOutputStream(),IndustrialParkDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("产业园区二级明细").doWrite(wrIndustrialParkDetail);
+                break;
+            case "沿街商铺":
+                log.info("查询沿街商铺数据开始！");
+                QueryWrapper<ShopPTO> wrapperShop = new QueryWrapper<>();
+                if (StringUtils.isNotBlank(substation)){
+                    wrapperShop.eq("substation",substation);
+                }
+                if (StringUtils.isNotBlank(customerManager)){
+                    wrapperShop.eq("customer_manager",customerManager);
+                }
+                if (StringUtils.isNotBlank(startTime)){
+                    wrapperShop.ge("modify_time",startTime);
+                }
+                if (StringUtils.isNotBlank(endTime)){
+                    wrapperShop.le("modify_time",endTime);
+                }
+                List<ShopPTO> wrShop = shopMapper.selectList(wrapperShop);
+                EasyExcel.write(response.getOutputStream(),ShopPTO.class).excelType(ExcelTypeEnum.XLS).sheet("沿街商铺").doWrite(wrShop);
+                break;
+            case "沿街商铺二级明细":
+                log.info("查询沿街商铺二级数据开始！");
+                QueryWrapper<ShopDetailPTO> wrapperShopDetail = new QueryWrapper<>();
+                if (StringUtils.isNotBlank(substation)){
+                    wrapperShopDetail.eq("substation",substation);
+                }
+                if (StringUtils.isNotBlank(customerManager)){
+                    wrapperShopDetail.eq("customer_manager",customerManager);
+                }
+                if (StringUtils.isNotBlank(startTime)){
+                    wrapperShopDetail.ge("modify_time",startTime);
+                }
+                if (StringUtils.isNotBlank(endTime)){
+                    wrapperShopDetail.le("modify_time",endTime);
+                }
+                List<ShopDetailPTO> wrShopDetail = shopDetailMapper.selectList(wrapperShopDetail);
+                EasyExcel.write(response.getOutputStream(),ShopDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("沿街商铺二级明细").doWrite(wrShopDetail);
+                break;
+        }
+//        String excelFileName = URLEncoder.encode("吴中调查情况表", "UTF-8")
+//                .replaceAll("\\+", "%20");
+//        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+//        response.setCharacterEncoding("utf-8");
+//        response.setHeader("Content-disposition", "attachment;filename=" + excelFileName + ".xls");
+//        ExcelWriter excelWriter = EasyExcel.write(response.getOutputStream()).build();
+//        WriteSheet hotelSheet = EasyExcel.writerSheet(0, "酒店宾馆").build();
+//        WriteSheet CommercialBuildingSheet = EasyExcel.writerSheet(1, "商务楼宇").build();
+//        WriteSheet CommercialBuildingDetailSheet = EasyExcel.writerSheet(2, "产业园区").build();
+//        WriteSheet IndustrialParkSheet = EasyExcel.writerSheet(3, "商务楼宇二级明细").build();
+//        WriteSheet IndustrialParkDetailSheet = EasyExcel.writerSheet(4, "产业园区二级明细").build();
+//        WriteSheet ShopSheet = EasyExcel.writerSheet(5, "沿街商铺").build();
+//        WriteSheet ShopDetailSheet = EasyExcel.writerSheet(6, "沿街商铺二级明细").build();
+//
+//        excelWriter.write(wrHotel,hotelSheet);
+//        excelWriter.write(wrCommercialBuilding,CommercialBuildingSheet);
+//        excelWriter.write(wrCommercialBuildingDetail,CommercialBuildingDetailSheet);
+//        excelWriter.write(wrIndustrialPark,IndustrialParkSheet);
+//        excelWriter.write(wrIndustrialParkDetail,IndustrialParkDetailSheet);
+//        excelWriter.write(wrShop,ShopSheet);
+//        excelWriter.write(wrShopDetail,ShopDetailSheet);
+//
+//
+//        excelWriter.finish();
+//        response.flushBuffer();
+
+//        //获取模板(模板你可以放在任何位置，前提是你能获取到。这里放在resource下)
 //        ClassPathResource couponOrderTemplateResource = new ClassPathResource("userInfo.xlsx");
 //
 //        response.setContentType("application/vnd.ms-excel");
@@ -262,19 +291,19 @@ public class MbpServiceImpl implements MbpService {
 //
 //        ServletOutputStream outputStream = null;
 //
-//        try {
-//            outputStream = response.getOutputStream();
-//            templateInputStream = couponOrderTemplateResource.getInputStream();
-//        } catch (IOException e) {
-//            log.error("获取模板失败");
-//        }
+////        try {
+////            outputStream = response.getOutputStream();
+////            templateInputStream = couponOrderTemplateResource.getInputStream();
+////        } catch (IOException e) {
+////            log.error("获取模板失败");
+////        }
 //
 //        // 这里注意 入参用了forceNewRow 代表在写入list的时候不管list下面有没有空行 都会创建一行，然后下面的数据往后移动。默认 是false，会直接使用下一行，如果没有则创建。
 //        // forceNewRow 如果设置了true,有个缺点 就是他会把所有的数据都放到内存了，所以慎用
 //        // 简单的说 如果你的模板有list,且list不是最后一行，下面还有数据需要填充 就必须设置 forceNewRow=true 但是这个就会把所有数据放到内存 会很耗内存
 //        // 如果数据量大 list不是最后一行 参照下一个
 //        FillConfig fillConfig = FillConfig.builder().forceNewRow(Boolean.TRUE).build();
-//        excelWriter = EasyExcel.write(outputStream).withTemplate(templateInputStream).build();
+////        excelWriter = EasyExcel.write(outputStream).withTemplate(templateInputStream).build();
 //
 //        //创建第一个sheet
 //        hotelSheet = EasyExcel.writerSheet("酒店宾馆").build();

@@ -9,6 +9,6 @@ import java.io.IOException;
 public interface MbpService {
     ApiResponse parsingTable(MultipartFile multipartFile, String marketType, Integer id);
 
-    ApiResponse downloadTable(HttpServletResponse response, String substation, String customerManager,
+    ApiResponse downloadTable(HttpServletResponse response, String marketType, String substation, String customerManager,
                               String startTime, String endTime) throws IOException;
 }

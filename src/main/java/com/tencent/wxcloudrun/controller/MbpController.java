@@ -53,13 +53,10 @@ public class MbpController {
     }
 
     @GetMapping(value = "/downloadTable")
-    public void downloadTable(HttpServletRequest request,HttpServletResponse response,
-                                    @RequestParam(required = false,value = "substation") String substation,
-                                     @RequestParam(required = false,value = "customerManager")String customerManager,
-                                     @RequestParam(required = false,value = "startTime") String startTime,
-                                     @RequestParam(required = false,value = "endTime")String endTime) throws IOException {
+    public ApiResponse downloadTable(HttpServletResponse response,
+                              @RequestBody RequestEntity requestEntity) throws IOException {
         log.info("导出数据开始！");
-        mbpService.downloadTable(response,substation,customerManager,startTime,endTime);
+        return mbpService.downloadTable(response,requestEntity.getMarketType(),requestEntity.getSubstation(),requestEntity.getCustomerManager(),requestEntity.getStartTime(),requestEntity.getEndTime());
     }
 
     @PostMapping(value = "/create")
