@@ -161,7 +161,7 @@ public class MbpServiceImpl implements MbpService {
                 apiResponse.setCode(200);
                 apiResponse.setMsg("正在导出");
                 break;
-            case " 商务楼宇二级明细 ":
+            case "商务楼宇二级明细":
                 log.info("查询商务楼宇二级数据开始！");
                 QueryWrapper<CommercialBuildingDetailPTO> wrapperCommercialBuildingDetail = new QueryWrapper<>();
                 if (StringUtils.isNotBlank(substation)){
