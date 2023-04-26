@@ -23,9 +23,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.lang.System.currentTimeMillis;
@@ -111,6 +109,8 @@ public class MbpServiceImpl implements MbpService {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setCharacterEncoding("utf-8");
         response.setHeader("Content-disposition", "attachment;filename=" + excelFileName + ".xls");
+        Set<String> excludeField = new HashSet<>();
+        excludeField.add("id");
         switch (marketType){
             case "酒店宾馆":
                 log.info("查询酒店宾馆数据开始！");
@@ -128,7 +128,9 @@ public class MbpServiceImpl implements MbpService {
                     wrapperHotel.le("modify_time",endTime);
                 }
                 List<HotelPTO> wrHotel = hotelMapper.selectList(wrapperHotel);
-                EasyExcel.write(response.getOutputStream(),HotelPTO.class).excelType(ExcelTypeEnum.XLS).sheet("酒店宾馆").doWrite(wrHotel);
+                EasyExcel.write(response.getOutputStream(),HotelPTO.class).excludeColumnFiledNames(excludeField).excelType(ExcelTypeEnum.XLS).sheet("酒店宾馆").doWrite(wrHotel);
+                apiResponse.setCode(200);
+                apiResponse.setMsg("正在导出");
                 break;
             case "商务楼宇":
                 log.info("查询商务楼宇数据开始！");
@@ -146,7 +148,9 @@ public class MbpServiceImpl implements MbpService {
                     wrapperCommercialBuilding.le("modify_time",endTime);
                 }
                 List<CommercialBuildingPTO> wrCommercialBuilding = commercialBuildingMapper.selectList(wrapperCommercialBuilding);
-                EasyExcel.write(response.getOutputStream(),CommercialBuildingPTO.class).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇").doWrite(wrCommercialBuilding);
+                EasyExcel.write(response.getOutputStream(),CommercialBuildingPTO.class).excludeColumnFiledNames(excludeField).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇").doWrite(wrCommercialBuilding);
+                apiResponse.setCode(200);
+                apiResponse.setMsg("正在导出");
                 break;
             case " 商务楼宇二级明细 ":
                 log.info("查询商务楼宇二级数据开始！");
@@ -164,7 +168,9 @@ public class MbpServiceImpl implements MbpService {
                     wrapperCommercialBuildingDetail.le("modify_time",endTime);
                 }
                 List<CommercialBuildingDetailPTO> wrCommercialBuildingDetail = commercialBuildingDetailMapper.selectList(wrapperCommercialBuildingDetail);
-                EasyExcel.write(response.getOutputStream(),CommercialBuildingDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇二级明细").doWrite(wrCommercialBuildingDetail);
+                EasyExcel.write(response.getOutputStream(),CommercialBuildingDetailPTO.class).excludeColumnFiledNames(excludeField).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇二级明细").doWrite(wrCommercialBuildingDetail);
+                apiResponse.setCode(200);
+                apiResponse.setMsg("正在导出");
                 break;
             case "产业园区":
                 log.info("查询产业园区数据开始！");
@@ -182,7 +188,9 @@ public class MbpServiceImpl implements MbpService {
                     wrapperIndustrialPark.le("modify_time",endTime);
                 }
                 List<IndustrialParkPTO> wrIndustrialPark = industrialParkMapper.selectList(wrapperIndustrialPark);
-                EasyExcel.write(response.getOutputStream(),IndustrialParkPTO.class).excelType(ExcelTypeEnum.XLS).sheet("产业园区").doWrite(wrIndustrialPark);
+                EasyExcel.write(response.getOutputStream(),IndustrialParkPTO.class).excludeColumnFiledNames(excludeField).excelType(ExcelTypeEnum.XLS).sheet("产业园区").doWrite(wrIndustrialPark);
+                apiResponse.setCode(200);
+                apiResponse.setMsg("正在导出");
                 break;
             case "产业园区二级明细":
                 log.info("查询产业园区二级数据开始！");
@@ -200,7 +208,9 @@ public class MbpServiceImpl implements MbpService {
                     wrapperIndustrialParkDetail.le("modify_time",endTime);
                 }
                 List<IndustrialParkDetailPTO> wrIndustrialParkDetail = industrialParkDetailMapper.selectList(wrapperIndustrialParkDetail);
-                EasyExcel.write(response.getOutputStream(),IndustrialParkDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("产业园区二级明细").doWrite(wrIndustrialParkDetail);
+                EasyExcel.write(response.getOutputStream(),IndustrialParkDetailPTO.class).excludeColumnFiledNames(excludeField).excelType(ExcelTypeEnum.XLS).sheet("产业园区二级明细").doWrite(wrIndustrialParkDetail);
+                apiResponse.setCode(200);
+                apiResponse.setMsg("正在导出");
                 break;
             case "沿街商铺":
                 log.info("查询沿街商铺数据开始！");
@@ -218,7 +228,9 @@ public class MbpServiceImpl implements MbpService {
                     wrapperShop.le("modify_time",endTime);
                 }
                 List<ShopPTO> wrShop = shopMapper.selectList(wrapperShop);
-                EasyExcel.write(response.getOutputStream(),ShopPTO.class).excelType(ExcelTypeEnum.XLS).sheet("沿街商铺").doWrite(wrShop);
+                EasyExcel.write(response.getOutputStream(),ShopPTO.class).excludeColumnFiledNames(excludeField).excelType(ExcelTypeEnum.XLS).sheet("沿街商铺").doWrite(wrShop);
+                apiResponse.setCode(200);
+                apiResponse.setMsg("正在导出");
                 break;
             case "沿街商铺二级明细":
                 log.info("查询沿街商铺二级数据开始！");
@@ -236,7 +248,9 @@ public class MbpServiceImpl implements MbpService {
                     wrapperShopDetail.le("modify_time",endTime);
                 }
                 List<ShopDetailPTO> wrShopDetail = shopDetailMapper.selectList(wrapperShopDetail);
-                EasyExcel.write(response.getOutputStream(),ShopDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("沿街商铺二级明细").doWrite(wrShopDetail);
+                EasyExcel.write(response.getOutputStream(),ShopDetailPTO.class).excludeColumnFiledNames(excludeField).excelType(ExcelTypeEnum.XLS).sheet("沿街商铺二级明细").doWrite(wrShopDetail);
+                apiResponse.setCode(200);
+                apiResponse.setMsg("正在导出");
                 break;
         }
 //        String excelFileName = URLEncoder.encode("吴中调查情况表", "UTF-8")
@@ -340,6 +354,7 @@ public class MbpServiceImpl implements MbpService {
 //        IOUtils.closeQuietly(templateInputStream);
 //        IOUtils.closeQuietly(outputStream);
 //        IOUtils.closeQuietly((Closeable) excelWriter);
+
         return apiResponse;
     }
 
