@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -93,7 +94,7 @@ public class MbpServiceImpl implements MbpService {
     }
 
     @Override
-    public ApiResponse downloadTable(String substation, String customerManager,
+    public ApiResponse downloadTable(HttpServletResponse response, String substation, String customerManager,
                                      String startTime, String endTime) throws IOException {
         ApiResponse apiResponse = new ApiResponse();
 
@@ -225,13 +226,16 @@ public class MbpServiceImpl implements MbpService {
 
         String excelFileName = URLEncoder.encode("吴中调查情况表", "UTF-8")
                 .replaceAll("\\+", "%20");
-        EasyExcel.write(excelFileName,HotelPTO.class).excelType(ExcelTypeEnum.XLS).sheet("酒店宾馆").doWrite(wrHotel);
-        EasyExcel.write(excelFileName,CommercialBuildingPTO.class).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇").doWrite(wrCommercialBuilding);
-        EasyExcel.write(excelFileName,IndustrialParkPTO.class).excelType(ExcelTypeEnum.XLS).sheet("产业园区").doWrite(wrIndustrialPark);
-        EasyExcel.write(excelFileName,CommercialBuildingDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇二级明细").doWrite(wrCommercialBuildingDetail);
-        EasyExcel.write(excelFileName,IndustrialParkDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("产业园区二级明细").doWrite(wrIndustrialParkDetail);
-        EasyExcel.write(excelFileName,ShopPTO.class).excelType(ExcelTypeEnum.XLS).sheet("沿街商铺").doWrite(wrShop);
-        EasyExcel.write(excelFileName,ShopDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("沿街商铺二级明细").doWrite(wrShopDetail);
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setCharacterEncoding("utf-8");
+        response.setHeader("Content-disposition", "attachment;filename=" + excelFileName + ".xls");
+        EasyExcel.write(response.getOutputStream(),HotelPTO.class).excelType(ExcelTypeEnum.XLS).sheet("酒店宾馆").doWrite(wrHotel);
+        EasyExcel.write(response.getOutputStream(),CommercialBuildingPTO.class).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇").doWrite(wrCommercialBuilding);
+        EasyExcel.write(response.getOutputStream(),IndustrialParkPTO.class).excelType(ExcelTypeEnum.XLS).sheet("产业园区").doWrite(wrIndustrialPark);
+        EasyExcel.write(response.getOutputStream(),CommercialBuildingDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇二级明细").doWrite(wrCommercialBuildingDetail);
+        EasyExcel.write(response.getOutputStream(),IndustrialParkDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("产业园区二级明细").doWrite(wrIndustrialParkDetail);
+        EasyExcel.write(response.getOutputStream(),ShopPTO.class).excelType(ExcelTypeEnum.XLS).sheet("沿街商铺").doWrite(wrShop);
+        EasyExcel.write(response.getOutputStream(),ShopDetailPTO.class).excelType(ExcelTypeEnum.XLS).sheet("沿街商铺二级明细").doWrite(wrShopDetail);
         //获取模板(模板你可以放在任何位置，前提是你能获取到。这里放在resource下)
 //        ClassPathResource couponOrderTemplateResource = new ClassPathResource("userInfo.xlsx");
 //
