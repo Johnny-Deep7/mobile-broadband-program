@@ -155,6 +155,9 @@ public class MbpServiceImpl implements MbpService {
                 List<CommercialBuildingPTO> wrCommercialBuilding = commercialBuildingMapper.selectList(wrapperCommercialBuilding);
                 excludeField.add("roomNumber");
                 excludeField.add("difficultPoint");
+                excludeField.add("hotelType");
+                excludeField.add("gims");
+                excludeField.add("gimsCover");
                 EasyExcel.write(response.getOutputStream(),CommercialBuildingPTO.class).excludeColumnFiledNames(excludeField).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇").doWrite(wrCommercialBuilding);
                 apiResponse.setCode(200);
                 apiResponse.setMsg("正在导出");
@@ -186,6 +189,7 @@ public class MbpServiceImpl implements MbpService {
                 excludeField.add("isCovered");
                 excludeField.add("endTime1");
                 excludeField.add("difficultPoint");
+                excludeField.add("buildingId");
                 EasyExcel.write(response.getOutputStream(),CommercialBuildingDetailPTO.class).excludeColumnFiledNames(excludeField).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇二级明细").doWrite(wrCommercialBuildingDetail);
                 apiResponse.setCode(200);
                 apiResponse.setMsg("正在导出");
