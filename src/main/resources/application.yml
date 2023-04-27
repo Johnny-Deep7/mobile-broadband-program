@@ -1,33 +1,6 @@
-#server:
-#  port: 80
-#
-#
-#spring:
-#  servlet:
-#    multipart:
-#      max-file-size: 50MB
-#      max-request-size: 50MB
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:springboot_demo}
-#    username: ${MYSQL_USERNAME}
-#    password: ${MySQL_PASSWORD}
-#  mvc:
-#    view:
-#      suffix: .html
-#      prefix: /
-#
-#mybatis:
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-#  mapper-locations: classpath*:mybatis/*Mapper.xml
-#
-#mybatis-plus:
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-
 server:
-  port: 8080
+  port: 80
+
 
 spring:
   servlet:
@@ -36,9 +9,9 @@ spring:
       max-request-size: 50MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://sh-cynosdbmysql-grp-iw8efhp6.sql.tencentcdb.com:25694/springboot_demo
-    username: root
-    password: GHf8twhf
+    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:springboot_demo}
+    username: ${MYSQL_USERNAME}
+    password: ${MySQL_PASSWORD}
   mvc:
     view:
       suffix: .html
@@ -52,3 +25,30 @@ mybatis:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#server:
+#  port: 8080
+#
+#spring:
+#  servlet:
+#    multipart:
+#      max-file-size: 50MB
+#      max-request-size: 50MB
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://sh-cynosdbmysql-grp-iw8efhp6.sql.tencentcdb.com:25694/springboot_demo
+#    username: root
+#    password: GHf8twhf
+#  mvc:
+#    view:
+#      suffix: .html
+#      prefix: /
+#
+#mybatis:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  mapper-locations: classpath*:mybatis/*Mapper.xml
+#
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
