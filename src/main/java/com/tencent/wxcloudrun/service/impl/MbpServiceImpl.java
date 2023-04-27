@@ -125,10 +125,6 @@ public class MbpServiceImpl implements MbpService {
                     wrapperHotel.le("modify_time",endTime);
                 }
                 List<HotelPTO> wrHotel = hotelMapper.selectList(wrapperHotel);
-                if(ObjectUtils.isNull(wrHotel)){
-                    apiResponse.setMsg("没有符合要求的数据");
-                    return apiResponse;
-                }
                 EasyExcel.write(response.getOutputStream(),HotelPTO.class).excludeColumnFiledNames(excludeField).excelType(ExcelTypeEnum.XLS).sheet("酒店宾馆").doWrite(wrHotel);
                 apiResponse.setCode(200);
                 apiResponse.setMsg("正在导出");
