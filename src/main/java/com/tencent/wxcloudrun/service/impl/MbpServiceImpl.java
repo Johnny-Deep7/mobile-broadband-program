@@ -153,10 +153,6 @@ public class MbpServiceImpl implements MbpService {
                     wrapperCommercialBuilding.le("modify_time",endTime);
                 }
                 List<CommercialBuildingPTO> wrCommercialBuilding = commercialBuildingMapper.selectList(wrapperCommercialBuilding);
-                if(ObjectUtils.isNull(wrCommercialBuilding)){
-                    apiResponse.setMsg("没有符合要求的数据");
-                    return apiResponse;
-                }
                 excludeField.add("roomNumber");
                 excludeField.add("difficultPoint");
                 EasyExcel.write(response.getOutputStream(),CommercialBuildingPTO.class).excludeColumnFiledNames(excludeField).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇").doWrite(wrCommercialBuilding);
@@ -185,10 +181,6 @@ public class MbpServiceImpl implements MbpService {
                 }
                 wrapperCommercialBuildingDetail.eq("building_id",subId);
                 List<CommercialBuildingDetailPTO> wrCommercialBuildingDetail = commercialBuildingDetailMapper.selectList(wrapperCommercialBuildingDetail);
-                if(ObjectUtils.isNull(wrCommercialBuildingDetail)){
-                    apiResponse.setMsg("没有符合要求的数据");
-                    return apiResponse;
-                }
                 excludeField.add("address");
                 excludeField.add("hotelName");
                 excludeField.add("isCovered");
@@ -214,10 +206,6 @@ public class MbpServiceImpl implements MbpService {
                     wrapperIndustrialPark.le("modify_time",endTime);
                 }
                 List<IndustrialParkPTO> wrIndustrialPark = industrialParkMapper.selectList(wrapperIndustrialPark);
-                if(ObjectUtils.isNull(wrIndustrialPark)){
-                    apiResponse.setMsg("没有符合要求的数据");
-                    return apiResponse;
-                }
                 excludeField.add("roomNumber");
                 excludeField.add("groupNumber");
                 excludeField.add("responsiblePerson");
@@ -250,10 +238,7 @@ public class MbpServiceImpl implements MbpService {
                 }
                 wrapperIndustrialParkDetail.eq("park_id",subId);
                 List<IndustrialParkDetailPTO> wrIndustrialParkDetail = industrialParkDetailMapper.selectList(wrapperIndustrialParkDetail);
-                if(ObjectUtils.isNull(wrIndustrialParkDetail)){
-                    apiResponse.setMsg("没有符合要求的数据");
-                    return apiResponse;
-                }
+                excludeField.add("parkId");
                 EasyExcel.write(response.getOutputStream(),IndustrialParkDetailPTO.class).excludeColumnFiledNames(excludeField).excelType(ExcelTypeEnum.XLS).sheet("产业园区二级明细").doWrite(wrIndustrialParkDetail);
                 apiResponse.setCode(200);
                 apiResponse.setMsg("正在导出");
@@ -274,10 +259,6 @@ public class MbpServiceImpl implements MbpService {
                     wrapperShop.le("modify_time",endTime);
                 }
                 List<ShopPTO> wrShop = shopMapper.selectList(wrapperShop);
-                if(ObjectUtils.isNull(wrShop)){
-                    apiResponse.setMsg("没有符合要求的数据");
-                    return apiResponse;
-                }
                 EasyExcel.write(response.getOutputStream(),ShopPTO.class).excludeColumnFiledNames(excludeField).excelType(ExcelTypeEnum.XLS).sheet("沿街商铺").doWrite(wrShop);
                 apiResponse.setCode(200);
                 apiResponse.setMsg("正在导出");
@@ -304,10 +285,7 @@ public class MbpServiceImpl implements MbpService {
                 }
                 wrapperShopDetail.eq("shop_id",subId);
                 List<ShopDetailPTO> wrShopDetail = shopDetailMapper.selectList(wrapperShopDetail);
-                if(ObjectUtils.isNull(wrShopDetail)){
-                    apiResponse.setMsg("没有符合要求的数据");
-                    return apiResponse;
-                }
+                excludeField.add("shopId");
                 EasyExcel.write(response.getOutputStream(),ShopDetailPTO.class).excludeColumnFiledNames(excludeField).excelType(ExcelTypeEnum.XLS).sheet("沿街商铺二级明细").doWrite(wrShopDetail);
                 apiResponse.setCode(200);
                 apiResponse.setMsg("正在导出");
