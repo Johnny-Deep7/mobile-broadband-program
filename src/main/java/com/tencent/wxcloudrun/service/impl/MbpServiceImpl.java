@@ -100,11 +100,7 @@ public class MbpServiceImpl implements MbpService {
     public ApiResponse downloadTable(HttpServletResponse response, String marketType, String substation, String customerManager,
                                      String startTime, String endTime, String subId) throws IOException {
         ApiResponse apiResponse = new ApiResponse();
-        if(StringUtils.isBlank(marketType) || ("沿街商铺".equals(marketType) && StringUtils.isNotBlank(customerManager))){
-            apiResponse.setCode(400);
-            apiResponse.setMsg("场景不可为空，请注意沿街商铺不可选客户经理");
-            return apiResponse;
-        }
+
         String excelFileName = URLEncoder.encode("吴中调查情况表", "UTF-8")
                 .replaceAll("\\+", "%20");
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -254,7 +250,7 @@ public class MbpServiceImpl implements MbpService {
                     wrapperShop.eq("substation",substation);
                 }
                 if (StringUtils.isNotBlank(customerManager)){
-                    wrapperShop.eq("customer_manager",customerManager);
+                    wrapperShop.eq("street_chief",customerManager);
                 }
                 if (StringUtils.isNotBlank(startTime)){
                     wrapperShop.ge("modify_time",startTime);
