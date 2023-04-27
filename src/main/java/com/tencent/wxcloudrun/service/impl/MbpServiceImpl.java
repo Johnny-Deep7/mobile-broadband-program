@@ -98,7 +98,7 @@ public class MbpServiceImpl implements MbpService {
 
     @Override
     public ApiResponse downloadTable(HttpServletResponse response, String marketType, String substation, String customerManager,
-                                     String startTime, String endTime) throws IOException {
+                                     String startTime, String endTime, String subId) throws IOException {
         ApiResponse apiResponse = new ApiResponse();
         if(StringUtils.isBlank(marketType) || ("沿街商铺".equals(marketType) && StringUtils.isNotBlank(customerManager))){
             apiResponse.setCode(400);
@@ -157,11 +157,18 @@ public class MbpServiceImpl implements MbpService {
                     apiResponse.setMsg("没有符合要求的数据");
                     return apiResponse;
                 }
+                excludeField.add("roomNumber");
+                excludeField.add("difficultPoint");
                 EasyExcel.write(response.getOutputStream(),CommercialBuildingPTO.class).excludeColumnFiledNames(excludeField).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇").doWrite(wrCommercialBuilding);
                 apiResponse.setCode(200);
                 apiResponse.setMsg("正在导出");
                 break;
             case "商务楼宇二级明细":
+                if(StringUtils.isBlank(subId)){
+                    apiResponse.setCode(400);
+                    apiResponse.setMsg("请输入相关明细的id");
+                    return apiResponse;
+                }
                 log.info("查询商务楼宇二级数据开始！");
                 QueryWrapper<CommercialBuildingDetailPTO> wrapperCommercialBuildingDetail = new QueryWrapper<>();
                 if (StringUtils.isNotBlank(substation)){
@@ -176,11 +183,17 @@ public class MbpServiceImpl implements MbpService {
                 if (StringUtils.isNotBlank(endTime)){
                     wrapperCommercialBuildingDetail.le("modify_time",endTime);
                 }
+                wrapperCommercialBuildingDetail.eq("building_id",subId);
                 List<CommercialBuildingDetailPTO> wrCommercialBuildingDetail = commercialBuildingDetailMapper.selectList(wrapperCommercialBuildingDetail);
                 if(ObjectUtils.isNull(wrCommercialBuildingDetail)){
                     apiResponse.setMsg("没有符合要求的数据");
                     return apiResponse;
                 }
+                excludeField.add("address");
+                excludeField.add("hotelName");
+                excludeField.add("isCovered");
+                excludeField.add("endTime1");
+                excludeField.add("difficultPoint");
                 EasyExcel.write(response.getOutputStream(),CommercialBuildingDetailPTO.class).excludeColumnFiledNames(excludeField).excelType(ExcelTypeEnum.XLS).sheet("商务楼宇二级明细").doWrite(wrCommercialBuildingDetail);
                 apiResponse.setCode(200);
                 apiResponse.setMsg("正在导出");
@@ -205,11 +218,22 @@ public class MbpServiceImpl implements MbpService {
                     apiResponse.setMsg("没有符合要求的数据");
                     return apiResponse;
                 }
+                excludeField.add("roomNumber");
+                excludeField.add("groupNumber");
+                excludeField.add("responsiblePerson");
+                excludeField.add("position");
+                excludeField.add("phoneNumber");
+                excludeField.add("difficultPoint");
                 EasyExcel.write(response.getOutputStream(),IndustrialParkPTO.class).excludeColumnFiledNames(excludeField).excelType(ExcelTypeEnum.XLS).sheet("产业园区").doWrite(wrIndustrialPark);
                 apiResponse.setCode(200);
                 apiResponse.setMsg("正在导出");
                 break;
             case "产业园区二级明细":
+                if(StringUtils.isBlank(subId)){
+                    apiResponse.setCode(400);
+                    apiResponse.setMsg("请输入相关明细的id");
+                    return apiResponse;
+                }
                 log.info("查询产业园区二级数据开始！");
                 QueryWrapper<IndustrialParkDetailPTO> wrapperIndustrialParkDetail = new QueryWrapper<>();
                 if (StringUtils.isNotBlank(substation)){
@@ -224,6 +248,7 @@ public class MbpServiceImpl implements MbpService {
                 if (StringUtils.isNotBlank(endTime)){
                     wrapperIndustrialParkDetail.le("modify_time",endTime);
                 }
+                wrapperIndustrialParkDetail.eq("park_id",subId);
                 List<IndustrialParkDetailPTO> wrIndustrialParkDetail = industrialParkDetailMapper.selectList(wrapperIndustrialParkDetail);
                 if(ObjectUtils.isNull(wrIndustrialParkDetail)){
                     apiResponse.setMsg("没有符合要求的数据");
@@ -258,6 +283,11 @@ public class MbpServiceImpl implements MbpService {
                 apiResponse.setMsg("正在导出");
                 break;
             case "沿街商铺二级明细":
+                if(StringUtils.isBlank(subId)){
+                    apiResponse.setCode(400);
+                    apiResponse.setMsg("请输入相关明细的id");
+                    return apiResponse;
+                }
                 log.info("查询沿街商铺二级数据开始！");
                 QueryWrapper<ShopDetailPTO> wrapperShopDetail = new QueryWrapper<>();
                 if (StringUtils.isNotBlank(substation)){
@@ -272,6 +302,7 @@ public class MbpServiceImpl implements MbpService {
                 if (StringUtils.isNotBlank(endTime)){
                     wrapperShopDetail.le("modify_time",endTime);
                 }
+                wrapperShopDetail.eq("shop_id",subId);
                 List<ShopDetailPTO> wrShopDetail = shopDetailMapper.selectList(wrapperShopDetail);
                 if(ObjectUtils.isNull(wrShopDetail)){
                     apiResponse.setMsg("没有符合要求的数据");

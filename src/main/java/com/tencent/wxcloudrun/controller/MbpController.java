@@ -58,10 +58,10 @@ public class MbpController {
                                      @RequestParam(required = false,value = "substation")String substation,
                                      @RequestParam(required = false,value = "customerManager")String customerManager,
                                      @RequestParam(required = false,value = "startTime")String startTime,
-                                     @RequestParam(required = false,value = "endTime")String endTime
-                              ) throws IOException {
+                                     @RequestParam(required = false,value = "endTime")String endTime,
+                                     @RequestParam(required = false,value = "subId")String subId) throws IOException {
         log.info("导出数据开始！");
-        return mbpService.downloadTable(response,marketType,substation,customerManager,startTime,endTime);
+        return mbpService.downloadTable(response,marketType,substation,customerManager,startTime,endTime,subId);
     }
 
     @PostMapping(value = "/create")
