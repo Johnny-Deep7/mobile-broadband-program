@@ -33,6 +33,14 @@ public class MbpBuildingServiceImpl implements MbpBuildingService {
     @Override
     public ApiResponse create(CommercialBuildingPTO commercialBuildingPTO) {
         ApiResponse apiResponse = ApiResponse.ok();
+        QueryWrapper<CommercialBuildingPTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("hotel_name",commercialBuildingPTO.getHotelName());
+        Long count = commercialBuildingMapper.selectCount(wrapper);
+        if (count != 0){
+            apiResponse.setCode(400);
+            apiResponse.setMsg("商务大楼已存在，请先搜索再编辑。");
+            return apiResponse;
+        }
         Date writeTime = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         commercialBuildingPTO.setWriteTime(format.format(writeTime));

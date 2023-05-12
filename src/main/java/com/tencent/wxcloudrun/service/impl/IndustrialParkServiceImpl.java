@@ -9,6 +9,7 @@ import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.dto.RequestEntity;
 import com.tencent.wxcloudrun.mapper.IndustrialParkMapper;
+import com.tencent.wxcloudrun.pto.CommercialBuildingPTO;
 import com.tencent.wxcloudrun.pto.IndustrialParkPTO;
 import com.tencent.wxcloudrun.service.IndustrialParkService;
 import lombok.SneakyThrows;
@@ -32,6 +33,14 @@ public class IndustrialParkServiceImpl implements IndustrialParkService {
     @Override
     public ApiResponse create(IndustrialParkPTO industrialParkPTO) {
         ApiResponse apiResponse = ApiResponse.ok();
+        QueryWrapper<IndustrialParkPTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("hotel_name",industrialParkPTO.getHotelName());
+        Long count = industrialParkMapper.selectCount(wrapper);
+        if (count != 0){
+            apiResponse.setCode(400);
+            apiResponse.setMsg("产业园区已存在，请先搜索再编辑。");
+            return apiResponse;
+        }
         Date writeTime = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         industrialParkPTO.setWriteTime(format.format(writeTime));

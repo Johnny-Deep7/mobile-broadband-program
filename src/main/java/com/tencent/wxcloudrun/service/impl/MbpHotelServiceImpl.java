@@ -33,6 +33,14 @@ public class MbpHotelServiceImpl implements MbpHotelService {
     @Override
     public ApiResponse create(HotelPTO hotelPTO) {
         ApiResponse apiResponse = ApiResponse.ok();
+        QueryWrapper<HotelPTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("hotel_name",hotelPTO.getHotelName());
+        Long count = hotelMapper.selectCount(wrapper);
+        if (count != 0){
+            apiResponse.setCode(400);
+            apiResponse.setMsg("酒店已存在，请先搜索再编辑。");
+            return apiResponse;
+        }
         Date writeTime = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         hotelPTO.setWriteTime(format.format(writeTime));

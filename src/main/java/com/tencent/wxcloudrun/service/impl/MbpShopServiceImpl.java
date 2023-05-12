@@ -8,6 +8,7 @@ import com.tencent.wxcloudrun.dto.CommercialBuildingDetail;
 import com.tencent.wxcloudrun.dto.PageVo;
 import com.tencent.wxcloudrun.dto.ShopDTO;
 import com.tencent.wxcloudrun.mapper.ShopMapper;
+import com.tencent.wxcloudrun.pto.IndustrialParkPTO;
 import com.tencent.wxcloudrun.pto.ShopPTO;
 import com.tencent.wxcloudrun.service.MbpShopService;
 import com.tencent.wxcloudrun.utils.CopyListUtils;
@@ -32,6 +33,14 @@ public class MbpShopServiceImpl implements MbpShopService {
     private static ApiResponse  apiResponse = ApiResponse.ok();
     @Override
     public ApiResponse createShop(ShopDTO shopDTO) {
+        QueryWrapper<ShopPTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("CELL_NAME",shopDTO.getCellName());
+        Long count = shopMapper.selectCount(wrapper);
+        if (count != 0){
+            apiResponse.setCode(400);
+            apiResponse.setMsg("沿街商铺已存在，请先搜索再编辑。");
+            return apiResponse;
+        }
         ShopPTO shopPTO = new ShopPTO();
         BeanUtils.copyProperties(shopDTO,shopPTO);
         Date writeTime = new Date();
