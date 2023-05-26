@@ -1,33 +1,29 @@
 package com.tencent.wxcloudrun.service.impl;
 
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.support.ExcelTypeEnum;
-import com.alibaba.excel.write.metadata.WriteSheet;
-import com.alibaba.excel.write.metadata.fill.FillConfig;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.tencent.wxcloudrun.config.ApiResponse;
+import com.tencent.wxcloudrun.dto.GetCountDTO;
+import com.tencent.wxcloudrun.dto.StatisticalAnalysisDTO;
 import com.tencent.wxcloudrun.dto.excelEntity.*;
 import com.tencent.wxcloudrun.mapper.*;
 import com.tencent.wxcloudrun.pto.*;
 import com.tencent.wxcloudrun.service.MbpService;
 import com.tencent.wxcloudrun.utils.CopyListUtils;
+import com.tencent.wxcloudrun.utils.SubstationType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static java.lang.System.currentTimeMillis;
 
 @Service
 @Slf4j
@@ -389,6 +385,192 @@ public class MbpServiceImpl implements MbpService {
 //        IOUtils.closeQuietly(outputStream);
 //        IOUtils.closeQuietly((Closeable) excelWriter);
 
+        return apiResponse;
+    }
+
+    @Override
+    public ApiResponse fullExport (String startTime,String endTime) {
+        List<HashMap<String, Long>> hotel = hotelMapper.getCount(startTime, endTime);
+        List<HashMap<String, Long>> commercialBuilding = commercialBuildingDetailMapper.getCount(startTime, endTime);
+        List<HashMap<String, Long>> industrialPark = industrialParkDetailMapper.getCount(startTime, endTime);
+        List<HashMap<String, Long>> shop = shopDetailMapper.getCount(startTime, endTime);
+        List<String> substations = new ArrayList<>();
+
+        for (HashMap h:hotel) {
+            substations.add(h.get("substation").toString());
+        }
+
+        for (HashMap h:commercialBuilding) {
+            substations.add(h.get("substation").toString());
+        }
+
+        for (HashMap h:industrialPark) {
+            substations.add(h.get("substation").toString());
+        }
+        for (HashMap h:shop) {
+            substations.add(h.get("substation").toString());
+        }
+        List<String> collect = substations.stream().distinct().collect(Collectors.toList());
+        StatisticalAnalysisDTO statisticalAnalysisDTO = new StatisticalAnalysisDTO();
+        List<GetCountDTO> list = new ArrayList<>();
+        GetCountDTO getCountDTO = null;
+        for (String substation:collect) {
+            Long hotelCount = 0L;
+            Long buildingCount = 0L;
+            Long park = 0L;
+            Long shopCount = 0L;
+            getCountDTO = new GetCountDTO();
+            getCountDTO.setSubstation(substation);
+            getCountDTO.setStartTime(startTime);
+            getCountDTO.setEndTime(endTime);
+            for (HashMap hashMap:hotel) {
+                if (!hashMap.get("substation").equals(substation)){
+                    continue;
+                }else {
+                    hotelCount = (Long) hashMap.get("count");
+                }
+            }
+
+            for (HashMap hashMap:commercialBuilding) {
+                if (!hashMap.get("substation").equals(substation)){
+                    continue;
+                }else {
+                    buildingCount = (Long) hashMap.get("count");
+                }
+            }
+
+            for (HashMap hashMap:industrialPark) {
+                if (!hashMap.get("substation").equals(substation)){
+                    continue;
+                }else {
+                    park = (Long) hashMap.get("count");
+                }
+            }
+
+            for (HashMap hashMap:shop) {
+                if (!hashMap.get("substation").equals(substation)){
+                    continue;
+                }else {
+                    shopCount = (Long) hashMap.get("count");
+                }
+            }
+            getCountDTO.setHotel(hotelCount.intValue());
+            getCountDTO.setBuilding(buildingCount.intValue());
+            getCountDTO.setIndustrialPark(park.intValue());
+            getCountDTO.setShop(shopCount.intValue());
+            getCountDTO.setTotel(hotelCount.intValue()+buildingCount.intValue()+park.intValue()+shopCount.intValue());
+            list.add(getCountDTO);
+        }
+        statisticalAnalysisDTO.setGetCountDTOS(list);
+        statisticalAnalysisDTO.setHotelCount(list.stream()
+                .map(e -> e.getHotel()).reduce(0, Integer::sum));
+        statisticalAnalysisDTO.setBuildingCount(list.stream()
+                .map(e -> e.getBuilding()).reduce(0, Integer::sum));
+        statisticalAnalysisDTO.setShopCount(list.stream()
+                .map(e -> e.getShop()).reduce(0, Integer::sum));
+        statisticalAnalysisDTO.setIndustrialParkCount(list.stream()
+                .map(e -> e.getIndustrialPark()).reduce(0, Integer::sum));
+        statisticalAnalysisDTO.setTotelCount(list.stream()
+                .map(e -> e.getTotel()).reduce(0, Integer::sum));
+        ApiResponse apiResponse = ApiResponse.ok();
+        apiResponse.setData(statisticalAnalysisDTO);
+        return apiResponse;
+    }
+
+    @Override
+    public ApiResponse statistics (String startTime,String endTime,String substation) {
+        List<HashMap<String, Long>> hotel = hotelMapper.getCountBySubstation(startTime, endTime,substation);
+        List<HashMap<String, Long>> commercialBuilding = commercialBuildingDetailMapper.getCountBySubstation(startTime, endTime,substation);
+        List<HashMap<String, Long>> industrialPark = industrialParkDetailMapper.getCountBySubstation(startTime, endTime,substation);
+        List<HashMap<String, Long>> shop = shopDetailMapper.getCountBySubstation(startTime, endTime,substation);
+
+        List<String> list1 = new ArrayList<>();
+
+        for (HashMap h:hotel) {
+            list1.add(h.get("customerManager").toString());
+        }
+
+        for (HashMap h:commercialBuilding) {
+            list1.add(h.get("customerManager").toString());
+        }
+
+        for (HashMap h:industrialPark) {
+            list1.add(h.get("customerManager").toString());
+        }
+        for (HashMap h:shop) {
+            list1.add(h.get("customerManager").toString());
+        }
+        List<String> customerManagers = list1.stream().distinct().collect(Collectors.toList());
+
+        StatisticalAnalysisDTO statisticalAnalysisDTO = new StatisticalAnalysisDTO();
+        List<GetCountDTO> list = new ArrayList<>();
+        GetCountDTO getCountDTO = null;
+
+        for (String customerManager:customerManagers) {
+
+            Long hotelCount = 0L;
+            Long buildingCount = 0L;
+            Long park = 0L;
+            Long shopCount = 0L;
+
+            getCountDTO = new GetCountDTO();
+            getCountDTO.setSubstation(substation);
+            getCountDTO.setCustomerManager(customerManager);
+            getCountDTO.setStartTime(startTime);
+            getCountDTO.setEndTime(endTime);
+
+            for (HashMap hashMap:hotel) {
+                if (!hashMap.get("customerManager").equals(customerManager)){
+                    continue;
+                }else {
+                    hotelCount = (Long) hashMap.get("count");
+                }
+            }
+
+            for (HashMap hashMap:commercialBuilding) {
+                if (!hashMap.get("customerManager").equals(customerManager)){
+                    continue;
+                }else {
+                    buildingCount = (Long) hashMap.get("count");
+                }
+            }
+
+            for (HashMap hashMap:industrialPark) {
+                if (!hashMap.get("customerManager").equals(customerManager)){
+                    continue;
+                }else {
+                    park = (Long) hashMap.get("count");
+                }
+            }
+
+            for (HashMap hashMap:shop) {
+                if (!hashMap.get("customerManager").equals(customerManager)){
+                    continue;
+                }else {
+                    shopCount = (Long) hashMap.get("count");
+                }
+            }
+
+            getCountDTO.setHotel(hotelCount.intValue());
+            getCountDTO.setBuilding(buildingCount.intValue());
+            getCountDTO.setIndustrialPark(park.intValue());
+            getCountDTO.setShop(shopCount.intValue());
+            getCountDTO.setTotel(hotelCount.intValue()+buildingCount.intValue()+park.intValue()+shopCount.intValue());
+            list.add(getCountDTO);
+        }
+        statisticalAnalysisDTO.setGetCountDTOS(list);
+        statisticalAnalysisDTO.setHotelCount(list.stream()
+                .map(e -> e.getHotel()).reduce(0, Integer::sum));
+        statisticalAnalysisDTO.setBuildingCount(list.stream()
+                .map(e -> e.getBuilding()).reduce(0, Integer::sum));
+        statisticalAnalysisDTO.setShopCount(list.stream()
+                .map(e -> e.getShop()).reduce(0, Integer::sum));
+        statisticalAnalysisDTO.setIndustrialParkCount(list.stream()
+                .map(e -> e.getIndustrialPark()).reduce(0, Integer::sum));
+        statisticalAnalysisDTO.setTotelCount(list.stream()
+                .map(e -> e.getTotel()).reduce(0, Integer::sum));
+        ApiResponse apiResponse = ApiResponse.ok();
+        apiResponse.setData(statisticalAnalysisDTO);
         return apiResponse;
     }
 

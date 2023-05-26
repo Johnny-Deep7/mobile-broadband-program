@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tencent.wxcloudrun.mapper.ShopDetailMapper">
+
+    <select id="getCount" resultType="java.util.HashMap" parameterType="String">
+        select count(1) as 'count',substation from mbp_sub_street_shops
+        where  modify_time &gt;= #{startTime} and modify_time &lt;= #{endTime}
+        group by substation
+    </select>
+
+    <select id="getCountBySubstation" resultType="java.util.HashMap" parameterType="String">
+        select count(1) as 'count',CUSTOMER_MANAGER as 'customerManager' from mbp_sub_street_shops
+        where  modify_time &gt;= #{startTime} and modify_time &lt;= #{endTime}
+          and substation = #{substation}
+        group by CUSTOMER_MANAGER
+    </select>
+</mapper>

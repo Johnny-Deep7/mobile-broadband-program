@@ -156,4 +156,17 @@
         from mbp_sub_industrial_park
         where ID = #{id}
     </delete>
+
+    <select id="getCount" resultType="java.util.HashMap" parameterType="String">
+        select count(1) as 'count',substation from mbp_sub_industrial_park
+        where  modify_time &gt;= #{startTime} and modify_time &lt;= #{endTime}
+        group by substation
+    </select>
+
+    <select id="getCountBySubstation" resultType="java.util.HashMap" parameterType="String">
+        select count(1) as 'count',CUSTOMER_MANAGER as 'customerManager' from mbp_sub_industrial_park
+        where  modify_time &gt;= #{startTime} and modify_time &lt;= #{endTime}
+          and substation = #{substation}
+        group by CUSTOMER_MANAGER
+    </select>
 </mapper>

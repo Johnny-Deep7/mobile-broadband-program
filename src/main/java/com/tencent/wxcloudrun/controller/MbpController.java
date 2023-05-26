@@ -250,4 +250,16 @@ public class MbpController {
         BeanUtils.copyProperties(marketingPlanDTO, marketingPlanPTO);
         return marketingPlanService.update(marketingPlanPTO);
     }
+
+    @GetMapping(value = "/fullExport")
+    public ApiResponse fullExport(@RequestParam("startTime")String startTime,@RequestParam("endTime")String endTime) {
+        log.info("统计分析查询开始！");
+        return mbpService.fullExport(startTime,endTime);
+    }
+
+    @GetMapping(value = "/statistics")
+    public ApiResponse statistics(@RequestParam("startTime")String startTime,@RequestParam("endTime")String endTime,@RequestParam("substation")String substation) {
+        log.info("统计分析查询开始！");
+        return mbpService.statistics(startTime,endTime,substation);
+    }
 }
