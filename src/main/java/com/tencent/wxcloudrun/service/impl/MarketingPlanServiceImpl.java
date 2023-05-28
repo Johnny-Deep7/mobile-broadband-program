@@ -1,17 +1,12 @@
 package com.tencent.wxcloudrun.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.tencent.wxcloudrun.MbpType;
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.tencent.wxcloudrun.config.ApiResponse;
 import com.tencent.wxcloudrun.dto.MarketingPlanDTO;
 import com.tencent.wxcloudrun.dto.PageVo;
-import com.tencent.wxcloudrun.dto.RequestEntity;
 import com.tencent.wxcloudrun.mapper.MarketingPlanMapper;
-import com.tencent.wxcloudrun.pto.IndustrialParkDetailPTO;
 import com.tencent.wxcloudrun.pto.MarketingPlanPTO;
 import com.tencent.wxcloudrun.service.MarketingPlanService;
 import lombok.SneakyThrows;
@@ -21,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

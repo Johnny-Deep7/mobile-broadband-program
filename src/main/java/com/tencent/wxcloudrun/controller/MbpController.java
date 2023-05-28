@@ -259,7 +259,17 @@ public class MbpController {
 
     @GetMapping(value = "/statistics")
     public ApiResponse statistics(@RequestParam("startTime")String startTime,@RequestParam("endTime")String endTime,@RequestParam("substation")String substation) {
-        log.info("统计分析查询开始！");
+        log.info("按照分局查询开始！");
         return mbpService.statistics(startTime,endTime,substation);
     }
+
+    @GetMapping(value = "/downloadFullExport")
+    public ApiResponse downloadFullExport(HttpServletResponse response,
+                                     @RequestParam(required = false,value = "startTime")String startTime,
+                                     @RequestParam(required = false,value = "endTime")String endTime
+                                     ) throws IOException {
+        log.info("导出数据开始！");
+        return mbpService.downloadFullExport(response,startTime,endTime);
+    }
+
 }

@@ -1,4 +1,4 @@
-package com.tencent.wxcloudrun;
+package com.tencent.wxcloudrun.utils;
 
 public enum MbpType {
     HOTEL("酒店宾馆"),

@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 public interface MbpService {
     ApiResponse parsingTable(MultipartFile multipartFile, String marketType, Integer id);
@@ -16,4 +17,6 @@ public interface MbpService {
     ApiResponse fullExport(String startTime, String endTime);
 
     ApiResponse statistics(String startTime, String endTime,String substation);
+
+    ApiResponse downloadFullExport(HttpServletResponse response,String startTime, String endTime) throws IOException;
 }
