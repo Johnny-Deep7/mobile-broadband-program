@@ -14,11 +14,14 @@ import com.tencent.wxcloudrun.pto.HotelPTO;
 import com.tencent.wxcloudrun.pto.IndustrialParkPTO;
 import com.tencent.wxcloudrun.pto.LoginPTO;
 import com.tencent.wxcloudrun.service.impl.MbpHotelServiceImpl;
+import com.tencent.wxcloudrun.service.impl.MbpServiceImpl;
 import com.tencent.wxcloudrun.utils.CopyListUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -38,6 +41,8 @@ public class MbpRouteService {
     ShopMapper shopMapper;
     @Autowired
     ShopDetailMapper shopDetailMapper;
+    @Resource
+    private MbpServiceImpl mbpService;
 
     private static ApiResponse  apiResponse = ApiResponse.ok();
 
@@ -178,4 +183,12 @@ public class MbpRouteService {
         return apiResponse;
     }
 
+    public ApiResponse download(HttpServletResponse response, String startTime, String endTime, String substation){
+        if (substation == null || substation.length() <= 0 ){
+            apiResponse = mbpService.downloadFullExport(response,startTime,endTime);
+        }else {
+            apiResponse = mbpService.downloadStatistics(response,startTime,endTime,substation);
+        }
+        return apiResponse;
+    }
 }
