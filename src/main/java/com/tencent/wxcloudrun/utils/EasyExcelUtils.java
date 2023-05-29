@@ -64,9 +64,9 @@ public class EasyExcelUtils {
     }
 
     public static OutputStream getOutputStream(String fileName, HttpServletResponse response) throws Exception {
-        fileName = URLEncoder.encode(fileName, "UTF-8");
+        fileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");;
         //  response.setContentType("application/vnd.ms-excel"); // .xls
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // .xlsx
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // .xls
         response.setCharacterEncoding("utf8");
         response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xls");
 
@@ -79,7 +79,7 @@ public class EasyExcelUtils {
      * @return
      */
     public static ExcelWriter buildExcelWriter(OutputStream out,Boolean flag)  {
-        ExcelWriterBuilder excelWriterBuilder = EasyExcel.write(out).excelType(ExcelTypeEnum.XLSX);
+        ExcelWriterBuilder excelWriterBuilder = EasyExcel.write(out).excelType(ExcelTypeEnum.XLS);
         if (flag){
             excelWriterBuilder.registerWriteHandler(getDefaultHorizontalCellStyleStrategy());
         }
