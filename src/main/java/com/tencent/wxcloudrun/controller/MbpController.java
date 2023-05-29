@@ -272,7 +272,7 @@ public class MbpController {
         return mbpService.downloadFullExport(response,startTime,endTime);
     }
 
-    @GetMapping(value = "/downloadstatistics")
+    @GetMapping(value = "/downloadStatistics")
     public ApiResponse downloadStatistics(HttpServletResponse response,
                                           @RequestParam(required = false,value = "startTime")String startTime,
                                           @RequestParam(required = false,value = "endTime")String endTime,

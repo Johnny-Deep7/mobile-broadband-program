@@ -914,7 +914,7 @@ public class MbpServiceImpl implements MbpService {
         ApiResponse apiResponse = new ApiResponse();
 
         try {
-            OutputStream outputStream = EasyExcelUtils.getOutputStream("吴中调查情况表", response);
+            OutputStream outputStream = EasyExcelUtils.getOutputStream("吴中调查情况表-按日期", response);
             ExcelWriter excelWriter = EasyExcelUtils.buildExcelWriter(outputStream);
             int i = 0;
             log.info("查询酒店宾馆数据开始！");
@@ -948,6 +948,11 @@ public class MbpServiceImpl implements MbpService {
                     buildingIds.add(building.getBuildingId());
                 }
                 buildingIds = buildingIds.stream().distinct().collect(Collectors.toList());
+                List<CommercialBuildingPTO> ptos = commercialBuildingMapper.selectBatchIds(buildingIds);
+                for (CommercialBuildingDetailPTO building:wrCommercialBuilding) {
+                    Optional<String> any = ptos.stream().filter(o -> o.getId().equals(building.getBuildingId())).map(CommercialBuildingPTO::getHotelName).findAny();
+                    building.setOwnerBuilding(any.get());
+                }
                 EasyExcelUtils.writeOnly(excelWriter,wrCommercialBuilding,CommercialBuildingDetailPTO.class,i,"商务楼宇");
                 i++;
             }
@@ -962,6 +967,16 @@ public class MbpServiceImpl implements MbpService {
             }
             List<IndustrialParkDetailPTO> wrIndustrialParkDetail = industrialParkDetailMapper.selectList(wrapperIndustrialParkDetail);
             if (wrIndustrialParkDetail.size()>0){
+                List<Integer> parkIds = new ArrayList<>();
+                for (IndustrialParkDetailPTO park:wrIndustrialParkDetail) {
+                    parkIds.add(park.getParkId());
+                }
+                parkIds = parkIds.stream().distinct().collect(Collectors.toList());
+                List<IndustrialParkPTO> ptos = industrialParkMapper.selectBatchIds(parkIds);
+                for (IndustrialParkDetailPTO park:wrIndustrialParkDetail) {
+                    Optional<String> any = ptos.stream().filter(o -> o.getId().equals(park.getParkId())).map(IndustrialParkPTO::getHotelName).findAny();
+                    park.setIndustryPark(any.get());
+                }
                 EasyExcelUtils.writeOnly(excelWriter,wrIndustrialParkDetail,IndustrialParkDetailPTO.class,i,"产业园区");
                 i++;
             }
@@ -994,7 +1009,7 @@ public class MbpServiceImpl implements MbpService {
         ApiResponse apiResponse = new ApiResponse();
 
         try {
-            OutputStream outputStream = EasyExcelUtils.getOutputStream("吴中调查情况表", response);
+            OutputStream outputStream = EasyExcelUtils.getOutputStream("吴中调查情况表-按分局", response);
             ExcelWriter excelWriter = EasyExcelUtils.buildExcelWriter(outputStream);
             int i = 0;
             log.info("查询酒店宾馆数据开始！");
@@ -1020,7 +1035,7 @@ public class MbpServiceImpl implements MbpService {
             if (StringUtils.isNotBlank(endTime)){
                 wrapperCommercialBuilding.le("modify_time",endTime);
             }
-            wrapperHotel.eq("substation",substation);
+            wrapperCommercialBuilding.eq("substation",substation);
             List<CommercialBuildingDetailPTO> wrCommercialBuilding = commercialBuildingDetailMapper.selectList(wrapperCommercialBuilding);
             if (wrCommercialBuilding.size()>0){
                 List<Integer> buildingIds = new ArrayList<>();
@@ -1028,6 +1043,11 @@ public class MbpServiceImpl implements MbpService {
                     buildingIds.add(building.getBuildingId());
                 }
                 buildingIds = buildingIds.stream().distinct().collect(Collectors.toList());
+                List<CommercialBuildingPTO> ptos = commercialBuildingMapper.selectBatchIds(buildingIds);
+                for (CommercialBuildingDetailPTO building:wrCommercialBuilding) {
+                    Optional<String> any = ptos.stream().filter(o -> o.getId().equals(building.getBuildingId())).map(CommercialBuildingPTO::getHotelName).findAny();
+                    building.setOwnerBuilding(any.get());
+                }
                 EasyExcelUtils.writeOnly(excelWriter,wrCommercialBuilding,CommercialBuildingDetailPTO.class,i,"商务楼宇");
                 i++;
             }
@@ -1040,9 +1060,19 @@ public class MbpServiceImpl implements MbpService {
             if (StringUtils.isNotBlank(endTime)){
                 wrapperIndustrialParkDetail.le("modify_time",endTime);
             }
-            wrapperHotel.eq("substation",substation);
+            wrapperIndustrialParkDetail.eq("substation",substation);
             List<IndustrialParkDetailPTO> wrIndustrialParkDetail = industrialParkDetailMapper.selectList(wrapperIndustrialParkDetail);
             if (wrIndustrialParkDetail.size()>0){
+                List<Integer> parkIds = new ArrayList<>();
+                for (IndustrialParkDetailPTO park:wrIndustrialParkDetail) {
+                    parkIds.add(park.getParkId());
+                }
+                parkIds = parkIds.stream().distinct().collect(Collectors.toList());
+                List<IndustrialParkPTO> ptos = industrialParkMapper.selectBatchIds(parkIds);
+                for (IndustrialParkDetailPTO park:wrIndustrialParkDetail) {
+                    Optional<String> any = ptos.stream().filter(o -> o.getId().equals(park.getParkId())).map(IndustrialParkPTO::getHotelName).findAny();
+                    park.setIndustryPark(any.get());
+                }
                 EasyExcelUtils.writeOnly(excelWriter,wrIndustrialParkDetail,IndustrialParkDetailPTO.class,i,"产业园区");
                 i++;
             }
@@ -1056,7 +1086,7 @@ public class MbpServiceImpl implements MbpService {
             if (StringUtils.isNotBlank(endTime)){
                 wrapperShopDetail.le("modify_time",endTime);
             }
-            wrapperHotel.eq("substation",substation);
+            wrapperShopDetail.eq("substation",substation);
             List<ShopDetailPTO> wrShopDetail = shopDetailMapper.selectList(wrapperShopDetail);
             if (wrShopDetail.size()>0){
                 EasyExcelUtils.writeOnly(excelWriter,wrShopDetail,ShopDetailPTO.class,i,"沿街商铺");
