@@ -18,5 +18,8 @@ public interface MbpService {
 
     ApiResponse statistics(String startTime, String endTime,String substation);
 
-    ApiResponse downloadFullExport(HttpServletResponse response,String startTime, String endTime) throws IOException;
+    ApiResponse downloadFullExport(HttpServletResponse response,String startTime, String endTime);
+
+    ApiResponse downloadStatistics(HttpServletResponse response,String startTime, String endTime,String substation);
+
 }

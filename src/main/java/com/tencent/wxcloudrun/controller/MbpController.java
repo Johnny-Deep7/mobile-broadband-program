@@ -267,9 +267,18 @@ public class MbpController {
     public ApiResponse downloadFullExport(HttpServletResponse response,
                                      @RequestParam(required = false,value = "startTime")String startTime,
                                      @RequestParam(required = false,value = "endTime")String endTime
-                                     ) throws IOException {
+                                     ) {
         log.info("导出数据开始！");
         return mbpService.downloadFullExport(response,startTime,endTime);
+    }
+
+    @GetMapping(value = "/downloadstatistics")
+    public ApiResponse downloadStatistics(HttpServletResponse response,
+                                          @RequestParam(required = false,value = "startTime")String startTime,
+                                          @RequestParam(required = false,value = "endTime")String endTime,
+                                          @RequestParam("substation")String substation) {
+        log.info("导出数据开始！");
+        return mbpService.downloadStatistics(response,startTime,endTime,substation);
     }
 
 }
