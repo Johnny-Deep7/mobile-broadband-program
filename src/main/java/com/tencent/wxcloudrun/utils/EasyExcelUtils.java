@@ -68,7 +68,8 @@ public class EasyExcelUtils {
         //  response.setContentType("application/vnd.ms-excel"); // .xls
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // .xlsx
         response.setCharacterEncoding("utf8");
-        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+        response.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xls");
+
         return response.getOutputStream();
     }
 
