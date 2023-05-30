@@ -2,140 +2,140 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tencent.wxcloudrun.mapper.HotelMapper">
 
-    <insert id="insert"
-            parameterType="com.tencent.wxcloudrun.pto.HotelPTO" useGeneratedKeys="true">
-        INSERT INTO mbp_hotel
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="substation != null and substation != ''">
-                SUBSTATION,
-            </if>
-            <if test="customerManager != null and customerManager != ''">
-                CUSTOMER_MANAGER,
-            </if>
-            <if test="contactWay != null and contactWay != ''">
-                CONTACT_WAY,
-            </if>
-            <if test="hotelName != null and hotelName != ''">
-                HOTEL_NAME,
-            </if>
-            <if test="isCovered != null and isCovered != ''">
-                IS_COVERED,
-            </if>
-            <if test="roomNumber != null and roomNumber != ''">
-                ROOM_NUMBER,
-            </if>
-            <if test="groupNumber != null and groupNumber != ''">
-                GROUP_NUMBER,
-            </if>
-            <if test="address != null and address != ''">
-                ADDRESS,
-            </if>
-            <if test="type != null and type != ''">
-                HOTEL_TYPE,
-            </if>
-            <if test="operator != null and operator != ''">
-                OPERATOR,
-            </if>
-            <if test="endTime1 != null and endTime1 != ''">
-                END_TIME1,
-            </if>
-            <if test="internetCharge != null and internetCharge != ''">
-                INTERNET_CHARGE,
-            </if>
-            <if test="endTime2 != null and endTime2 != ''">
-                END_TIME2,
-            </if>
-            <if test="responsiblePerson != null and responsiblePerson != ''">
-                RESPONSIBLE_PERSON,
-            </if>
-            <if test="position != null and position != ''" >
-                POSITION,
-            </if>
-            <if test="phoneNumber != null and phoneNumber != ''">
-                PHONE_NUMBER,
-            </if>
-            <if test="visitDate != null and visitDate != ''">
-                VISIT_DATE,
-            </if>
-            <if test="visitInformation != null and visitInformation != ''">
-                VISIT_INFORMATION,
-            </if>
-            <if test="difficultPoint != null and difficultPoint != ''">
-                DIFFICULT_POINT,
-            </if>
-            <if test="writeTime != null and writeTime != ''">
-                WRITE_TIME,
-            </if>
-            <if test="modifyTime != null and modifyTime != ''">
-                MODIFY_TIME
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="substation != null and substation != ''">
-                #{substation,jdbcType=VARCHAR},
-            </if>
-            <if test="customerManager != null and customerManager != ''">
-                #{customerManager,jdbcType=VARCHAR},
-            </if>
-            <if test="contactWay != null and contactWay != ''">
-                #{contactWay,jdbcType=INTEGER},
-            </if>
-            <if test="hotelName != null and hotelName != ''">
-                #{hotelName,jdbcType=VARCHAR},
-            </if>
-            <if test="isCovered != null and isCovered != ''">
-                #{isCovered,jdbcType=VARCHAR},
-            </if>
-            <if test="roomNumber != null and roomNumber != '' ">
-                #{roomNumber,jdbcType=INTEGER},
-            </if>
-            <if test="groupNumber != null and groupNumber != '' ">
-                #{groupNumber,jdbcType=VARCHAR},
-            </if>
-            <if test="address != null and address != ''">
-                #{address,jdbcType=VARCHAR},
-            </if>
-            <if test="type != null and type != ''">
-                #{type,jdbcType=VARCHAR},
-            </if>
-            <if test="operator != null and operator != ''">
-                #{operator,jdbcType=VARCHAR},
-            </if>
-            <if test="endTime1 != null and endTime1 != ''">
-                #{endTime1,jdbcType=VARCHAR},
-            </if>
-            <if test="internetCharge != null and internetCharge != ''">
-                #{internetCharge,jdbcType=VARCHAR},
-            </if>
-            <if test="endTime2 != null and endTime2 != ''">
-                #{endTime2,jdbcType=TIMESTAMP},
-            </if>
-            <if test="responsiblePerson != null and responsiblePerson != ''">
-                #{responsiblePerson,jdbcType=VARCHAR},
-            </if>
-            <if test="position != null and position != ''">
-                #{position,jdbcType=VARCHAR},
-            </if>
-            <if test="phoneNumber != null and phoneNumber != ''">
-                #{phoneNumber,jdbcType=VARCHAR},
-            </if>
-            <if test="visitDate != null and visitDate != ''">
-                #{visitDate,jdbcType=TIMESTAMP},
-            </if>
-            <if test="visitInformation != null and visitInformation != ''">
-                #{visitInformation,jdbcType=VARCHAR},
-            </if>
-            <if test="difficultPoint != null and difficultPoint != ''">
-                #{difficultPoint,jdbcType=VARCHAR},
-            </if>
-            <if test="writeTime != null and writeTime != ''">
-                #{writeTime,jdbcType=VARCHAR},
-            </if>
-            <if test="modifyTime != null and modifyTime != ''">
-                #{modifyTime,jdbcType=VARCHAR},
-            </if>
-        </trim>
-    </insert>
+<!--    <insert id="insert"-->
+<!--            parameterType="com.tencent.wxcloudrun.pto.HotelPTO" useGeneratedKeys="true">-->
+<!--        INSERT INTO mbp_hotel-->
+<!--        <trim prefix="(" suffix=")" suffixOverrides=",">-->
+<!--            <if test="substation != null and substation != ''">-->
+<!--                SUBSTATION,-->
+<!--            </if>-->
+<!--            <if test="customerManager != null and customerManager != ''">-->
+<!--                CUSTOMER_MANAGER,-->
+<!--            </if>-->
+<!--            <if test="contactWay != null and contactWay != ''">-->
+<!--                CONTACT_WAY,-->
+<!--            </if>-->
+<!--            <if test="hotelName != null and hotelName != ''">-->
+<!--                HOTEL_NAME,-->
+<!--            </if>-->
+<!--            <if test="isCovered != null and isCovered != ''">-->
+<!--                IS_COVERED,-->
+<!--            </if>-->
+<!--            <if test="roomNumber != null and roomNumber != ''">-->
+<!--                ROOM_NUMBER,-->
+<!--            </if>-->
+<!--            <if test="groupNumber != null and groupNumber != ''">-->
+<!--                GROUP_NUMBER,-->
+<!--            </if>-->
+<!--            <if test="address != null and address != ''">-->
+<!--                ADDRESS,-->
+<!--            </if>-->
+<!--            <if test="type != null and type != ''">-->
+<!--                HOTEL_TYPE,-->
+<!--            </if>-->
+<!--            <if test="operator != null and operator != ''">-->
+<!--                OPERATOR,-->
+<!--            </if>-->
+<!--            <if test="endTime1 != null and endTime1 != ''">-->
+<!--                END_TIME1,-->
+<!--            </if>-->
+<!--            <if test="internetCharge != null and internetCharge != ''">-->
+<!--                INTERNET_CHARGE,-->
+<!--            </if>-->
+<!--            <if test="endTime2 != null and endTime2 != ''">-->
+<!--                END_TIME2,-->
+<!--            </if>-->
+<!--            <if test="responsiblePerson != null and responsiblePerson != ''">-->
+<!--                RESPONSIBLE_PERSON,-->
+<!--            </if>-->
+<!--            <if test="position != null and position != ''" >-->
+<!--                POSITION,-->
+<!--            </if>-->
+<!--            <if test="phoneNumber != null and phoneNumber != ''">-->
+<!--                PHONE_NUMBER,-->
+<!--            </if>-->
+<!--            <if test="visitDate != null and visitDate != ''">-->
+<!--                VISIT_DATE,-->
+<!--            </if>-->
+<!--            <if test="visitInformation != null and visitInformation != ''">-->
+<!--                VISIT_INFORMATION,-->
+<!--            </if>-->
+<!--            <if test="difficultPoint != null and difficultPoint != ''">-->
+<!--                DIFFICULT_POINT,-->
+<!--            </if>-->
+<!--            <if test="writeTime != null and writeTime != ''">-->
+<!--                WRITE_TIME,-->
+<!--            </if>-->
+<!--            <if test="modifyTime != null and modifyTime != ''">-->
+<!--                MODIFY_TIME-->
+<!--            </if>-->
+<!--        </trim>-->
+<!--        <trim prefix="values (" suffix=")" suffixOverrides=",">-->
+<!--            <if test="substation != null and substation != ''">-->
+<!--                #{substation,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="customerManager != null and customerManager != ''">-->
+<!--                #{customerManager,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="contactWay != null and contactWay != ''">-->
+<!--                #{contactWay,jdbcType=INTEGER},-->
+<!--            </if>-->
+<!--            <if test="hotelName != null and hotelName != ''">-->
+<!--                #{hotelName,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="isCovered != null and isCovered != ''">-->
+<!--                #{isCovered,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="roomNumber != null and roomNumber != '' ">-->
+<!--                #{roomNumber,jdbcType=INTEGER},-->
+<!--            </if>-->
+<!--            <if test="groupNumber != null and groupNumber != '' ">-->
+<!--                #{groupNumber,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="address != null and address != ''">-->
+<!--                #{address,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="type != null and type != ''">-->
+<!--                #{type,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="operator != null and operator != ''">-->
+<!--                #{operator,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="endTime1 != null and endTime1 != ''">-->
+<!--                #{endTime1,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="internetCharge != null and internetCharge != ''">-->
+<!--                #{internetCharge,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="endTime2 != null and endTime2 != ''">-->
+<!--                #{endTime2,jdbcType=TIMESTAMP},-->
+<!--            </if>-->
+<!--            <if test="responsiblePerson != null and responsiblePerson != ''">-->
+<!--                #{responsiblePerson,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="position != null and position != ''">-->
+<!--                #{position,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="phoneNumber != null and phoneNumber != ''">-->
+<!--                #{phoneNumber,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="visitDate != null and visitDate != ''">-->
+<!--                #{visitDate,jdbcType=TIMESTAMP},-->
+<!--            </if>-->
+<!--            <if test="visitInformation != null and visitInformation != ''">-->
+<!--                #{visitInformation,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="difficultPoint != null and difficultPoint != ''">-->
+<!--                #{difficultPoint,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="writeTime != null and writeTime != ''">-->
+<!--                #{writeTime,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--            <if test="modifyTime != null and modifyTime != ''">-->
+<!--                #{modifyTime,jdbcType=VARCHAR},-->
+<!--            </if>-->
+<!--        </trim>-->
+<!--    </insert>-->
 
     <delete id="deleteById">
         delete

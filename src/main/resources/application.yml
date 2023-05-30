@@ -9,7 +9,7 @@ spring:
       max-request-size: 50MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:springboot_demo}
+    url: jdbc:mysql://${MYSQL_ADDRESS}/${MYSQL_DATABASE:springboot_demo}?serverTimezone=UTC
     username: ${MYSQL_USERNAME}
     password: ${MySQL_PASSWORD}
   mvc:

@@ -8,7 +8,7 @@ spring:
       max-request-size: 50MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://sh-cynosdbmysql-grp-iw8efhp6.sql.tencentcdb.com:25694/springboot_demo
+    url: jdbc:mysql://sh-cynosdbmysql-grp-iw8efhp6.sql.tencentcdb.com:25694/springboot_demo?serverTimezone=UTC
     username: root
     password: GHf8twhf
   mvc:
