@@ -198,4 +198,10 @@
         group by CUSTOMER_MANAGER
     </select>
 
+    <select id="getCountAndCm" resultType="java.util.HashMap" parameterType="string" >
+        select CUSTOMER_MANAGER as 'customerManager',count(1) as 'count',substation from mbp_sub_commercial_building
+        where  modify_time &gt;= #{startTime} and modify_time &lt;= #{endTime}
+        group by CUSTOMER_MANAGER
+    </select>
+
 </mapper>

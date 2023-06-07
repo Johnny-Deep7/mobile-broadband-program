@@ -15,4 +15,7 @@ public interface CommercialBuildingDetailMapper extends EasyBaseMapper<Commercia
     List<HashMap<String,Long>> getCount(@Param("startTime")String startTime, @Param("endTime")String endTime);
 
     List<HashMap<String,Long>> getCountBySubstation(@Param("startTime")String startTime,@Param("endTime")String endTime,@Param("substation")String substation);
+
+    List<HashMap<String,Long>> getCountAndCm(@Param("startTime")String startTime, @Param("endTime")String endTime);
+
 }

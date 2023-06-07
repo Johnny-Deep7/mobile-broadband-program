@@ -287,107 +287,6 @@ public class MbpServiceImpl implements MbpService {
                 apiResponse.setMsg("正在导出");
                 break;
         }
-//        String excelFileName = URLEncoder.encode("吴中调查情况表", "UTF-8")
-//                .replaceAll("\\+", "%20");
-//        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-//        response.setCharacterEncoding("utf-8");
-//        response.setHeader("Content-disposition", "attachment;filename=" + excelFileName + ".xls");
-//        ExcelWriter excelWriter = EasyExcel.write(response.getOutputStream()).build();
-//        WriteSheet hotelSheet = EasyExcel.writerSheet(0, "酒店宾馆").build();
-//        WriteSheet CommercialBuildingSheet = EasyExcel.writerSheet(1, "商务楼宇").build();
-//        WriteSheet CommercialBuildingDetailSheet = EasyExcel.writerSheet(2, "产业园区").build();
-//        WriteSheet IndustrialParkSheet = EasyExcel.writerSheet(3, "商务楼宇二级明细").build();
-//        WriteSheet IndustrialParkDetailSheet = EasyExcel.writerSheet(4, "产业园区二级明细").build();
-//        WriteSheet ShopSheet = EasyExcel.writerSheet(5, "沿街商铺").build();
-//        WriteSheet ShopDetailSheet = EasyExcel.writerSheet(6, "沿街商铺二级明细").build();
-//
-//        excelWriter.write(wrHotel,hotelSheet);
-//        excelWriter.write(wrCommercialBuilding,CommercialBuildingSheet);
-//        excelWriter.write(wrCommercialBuildingDetail,CommercialBuildingDetailSheet);
-//        excelWriter.write(wrIndustrialPark,IndustrialParkSheet);
-//        excelWriter.write(wrIndustrialParkDetail,IndustrialParkDetailSheet);
-//        excelWriter.write(wrShop,ShopSheet);
-//        excelWriter.write(wrShopDetail,ShopDetailSheet);
-//
-//
-//        excelWriter.finish();
-//        response.flushBuffer();
-
-//        //获取模板(模板你可以放在任何位置，前提是你能获取到。这里放在resource下)
-//        ClassPathResource couponOrderTemplateResource = new ClassPathResource("userInfo.xlsx");
-//
-//        response.setContentType("application/vnd.ms-excel");
-//        response.setCharacterEncoding("utf-8");
-//        String excelFileName = URLEncoder.encode("吴中调查情况表", "UTF-8")
-//                .replaceAll("\\+", "%20");
-//        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
-//        // attachment这个代表要下载的，如果去掉就直接打开了(attachment-作为附件下载,inline-在线打开)
-//        // excelFileName是文件名，另存为或者下载时，为默认的文件名
-//        response.setHeader("Content-disposition","attachment;filename=" + excelFileName + ".xlsx");
-//        response.setHeader("Content-Type","application/octet-stream;charset=utf-8");
-//
-//        InputStream templateInputStream = null;
-//
-//        ExcelWriter excelWriter = null;
-//        WriteSheet hotelSheet = null;
-//        WriteSheet CommercialBuildingSheet = null;
-//        WriteSheet CommercialBuildingDetailSheet = null;
-//        WriteSheet IndustrialParkSheet = null;
-//        WriteSheet IndustrialParkDetailSheet = null;
-//        WriteSheet ShopSheet = null;
-//        WriteSheet ShopDetailSheet = null;
-//
-//        ServletOutputStream outputStream = null;
-//
-////        try {
-////            outputStream = response.getOutputStream();
-////            templateInputStream = couponOrderTemplateResource.getInputStream();
-////        } catch (IOException e) {
-////            log.error("获取模板失败");
-////        }
-//
-//        // 这里注意 入参用了forceNewRow 代表在写入list的时候不管list下面有没有空行 都会创建一行，然后下面的数据往后移动。默认 是false，会直接使用下一行，如果没有则创建。
-//        // forceNewRow 如果设置了true,有个缺点 就是他会把所有的数据都放到内存了，所以慎用
-//        // 简单的说 如果你的模板有list,且list不是最后一行，下面还有数据需要填充 就必须设置 forceNewRow=true 但是这个就会把所有数据放到内存 会很耗内存
-//        // 如果数据量大 list不是最后一行 参照下一个
-//        FillConfig fillConfig = FillConfig.builder().forceNewRow(Boolean.TRUE).build();
-////        excelWriter = EasyExcel.write(outputStream).withTemplate(templateInputStream).build();
-//
-//        //创建第一个sheet
-//        hotelSheet = EasyExcel.writerSheet("酒店宾馆").build();
-//        //填充
-//        excelWriter.fill(wrapperHotel,fillConfig,hotelSheet);
-//
-//        //创建第二个sheet
-//        CommercialBuildingSheet = EasyExcel.writerSheet("商务楼宇").build();
-//        //填充
-//        excelWriter.fill(wrapperCommercialBuilding,fillConfig,CommercialBuildingSheet);
-//
-//        IndustrialParkSheet = EasyExcel.writerSheet("产业园区").build();
-//        //填充
-//        excelWriter.fill(wrapperIndustrialPark,fillConfig,IndustrialParkSheet);
-//
-//        CommercialBuildingDetailSheet = EasyExcel.writerSheet("商务楼宇二级明细").build();
-//        //填充
-//        excelWriter.fill(wrapperCommercialBuildingDetail,fillConfig,CommercialBuildingDetailSheet);
-//
-//        IndustrialParkDetailSheet = EasyExcel.writerSheet("产业园区二级明细").build();
-//        //填充
-//        excelWriter.fill(wrapperIndustrialParkDetail,fillConfig,IndustrialParkDetailSheet);
-//
-//        ShopSheet = EasyExcel.writerSheet("沿街商铺").build();
-//        //填充
-//        excelWriter.fill(wrapperShop,fillConfig,ShopSheet);
-//
-//        ShopDetailSheet = EasyExcel.writerSheet("沿街商铺二级明细").build();
-//        //填充
-//        excelWriter.fill(wrapperShopDetail,fillConfig,ShopDetailSheet);
-//
-//        //关闭
-//        excelWriter.finish();
-//        IOUtils.closeQuietly(templateInputStream);
-//        IOUtils.closeQuietly(outputStream);
-//        IOUtils.closeQuietly((Closeable) excelWriter);
 
         return apiResponse;
     }
@@ -555,6 +454,98 @@ public class MbpServiceImpl implements MbpService {
                 }
             }
 
+            getCountDTO.setHotel(hotelCount.intValue());
+            getCountDTO.setBuilding(buildingCount.intValue());
+            getCountDTO.setIndustrialPark(park.intValue());
+            getCountDTO.setShop(shopCount.intValue());
+            getCountDTO.setTotel(hotelCount.intValue()+buildingCount.intValue()+park.intValue()+shopCount.intValue());
+            list.add(getCountDTO);
+        }
+        statisticalAnalysisDTO.setGetCountDTOS(list);
+        statisticalAnalysisDTO.setHotelCount(list.stream()
+                .map(e -> e.getHotel()).reduce(0, Integer::sum));
+        statisticalAnalysisDTO.setBuildingCount(list.stream()
+                .map(e -> e.getBuilding()).reduce(0, Integer::sum));
+        statisticalAnalysisDTO.setShopCount(list.stream()
+                .map(e -> e.getShop()).reduce(0, Integer::sum));
+        statisticalAnalysisDTO.setIndustrialParkCount(list.stream()
+                .map(e -> e.getIndustrialPark()).reduce(0, Integer::sum));
+        statisticalAnalysisDTO.setTotelCount(list.stream()
+                .map(e -> e.getTotel()).reduce(0, Integer::sum));
+        ApiResponse apiResponse = ApiResponse.ok();
+        apiResponse.setData(statisticalAnalysisDTO);
+        return apiResponse;
+    }
+
+    @Override
+    public ApiResponse fullExportByCM (String startTime,String endTime) {
+        List<HashMap<String, Long>> hotel = hotelMapper.getCountAndCm(startTime, endTime);
+        List<HashMap<String, Long>> commercialBuilding = commercialBuildingDetailMapper.getCountAndCm(startTime, endTime);
+        List<HashMap<String, Long>> industrialPark = industrialParkDetailMapper.getCountAndCm(startTime, endTime);
+        List<HashMap<String, Long>> shop = shopDetailMapper.getCountAndCm(startTime, endTime);
+//        List<String> customerManagers = new ArrayList<>();
+
+        HashMap<String, String> map = new HashMap<>();
+
+        for (HashMap h:hotel) {
+            map.put(h.get("customerManager").toString(),h.get("substation").toString());
+        }
+
+        for (HashMap h:commercialBuilding) {
+            map.put(h.get("customerManager").toString(),h.get("substation").toString());
+        }
+
+        for (HashMap h:industrialPark) {
+            map.put(h.get("customerManager").toString(),h.get("substation").toString());
+        }
+        for (HashMap h:shop) {
+            map.put(h.get("customerManager").toString(),h.get("substation").toString());
+        }
+
+        StatisticalAnalysisDTO statisticalAnalysisDTO = new StatisticalAnalysisDTO();
+        List<GetCountDTO> list = new ArrayList<>();
+        GetCountDTO getCountDTO = null;
+        for (String customerManager:map.keySet()) {
+            Long hotelCount = 0L;
+            Long buildingCount = 0L;
+            Long park = 0L;
+            Long shopCount = 0L;
+            getCountDTO = new GetCountDTO();
+            getCountDTO.setCustomerManager(customerManager);
+            getCountDTO.setStartTime(startTime);
+            getCountDTO.setEndTime(endTime);
+            for (HashMap hashMap:hotel) {
+                if (!hashMap.get("customerManager").equals(customerManager)){
+                    continue;
+                }else {
+                    hotelCount = (Long) hashMap.get("count");
+                }
+            }
+
+            for (HashMap hashMap:commercialBuilding) {
+                if (!hashMap.get("customerManager").equals(customerManager)){
+                    continue;
+                }else {
+                    buildingCount = (Long) hashMap.get("count");
+                }
+            }
+
+            for (HashMap hashMap:industrialPark) {
+                if (!hashMap.get("customerManager").equals(customerManager)){
+                    continue;
+                }else {
+                    park = (Long) hashMap.get("count");
+                }
+            }
+
+            for (HashMap hashMap:shop) {
+                if (!hashMap.get("customerManager").equals(customerManager)){
+                    continue;
+                }else {
+                    shopCount = (Long) hashMap.get("count");
+                }
+            }
+            getCountDTO.setSubstation(map.get(customerManager));
             getCountDTO.setHotel(hotelCount.intValue());
             getCountDTO.setBuilding(buildingCount.intValue());
             getCountDTO.setIndustrialPark(park.intValue());

@@ -273,4 +273,10 @@ public class MbpController {
         return routeService.download(response,startTime,endTime,substation);
     }
 
+    @GetMapping(value = "/fullExportByCM")
+    public ApiResponse fullExportByCM(@RequestParam("startTime")String startTime,@RequestParam("endTime")String endTime) {
+        log.info("统计分析查询开始！");
+        return mbpService.fullExportByCM(startTime,endTime);
+    }
+
 }

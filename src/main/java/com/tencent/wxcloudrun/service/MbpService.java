@@ -22,4 +22,6 @@ public interface MbpService {
 
     ApiResponse downloadStatistics(HttpServletResponse response,String startTime, String endTime,String substation);
 
+    ApiResponse fullExportByCM(String startTime, String endTime);
+
 }
