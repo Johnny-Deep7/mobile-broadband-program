@@ -11,8 +11,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class LoginDTO {
-    Integer id;
-    String phoneNumber;
-    String passWord;
-    String isAdministrator;
+    private Integer id;
+    private String userName;
+    private String phoneNumber;
+    private String passWord;
+    private String isAdministrator;
 }

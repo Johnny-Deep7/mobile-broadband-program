@@ -16,11 +16,13 @@ import lombok.NoArgsConstructor;
 @TableName(value = "mbp_log_in")
 public class LoginPTO {
     @TableId(value = "id", type = IdType.AUTO)
-    Integer id;
+    private Integer id;
+    @TableField("USER_NAME")
+    private String userName;
     @TableField("PHONE_NUMBER")
-    String phoneNumber;
+    private String phoneNumber;
     @TableField("PASSWORD")
-    String passWord;
+    private String passWord;
     @TableField("IS_ADMINISTRATOR")
-    String isAdministrator;
+    private String isAdministrator;
 }
