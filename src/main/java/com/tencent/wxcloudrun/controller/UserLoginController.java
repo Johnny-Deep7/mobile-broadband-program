@@ -25,23 +25,6 @@ public class UserLoginController {
         return loginService.create(loginPTO);
     }
 
-    /**
-     * 注册
-     */
-    @PostMapping("/register")
-    public ApiResponse register(@RequestBody LoginPTO loginPTO){
-        log.info("注册用户信息开始！");
-        return loginService.register(loginPTO);
-    }
-
-    // 登录，基于restful风格
-    @PostMapping("/login")
-    public ApiResponse login(@RequestBody LoginPTO loginPTO) {
-        log.info("用户登录！");
-        return loginService.login(loginPTO);
-    }
-
-
     @PostMapping(value = "/Login")
     @ResponseBody
     public ApiResponse login(@RequestBody LoginDTO loginDTO) {
