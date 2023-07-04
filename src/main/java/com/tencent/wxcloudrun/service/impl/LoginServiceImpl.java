@@ -8,15 +8,21 @@ import com.tencent.wxcloudrun.mapper.LoginMapper;
 import com.tencent.wxcloudrun.pto.LoginPTO;
 import com.tencent.wxcloudrun.pto.MarketingPlanPTO;
 import com.tencent.wxcloudrun.service.LoginService;
+import com.tencent.wxcloudrun.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.regex.Pattern;
 
 @Service
 public class LoginServiceImpl implements LoginService {
     @Autowired
     private LoginMapper loginMapper;
+
+    //        创建一个BCryptPasswordEncoder对象
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
     public ApiResponse create(LoginPTO loginPTO) {
@@ -27,9 +33,9 @@ public class LoginServiceImpl implements LoginService {
             return apiResponse;
         }
         QueryWrapper<LoginPTO> wrapper = new QueryWrapper<>();
-        wrapper.eq("phone_number",loginPTO.getPhoneNumber());
+        wrapper.eq("phone_number", loginPTO.getPhoneNumber());
         Long count = loginMapper.selectCount(wrapper);
-        if(0 != count){
+        if (0 != count) {
             apiResponse.setCode(400);
             apiResponse.setMsg("手机号已注册");
             return apiResponse;
@@ -46,6 +52,33 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
+    public ApiResponse regin(LoginPTO loginPTO) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //对密码进行加密
+        String password = passwordEncoder.encode(loginPTO.getPassWord());
+        loginPTO.setPassWord(password);
+        QueryWrapper<LoginPTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("phone_number", loginPTO.getPhoneNumber());
+        Long count = loginMapper.selectCount(wrapper);
+        if (count > 0) {
+            apiResponse.setCode(400);
+            apiResponse.setMsg("当前用户已经存在");
+            return apiResponse;
+        }
+        int i = loginMapper.insert(loginPTO);
+        if (i > 0) {
+            apiResponse.setCode(200);
+            apiResponse.setMsg("添加成功");
+        } else {
+            apiResponse.setCode(400);
+            apiResponse.setMsg("添加失败");
+        }
+
+        return apiResponse;
+
+    }
+
+    @Override
     public ApiResponse login(LoginPTO loginPTO) {
         String passWord = loginPTO.getPassWord();
         ApiResponse apiResponse = new ApiResponse();
@@ -55,20 +88,24 @@ public class LoginServiceImpl implements LoginService {
         }
         LoginPTO loginPTO1 = loginMapper.selectOne(queryWrapper);
         if (StringUtils.isBlank(loginPTO1.getPassWord())) {
-            loginMapper.update(loginPTO,queryWrapper);
-            apiResponse.setCode(200);
-            apiResponse.setMsg("第一次登录，密码设置成功");
+            apiResponse.setCode(400);
+            apiResponse.setMsg("登录失败,当前用户不存在");
             return apiResponse;
         }
-        if (passWord.equals(loginPTO1.getPassWord())){
+        boolean matches = passwordEncoder.matches(loginPTO.getPassWord(), loginPTO1.getPassWord());
+        //生成token
+        String token = JwtUtil.getJwtToken(loginPTO1.getId(), loginPTO1.getUserName());
+        if (matches) {
             apiResponse.setCode(200);
             apiResponse.setMsg("登录成功");
+            apiResponse.setData(token);
         } else {
             apiResponse.setCode(400);
-            apiResponse.setMsg("登录失败");
+            apiResponse.setMsg("密码输入错误，请重新输入");
         }
         return apiResponse;
     }
+
     @Override
     public QueryResponse query(LoginPTO loginPTO) {
         QueryResponse queryResponse = new QueryResponse();
@@ -98,10 +135,10 @@ public class LoginServiceImpl implements LoginService {
     public ApiResponse delete(Integer id) {
         ApiResponse apiResponse = new ApiResponse();
         int i = loginMapper.deleteById(id);
-        if(i>0){
+        if (i > 0) {
             apiResponse.setCode(200);
             apiResponse.setMsg("删除成功");
-        }else{
+        } else {
             apiResponse.setCode(400);
             apiResponse.setMsg("删除失败");
         }
@@ -112,7 +149,7 @@ public class LoginServiceImpl implements LoginService {
     public ApiResponse update(LoginPTO loginPTO) {
         ApiResponse apiResponse = new ApiResponse();
         QueryWrapper<LoginPTO> queryWrapper = new QueryWrapper<>();
-        if(StringUtils.isNotEmpty(loginPTO.getPhoneNumber())) {
+        if (StringUtils.isNotEmpty(loginPTO.getPhoneNumber())) {
             queryWrapper.eq("phone_number", loginPTO.getPhoneNumber());
         }
         Long count = loginMapper.selectCount(queryWrapper);
@@ -121,7 +158,7 @@ public class LoginServiceImpl implements LoginService {
             apiResponse.setMsg("手机号码输入错误");
             return apiResponse;
         }
-        int i = loginMapper.update(loginPTO,queryWrapper);
+        int i = loginMapper.update(loginPTO, queryWrapper);
         if (i > 0) {
             apiResponse.setCode(200);
             apiResponse.setMsg("登录信息修改成功");
@@ -132,8 +169,28 @@ public class LoginServiceImpl implements LoginService {
         return apiResponse;
     }
 
+    @Override
+    public ApiResponse updatePassWord(Integer id, String passWord) {
+        ApiResponse apiResponse = ApiResponse.ok();
+
+        QueryWrapper<LoginPTO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", id);
+        LoginPTO loginPTO = loginMapper.selectOne(queryWrapper);
+        loginPTO.setPassWord(passwordEncoder.encode(passWord));
+        int i = loginMapper.updateById(loginPTO);
+        if (i > 0) {
+            apiResponse.setCode(200);
+            apiResponse.setMsg("密码修改成功！");
+        }else {
+            apiResponse.setCode(400);
+            apiResponse.setMsg("密码修改失败!");
+        }
+
+        return apiResponse;
+    }
+
     private Boolean isValidPhoneNumber(String phoneNumber) {
-        if(phoneNumber != null && !phoneNumber.isEmpty()) {
+        if (phoneNumber != null && !phoneNumber.isEmpty()) {
             return Pattern.matches("^1[3-9]\\d{9}$", phoneNumber);
         }
         return false;
