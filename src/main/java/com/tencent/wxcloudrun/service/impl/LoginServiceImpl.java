@@ -8,15 +8,24 @@ import com.tencent.wxcloudrun.mapper.LoginMapper;
 import com.tencent.wxcloudrun.pto.LoginPTO;
 import com.tencent.wxcloudrun.pto.MarketingPlanPTO;
 import com.tencent.wxcloudrun.service.LoginService;
+import com.tencent.wxcloudrun.utils.DataAddException;
+import com.tencent.wxcloudrun.utils.DataMatchException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
 
 @Service
+@Log4j2
 public class LoginServiceImpl implements LoginService {
     @Autowired
     private LoginMapper loginMapper;
+    // 数据加密，在启动类中已经注入进IOC容器中
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
 
     @Override
     public ApiResponse create(LoginPTO loginPTO) {
@@ -46,29 +55,79 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public ApiResponse login(LoginPTO loginPTO) {
-        String passWord = loginPTO.getPassWord();
-        ApiResponse apiResponse = new ApiResponse();
-        QueryWrapper<LoginPTO> queryWrapper = new QueryWrapper<>();
-        if (StringUtils.isNotEmpty(loginPTO.getPhoneNumber())) {
-            queryWrapper.eq("phone_number", loginPTO.getPhoneNumber());
-        }
-        LoginPTO loginPTO1 = loginMapper.selectOne(queryWrapper);
-        if (StringUtils.isBlank(loginPTO1.getPassWord())) {
-            loginMapper.update(loginPTO,queryWrapper);
-            apiResponse.setCode(200);
-            apiResponse.setMsg("第一次登录，密码设置成功");
+    public ApiResponse register(LoginPTO loginPTO) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        QueryWrapper<LoginPTO> wrapper = new QueryWrapper<>();
+        wrapper.eq("phone_number",loginPTO.getPhoneNumber());
+        Long count = loginMapper.selectCount(wrapper);
+        if (count != 0){
+            apiResponse.setCode(400);
+            apiResponse.setMsg("手机号已注册");
             return apiResponse;
         }
-        if (passWord.equals(loginPTO1.getPassWord())){
-            apiResponse.setCode(200);
-            apiResponse.setMsg("登录成功");
-        } else {
-            apiResponse.setCode(400);
-            apiResponse.setMsg("登录失败");
+        int i = loginMapper.insert(loginPTO);
+        if (i == 1){
+            log.info("用户{}注册成功",loginPTO);
+            return apiResponse;
+        }else {
+            log.error("服务器发生异常，注册失败");
+            throw new DataAddException("403","注册失败");
         }
-        return apiResponse;
+
     }
+
+    @Override
+    public ApiResponse login(LoginPTO loginPTO) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        // mybatis-plus的条件构造器，这里实现根据username查询
+        QueryWrapper<LoginPTO> wrapper = new QueryWrapper<LoginPTO>();
+        wrapper.eq("phone_number", loginPTO.getPhoneNumber());
+        LoginPTO userLogin = loginMapper.selectOne(wrapper);
+
+        /**
+         *  encoder.matches(password, userLogin.getPassword()，实现输入的密码与数据库中的密码进
+         *  行匹配,如果匹配成功则返回匹配的数据给controller层，如果失败则抛异常。
+         *  为什么没盐，没有解密了?因为这个已经被CryptPasswordEncoder封装好了，
+         *  在encoder.matches()方进行解密匹配完全帮你封装好了，所以不必考虑，
+         *  只需要将前端传入的密码与数据库中加密后的密码进行匹配就行。
+         * **/
+        if (userLogin != null && encoder.matches(loginPTO.getPassWord(), userLogin.getPassWord())) {
+            log.info("用户{}，登录成功",loginPTO.getUserName());
+            apiResponse.setMsg("登录成功");
+            apiResponse.setCode(200);
+            return apiResponse;
+        } else {
+            log.error("用户名或密码错误");
+            throw new DataMatchException("405", "用户名或密码错误");
+        }
+    }
+
+
+
+//    @Override
+//    public ApiResponse login(LoginPTO loginPTO) {
+//        String passWord = loginPTO.getPassWord();
+//        ApiResponse apiResponse = new ApiResponse();
+//        QueryWrapper<LoginPTO> queryWrapper = new QueryWrapper<>();
+//        if (StringUtils.isNotEmpty(loginPTO.getPhoneNumber())) {
+//            queryWrapper.eq("phone_number", loginPTO.getPhoneNumber());
+//        }
+//        LoginPTO loginPTO1 = loginMapper.selectOne(queryWrapper);
+//        if (StringUtils.isBlank(loginPTO1.getPassWord())) {
+//            loginMapper.update(loginPTO,queryWrapper);
+//            apiResponse.setCode(200);
+//            apiResponse.setMsg("第一次登录，密码设置成功");
+//            return apiResponse;
+//        }
+//        if (passWord.equals(loginPTO1.getPassWord())){
+//            apiResponse.setCode(200);
+//            apiResponse.setMsg("登录成功");
+//        } else {
+//            apiResponse.setCode(400);
+//            apiResponse.setMsg("登录失败");
+//        }
+//        return apiResponse;
+//    }
     @Override
     public QueryResponse query(LoginPTO loginPTO) {
         QueryResponse queryResponse = new QueryResponse();

@@ -17,6 +17,8 @@ import lombok.NoArgsConstructor;
 public class LoginPTO {
     @TableId(value = "id", type = IdType.AUTO)
     Integer id;
+    @TableField("USER_NAME")
+    String userName;
     @TableField("PHONE_NUMBER")
     String phoneNumber;
     @TableField("PASSWORD")
