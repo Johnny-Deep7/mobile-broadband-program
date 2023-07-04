@@ -552,6 +552,9 @@ public class MbpServiceImpl implements MbpService {
             getCountDTO.setShop(shopCount.intValue());
             getCountDTO.setTotel(hotelCount.intValue()+buildingCount.intValue()+park.intValue()+shopCount.intValue());
             list.add(getCountDTO);
+            list = list.stream().sorted((g1, g2) -> {
+                return g1.getSubstation().compareTo(g2.getSubstation());
+            }).collect(Collectors.toList());
         }
         statisticalAnalysisDTO.setGetCountDTOS(list);
         statisticalAnalysisDTO.setHotelCount(list.stream()
