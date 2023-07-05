@@ -7,7 +7,6 @@ import com.tencent.wxcloudrun.pto.LoginPTO;
 import javax.servlet.http.HttpServletRequest;
 
 public interface LoginService {
-    public ApiResponse create(LoginPTO loginPTO);
     public ApiResponse regin(LoginPTO loginPTO);
     public ApiResponse login(LoginPTO loginPTO);
     public ApiResponse delete(Integer id);
