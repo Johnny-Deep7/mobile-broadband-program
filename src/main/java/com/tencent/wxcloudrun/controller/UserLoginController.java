@@ -49,14 +49,14 @@ public class UserLoginController {
     }
 
 
-    @PostMapping(value = "/Query")
-    @ResponseBody
-    public QueryResponse query(@RequestBody LoginDTO loginDTO) {
-        log.info("验证用户登录信息");
-        LoginPTO loginPTO = new LoginPTO();
-        BeanUtils.copyProperties(loginDTO, loginPTO);
-        return loginService.query(loginPTO);
-    }
+//    @PostMapping(value = "/Query")
+//    @ResponseBody
+//    public QueryResponse query(@RequestBody LoginDTO loginDTO) {
+//        log.info("验证用户登录信息");
+//        LoginPTO loginPTO = new LoginPTO();
+//        BeanUtils.copyProperties(loginDTO, loginPTO);
+//        return loginService.query(loginPTO);
+//    }
 
     @DeleteMapping(value = "/deleteAccount")
     public ApiResponse deleteLogin(@RequestParam("id") Integer id) {

@@ -61,6 +61,7 @@ public class LoginServiceImpl implements LoginService {
         String password = AESUtils.decode(loginPTO.getPassWord());
         String phoneNumber = AESUtils.decode(loginPTO.getPhoneNumber());
         ApiResponse apiResponse = new ApiResponse();
+        QueryResponse queryResponse = new QueryResponse();
         QueryWrapper<LoginPTO> queryWrapper = new QueryWrapper<>();
         if (StringUtils.isNotEmpty(loginPTO.getPhoneNumber())) {
             queryWrapper.eq("phone_number", phoneNumber);
@@ -75,9 +76,11 @@ public class LoginServiceImpl implements LoginService {
         //生成token
         String token = JwtUtil.getJwtToken(loginPTO1.getId(), loginPTO1.getUserName());
         if (matches) {
+            queryResponse.setIsAdmin(loginPTO1.getIsAdministrator());
+            queryResponse.setMsg(token);
             apiResponse.setCode(200);
             apiResponse.setMsg("登录成功");
-            apiResponse.setData(token);
+            apiResponse.setData(queryResponse);
         } else {
             apiResponse.setCode(400);
             apiResponse.setMsg("密码输入错误，请重新输入");
@@ -85,30 +88,30 @@ public class LoginServiceImpl implements LoginService {
         return apiResponse;
     }
 
-    @Override
-    public QueryResponse query(LoginPTO loginPTO) {
-        QueryResponse queryResponse = new QueryResponse();
-        QueryWrapper<LoginPTO> queryWrapper = new QueryWrapper<>();
-        if (StringUtils.isNotEmpty(loginPTO.getPhoneNumber())) {
-            queryWrapper.eq("phone_number", loginPTO.getPhoneNumber());
-        }
-        LoginPTO loginPTO1 = loginMapper.selectOne(queryWrapper);
-        if (loginPTO1 != null) {
-            queryResponse.setCode(200);
-            queryResponse.setMsg("账号查询成功");
-            if (StringUtils.isBlank(loginPTO1.getPassWord())) {
-                queryResponse.setIsFirstLogin(Boolean.TRUE);
-                queryResponse.setIsAdmin(loginPTO1.getIsAdministrator());
-            } else {
-                queryResponse.setIsFirstLogin(Boolean.FALSE);
-                queryResponse.setIsAdmin(loginPTO1.getIsAdministrator());
-            }
-        } else {
-            queryResponse.setCode(400);
-            queryResponse.setMsg("账号查询失败");
-        }
-        return queryResponse;
-    }
+//    @Override
+//    public QueryResponse query(LoginPTO loginPTO) {
+//        QueryResponse queryResponse = new QueryResponse();
+//        QueryWrapper<LoginPTO> queryWrapper = new QueryWrapper<>();
+//        if (StringUtils.isNotEmpty(loginPTO.getPhoneNumber())) {
+//            queryWrapper.eq("phone_number", loginPTO.getPhoneNumber());
+//        }
+//        LoginPTO loginPTO1 = loginMapper.selectOne(queryWrapper);
+//        if (loginPTO1 != null) {
+//            queryResponse.setCode(200);
+//            queryResponse.setMsg("账号查询成功");
+//            if (StringUtils.isBlank(loginPTO1.getPassWord())) {
+//                queryResponse.setIsFirstLogin(Boolean.TRUE);
+//                queryResponse.setIsAdmin(loginPTO1.getIsAdministrator());
+//            } else {
+//                queryResponse.setIsFirstLogin(Boolean.FALSE);
+//                queryResponse.setIsAdmin(loginPTO1.getIsAdministrator());
+//            }
+//        } else {
+//            queryResponse.setCode(400);
+//            queryResponse.setMsg("账号查询失败");
+//        }
+//        return queryResponse;
+//    }
 
     @Override
     public ApiResponse delete(Integer id) {

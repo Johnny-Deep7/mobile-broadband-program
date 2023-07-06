@@ -12,5 +12,5 @@ public interface LoginService {
     public ApiResponse delete(Integer id);
     public ApiResponse update(LoginPTO loginPTO);
     public ApiResponse updatePassWord(Integer id,String passWord);
-    public QueryResponse query(LoginPTO loginPTO);
+//    public QueryResponse query(LoginPTO loginPTO);
 }
