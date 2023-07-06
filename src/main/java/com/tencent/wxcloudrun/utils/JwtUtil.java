@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 public class JwtUtil {
-    //    token 时效 12小时
-    public static final long EXPIRE = 1000*60*60*12;
+    //    token 时效 1小时
+    public static final long EXPIRE = 1000*60*60*1;
     //    签名哈希的密钥，对于不同的加密算法来说含义不同
     public static final String APP_SECRET = "hss200923usersToken";
 

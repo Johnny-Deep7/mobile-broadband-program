@@ -30,9 +30,11 @@ public class LoginServiceImpl implements LoginService {
         ApiResponse apiResponse = ApiResponse.ok();
         //对密码解密
         String decode = AESUtils.decode(loginPTO.getPassWord());
+        String phoneNumber = AESUtils.decode(loginPTO.getPhoneNumber());
         //对密码进行加密
         String password = passwordEncoder.encode(decode);
         loginPTO.setPassWord(password);
+        loginPTO.setPassWord(phoneNumber);
         QueryWrapper<LoginPTO> wrapper = new QueryWrapper<>();
         wrapper.eq("phone_number", loginPTO.getPhoneNumber());
         Long count = loginMapper.selectCount(wrapper);
@@ -57,10 +59,11 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public ApiResponse login(LoginPTO loginPTO) {
         String password = AESUtils.decode(loginPTO.getPassWord());
+        String phoneNumber = AESUtils.decode(loginPTO.getPhoneNumber());
         ApiResponse apiResponse = new ApiResponse();
         QueryWrapper<LoginPTO> queryWrapper = new QueryWrapper<>();
         if (StringUtils.isNotEmpty(loginPTO.getPhoneNumber())) {
-            queryWrapper.eq("phone_number", loginPTO.getPhoneNumber());
+            queryWrapper.eq("phone_number", phoneNumber);
         }
         LoginPTO loginPTO1 = loginMapper.selectOne(queryWrapper);
         if (StringUtils.isBlank(loginPTO1.getPassWord())) {
