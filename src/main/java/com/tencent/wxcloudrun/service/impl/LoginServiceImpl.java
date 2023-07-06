@@ -34,7 +34,7 @@ public class LoginServiceImpl implements LoginService {
         //对密码进行加密
         String password = passwordEncoder.encode(decode);
         loginPTO.setPassWord(password);
-        loginPTO.setPassWord(phoneNumber);
+        loginPTO.setPhoneNumber(phoneNumber);
         QueryWrapper<LoginPTO> wrapper = new QueryWrapper<>();
         wrapper.eq("phone_number", loginPTO.getPhoneNumber());
         Long count = loginMapper.selectCount(wrapper);
