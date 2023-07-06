@@ -42,12 +42,13 @@ public class JwtUtil {
      * @return 如果token 有效返回true，否则返回false
      */
     public static boolean checkToken(String jwtToken){
-        if(StringUtils.isEmpty(jwtToken)) return false;
+        if(StringUtils.isEmpty(jwtToken)) {
+            return false;
+        }
         try {
             Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(jwtToken);
         }catch(Exception e){
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException("判断token失败");
         }
         return true;
     }
@@ -61,11 +62,12 @@ public class JwtUtil {
         try{
 //            从http请求头中获取token字符串
             String jwtToken = request.getHeader("token");
-            if(StringUtils.isEmpty(jwtToken)) return false;
+            if(StringUtils.isEmpty(jwtToken)) {
+                return false;
+            }
             Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(jwtToken);
         }catch(Exception e){
-            e.printStackTrace();
-            return false;
+            throw new RuntimeException("token判断失败！");
         }
         return true;
     }

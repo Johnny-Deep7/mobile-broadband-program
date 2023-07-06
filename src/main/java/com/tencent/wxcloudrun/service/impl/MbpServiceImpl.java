@@ -602,20 +602,20 @@ public class MbpServiceImpl implements MbpService {
                 os.write(buffer, 0, bytesRead);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+           throw new RuntimeException("获取流文件失败！");
         } finally {
             if (os != null) {
                 try {
                     os.close();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    throw new RuntimeException("关闭流文件失败！");
                 }
             }
             if (ins != null) {
                 try {
                     ins.close();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    throw new RuntimeException("关闭流文件失败！");
                 }
             }
         }
@@ -889,13 +889,13 @@ public class MbpServiceImpl implements MbpService {
             }
             return apiResponse;
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            throw new RuntimeException("文件未找到！");
         } finally {
             if (inputStream != null) {
                 try {
                     inputStream.close();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException("关闭流文件失败！");
                 }
             }
             return apiResponse;
@@ -990,7 +990,7 @@ public class MbpServiceImpl implements MbpService {
             }
             EasyExcelUtils.finishWriter(outputStream,excelWriter);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("导出文件失败！");
         }
 
         apiResponse.setCode(200);
@@ -1087,7 +1087,7 @@ public class MbpServiceImpl implements MbpService {
             }
             EasyExcelUtils.finishWriter(outputStream,excelWriter);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException("导出文件失败！");
         }
 
         apiResponse.setCode(200);
