@@ -130,9 +130,12 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public ApiResponse update(LoginPTO loginPTO) {
         ApiResponse apiResponse = new ApiResponse();
+        String password = AESUtils.decode(loginPTO.getPassWord());
+        String phoneNumber = AESUtils.decode(loginPTO.getPhoneNumber());
+
         QueryWrapper<LoginPTO> queryWrapper = new QueryWrapper<>();
         if (StringUtils.isNotEmpty(loginPTO.getPhoneNumber())) {
-            queryWrapper.eq("phone_number", loginPTO.getPhoneNumber());
+            queryWrapper.eq("phone_number", phoneNumber);
         }
         Long count = loginMapper.selectCount(queryWrapper);
         if (count == 0) {
@@ -140,6 +143,8 @@ public class LoginServiceImpl implements LoginService {
             apiResponse.setMsg("手机号码输入错误");
             return apiResponse;
         }
+        loginPTO.setPhoneNumber(phoneNumber);
+        loginPTO.setPassWord(passwordEncoder.encode(password));
         int i = loginMapper.update(loginPTO, queryWrapper);
         if (i > 0) {
             apiResponse.setCode(200);
