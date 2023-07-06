@@ -9,6 +9,7 @@ import com.tencent.wxcloudrun.service.IndustrialParkDetailService;
 import com.tencent.wxcloudrun.service.MarketingPlanService;
 import com.tencent.wxcloudrun.service.MbpRouteService;
 import com.tencent.wxcloudrun.service.impl.*;
+import com.tencent.wxcloudrun.utils.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.MediaType;
@@ -45,7 +46,7 @@ public class MbpController {
     private MarketingPlanService marketingPlanService;
 
     @PostMapping(value = "/parsingTable", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ApiResponse parsingTable(@RequestParam(value = "file") MultipartFile file,
+    public ApiResponse parsingTable(HttpServletRequest httpServletRequest,@RequestParam(value = "file") MultipartFile file,
                              @RequestParam(value = "marketType") String marketType,
                              @RequestParam(required = false,value = "id")Integer id) {
         log.info("处理{}表格数据开始！",marketType);
@@ -53,81 +54,165 @@ public class MbpController {
     }
 
     @GetMapping(value = "/downloadTable")
-    public ApiResponse downloadTable(HttpServletResponse response,
+    public ApiResponse downloadTable(HttpServletRequest httpServletRequest,HttpServletResponse response,
                                      @RequestParam(value = "marketType") String marketType,
                                      @RequestParam(required = false,value = "substation")String substation,
                                      @RequestParam(required = false,value = "customerManager")String customerManager,
                                      @RequestParam(required = false,value = "startTime")String startTime,
                                      @RequestParam(required = false,value = "endTime")String endTime,
                                      @RequestParam(required = false,value = "subId")String subId) throws IOException {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("导出数据开始！");
         return mbpService.downloadTable(response,marketType,substation,customerManager,startTime,endTime,subId);
     }
 
     @PostMapping(value = "/create")
-    public ApiResponse create(@RequestBody RequestEntity requestEntity) {
+    public ApiResponse create(HttpServletRequest httpServletRequest,@RequestBody RequestEntity requestEntity) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("添加{}数据开始！",requestEntity.getMarketType());
         return routeService.create(requestEntity);
     }
 
     @PostMapping(value = "/list")
     @ResponseBody
-    public ApiResponse query(@RequestBody PageVo<RequestEntity> pageVo) {
+    public ApiResponse query(HttpServletRequest httpServletRequest,@RequestBody PageVo<RequestEntity> pageVo) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("查询{}数据开始！",pageVo.getType().getMarketType());
         return routeService.query(pageVo);
     }
 
     @DeleteMapping(value = "/delete")
-    public ApiResponse delete(@RequestParam("id") Integer id,@RequestParam("marketType") String marketType) {
+    public ApiResponse delete(HttpServletRequest httpServletRequest,@RequestParam("id") Integer id,@RequestParam("marketType") String marketType) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("删除{}数据开始！",marketType);
         return routeService.delete(id,marketType);
     }
 
     @PutMapping(value = "/update")
-    public ApiResponse update(@RequestBody RequestEntity requestEntity) {
+    public ApiResponse update(HttpServletRequest httpServletRequest,@RequestBody RequestEntity requestEntity) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("更新{}数据开始！",requestEntity.getMarketType());
         return routeService.update(requestEntity);
     }
 
     @PutMapping(value = "/listUpdate")
-    public ApiResponse update(@RequestBody List<RequestEntity> requestEntity) {
+    public ApiResponse update(HttpServletRequest httpServletRequest,@RequestBody List<RequestEntity> requestEntity) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("批量更新{}数据开始！",requestEntity.get(0).getMarketType());
         return routeService.listUpdate(requestEntity);
     }
 
     @PostMapping(value = "/createBuildingDetail")
-    public ApiResponse createBuildingDetail(@RequestBody CommercialBuildingDetail commercialBuildingDetail) {
+    public ApiResponse createBuildingDetail(HttpServletRequest httpServletRequest,@RequestBody CommercialBuildingDetail commercialBuildingDetail) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("添加商务楼宇二级明细数据开始！");
         return mbpBuildingDetailServiceImpl.createBuildingDetail(commercialBuildingDetail);
     }
 
     @PostMapping(value = "/listBuildingDetail")
     @ResponseBody
-    public ApiResponse queryBuildingDetail(@RequestBody PageVo<CommercialBuildingDetail> pageVo) {
+    public ApiResponse queryBuildingDetail(HttpServletRequest httpServletRequest,@RequestBody PageVo<CommercialBuildingDetail> pageVo) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("查询商务楼宇二级明细数据开始！");
         return mbpBuildingDetailServiceImpl.queryBuildingDetail(pageVo);
     }
 
     @DeleteMapping(value = "/deleteBuildingDetail")
-    public ApiResponse deleteBuildingDetail(@RequestParam("id") Integer id) {
+    public ApiResponse deleteBuildingDetail(HttpServletRequest httpServletRequest,@RequestParam("id") Integer id) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("删除商务楼宇二级明细数据开始！");
         return mbpBuildingDetailServiceImpl.deleteBuildingDetail(id);
     }
 
     @PutMapping(value = "/updateBuildingDetail")
-    public ApiResponse updateBuildingDetail(@RequestBody CommercialBuildingDetail commercialBuildingDetail) {
+    public ApiResponse updateBuildingDetail(HttpServletRequest httpServletRequest,@RequestBody CommercialBuildingDetail commercialBuildingDetail) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("更新商务楼宇二级明细数据开始！");
         return mbpBuildingDetailServiceImpl.updateBuildingDetail(commercialBuildingDetail);
     }
 
     @PutMapping(value = "/updateBuildingDetailList")
-    public ApiResponse updateBuildingDetailList(@RequestBody List<CommercialBuildingDetail> commercialBuildingDetailList) {
+    public ApiResponse updateBuildingDetailList(HttpServletRequest httpServletRequest,@RequestBody List<CommercialBuildingDetail> commercialBuildingDetailList) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("批量更新商务楼宇二级明细数据开始！");
         return mbpBuildingDetailServiceImpl.updateBuildingDetailList(commercialBuildingDetailList);
     }
 
     @PostMapping(value = "/createIndustrialParkDetail")
-    public ApiResponse createIndustrialParkDetail(@RequestBody IndustrialParkDetail industrialParkDetail) {
+    public ApiResponse createIndustrialParkDetail(HttpServletRequest httpServletRequest,@RequestBody IndustrialParkDetail industrialParkDetail) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("添加产业园区二级明细数据开始！");
         IndustrialParkDetailPTO industrialParkDetailPTO = new IndustrialParkDetailPTO();
         BeanUtils.copyProperties(industrialParkDetail, industrialParkDetailPTO);
@@ -136,18 +221,39 @@ public class MbpController {
 
     @PostMapping(value = "/listIndustrialParkDetail")
     @ResponseBody
-    public ApiResponse queryIndustrialParkDetail(@RequestBody PageVo<IndustrialParkDetail> pageVo) {
+    public ApiResponse queryIndustrialParkDetail(HttpServletRequest httpServletRequest,@RequestBody PageVo<IndustrialParkDetail> pageVo) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("查询产业园区二级明细数据开始！");
         return industrialParkDetailService.query(pageVo);
     }
 
     @DeleteMapping(value = "/deleteIndustrialParkDetail")
-    public ApiResponse deleteIndustrialParkDetail(@RequestParam("id") Integer id) {
+    public ApiResponse deleteIndustrialParkDetail(HttpServletRequest httpServletRequest,@RequestParam("id") Integer id) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("删除产业园区二级明细数据开始！");
         return industrialParkDetailService.delete(id);
     }
     @PutMapping(value = "/updateIndustrialParkDetail")
-    public ApiResponse updateIndustrialParkDetail(@RequestBody IndustrialParkDetail industrialParkDetail) {
+    public ApiResponse updateIndustrialParkDetail(HttpServletRequest httpServletRequest,@RequestBody IndustrialParkDetail industrialParkDetail) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("更新产业园区二级明细数据开始！");
         IndustrialParkDetailPTO industrialParkDetailPTO = new IndustrialParkDetailPTO();
         BeanUtils.copyProperties(industrialParkDetail, industrialParkDetailPTO);
@@ -155,75 +261,159 @@ public class MbpController {
     }
 
     @PutMapping(value = "/updateIndustrialParkDetailList")
-    public ApiResponse updateBuildingDetail(@RequestBody List<IndustrialParkDetail> industrialParkDetailList) {
+    public ApiResponse updateBuildingDetail(HttpServletRequest httpServletRequest,@RequestBody List<IndustrialParkDetail> industrialParkDetailList) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("批量更新产业园区二级明细数据开始！");
         return industrialParkDetailService.updateIndustrialParkDetailList(industrialParkDetailList);
     }
 
     @PostMapping(value = "/createShop")
-    public ApiResponse createShop(@RequestBody ShopDTO shopDTO) {
+    public ApiResponse createShop(HttpServletRequest httpServletRequest,@RequestBody ShopDTO shopDTO) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("添加沿街商铺数据开始！");
         return mbpShopService.createShop(shopDTO);
     }
 
     @PostMapping(value = "/listShop")
     @ResponseBody
-    public ApiResponse queryShop(@RequestBody PageVo<ShopDTO> pageVo) {
+    public ApiResponse queryShop(HttpServletRequest httpServletRequest,@RequestBody PageVo<ShopDTO> pageVo) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("查询沿街商铺数据开始！");
         return mbpShopService.queryShop(pageVo);
     }
 
     @DeleteMapping(value = "/deleteShop")
-    public ApiResponse deleteShop(@RequestParam("id") Integer id) {
+    public ApiResponse deleteShop(HttpServletRequest httpServletRequest,@RequestParam("id") Integer id) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("删除沿街商铺数据开始！");
         return mbpShopService.deleteShop(id);
     }
 
     @PutMapping(value = "/updateShop")
-    public ApiResponse updateShop(@RequestBody ShopDTO shopDTO) {
+    public ApiResponse updateShop(HttpServletRequest httpServletRequest,@RequestBody ShopDTO shopDTO) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("更新沿街商铺数据开始！");
         return mbpShopService.updateShop(shopDTO);
     }
 
     @PutMapping(value = "/updateShopList")
-    public ApiResponse updateShopList(@RequestBody List<ShopDTO> shopDTOList) {
+    public ApiResponse updateShopList(HttpServletRequest httpServletRequest,@RequestBody List<ShopDTO> shopDTOList) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("批量更新沿街商铺数据开始！");
         return mbpShopService.updateShopList(shopDTOList);
     }
 
     @PostMapping(value = "/createShopDetail")
-    public ApiResponse createShopDetail(@RequestBody ShopDetail shopDetail) {
+    public ApiResponse createShopDetail(HttpServletRequest httpServletRequest,@RequestBody ShopDetail shopDetail) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("添加沿街商铺二级明细数据开始！");
         return mbpShopDetailService.createShopDetail(shopDetail);
     }
 
     @PostMapping(value = "/listShopDetail")
     @ResponseBody
-    public ApiResponse queryShopDetail(@RequestBody PageVo<ShopDetail> pageVo) {
+    public ApiResponse queryShopDetail(HttpServletRequest httpServletRequest,@RequestBody PageVo<ShopDetail> pageVo) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("查询沿街商铺二级明细数据开始！");
         return mbpShopDetailService.queryShopDetail(pageVo);
     }
 
     @DeleteMapping(value = "/deleteShopDetail")
-    public ApiResponse deleteShopDetail(@RequestParam("id") Integer id) {
+    public ApiResponse deleteShopDetail(HttpServletRequest httpServletRequest,@RequestParam("id") Integer id) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("删除沿街商铺二级明细数据开始！");
         return mbpShopDetailService.deleteShopDetail(id);
     }
 
     @PutMapping(value = "/updateShopDetail")
-    public ApiResponse updateShopDetail(@RequestBody ShopDetail shopDetail) {
+    public ApiResponse updateShopDetail(HttpServletRequest httpServletRequest,@RequestBody ShopDetail shopDetail) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("更新沿街商铺二级明细数据开始！");
         return mbpShopDetailService.updateShopDetail(shopDetail);
     }
 
     @PutMapping(value = "/updateShopDetailList")
-    public ApiResponse updateShopDetailList(@RequestBody List<ShopDetail> shopDetailList) {
+    public ApiResponse updateShopDetailList(HttpServletRequest httpServletRequest,@RequestBody List<ShopDetail> shopDetailList) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("批量更新商铺二级明细数据开始！");
         return mbpShopDetailService.updateShopDetailList(shopDetailList);
     }
 
     @PostMapping(value = "/createMarketingPlan")
-    public ApiResponse createMarketingPlan(@RequestBody MarketingPlanDTO marketingPlanDTO) {
+    public ApiResponse createMarketingPlan(HttpServletRequest httpServletRequest,@RequestBody MarketingPlanDTO marketingPlanDTO) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("添加营销计划数据开始！");
         MarketingPlanPTO marketingPlanPTO = new MarketingPlanPTO();
         BeanUtils.copyProperties(marketingPlanDTO, marketingPlanPTO);
@@ -232,19 +422,40 @@ public class MbpController {
 
     @PostMapping(value = "/listMarketingPlan")
     @ResponseBody
-    public ApiResponse queryMarketingPlan(@RequestBody PageVo<MarketingPlanDTO> pageVo) {
+    public ApiResponse queryMarketingPlan(HttpServletRequest httpServletRequest,@RequestBody PageVo<MarketingPlanDTO> pageVo) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("查询营销计划数据开始！");
         return marketingPlanService.query(pageVo);
     }
 
     @DeleteMapping(value = "/deleteMarketingPlan")
-    public ApiResponse deleteMarketingPlan(@RequestParam("id") Integer id) {
+    public ApiResponse deleteMarketingPlan(HttpServletRequest httpServletRequest,@RequestParam("id") Integer id) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("删除营销计划数据开始！");
         return marketingPlanService.delete(id);
     }
 
     @PutMapping(value = "/updateMarketingPlan")
-    public ApiResponse updateMarketingPlan(@RequestBody MarketingPlanDTO marketingPlanDTO) {
+    public ApiResponse updateMarketingPlan(HttpServletRequest httpServletRequest,@RequestBody MarketingPlanDTO marketingPlanDTO) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("更新营销计划数据开始！");
         MarketingPlanPTO marketingPlanPTO = new MarketingPlanPTO();
         BeanUtils.copyProperties(marketingPlanDTO, marketingPlanPTO);
@@ -252,29 +463,62 @@ public class MbpController {
     }
 
     @GetMapping(value = "/fullExport")
-    public ApiResponse fullExport(@RequestParam("startTime")String startTime,@RequestParam("endTime")String endTime) {
+    public ApiResponse fullExport(HttpServletRequest httpServletRequest,@RequestParam("startTime")String startTime,@RequestParam("endTime")String endTime) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("统计分析查询开始！");
         return mbpService.fullExport(startTime,endTime);
     }
 
     @GetMapping(value = "/statistics")
-    public ApiResponse statistics(@RequestParam("startTime")String startTime,@RequestParam("endTime")String endTime,@RequestParam("substation")String substation) {
+    public ApiResponse statistics(HttpServletRequest httpServletRequest,
+                                  @RequestParam("startTime")String startTime,
+                                  @RequestParam("endTime")String endTime,
+                                  @RequestParam("substation")String substation) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("按照分局查询开始！");
         return mbpService.statistics(startTime,endTime,substation);
     }
 
     @GetMapping(value = "/downloadFullExport")
-    public ApiResponse downloadFullExport(HttpServletResponse response,
+    public ApiResponse downloadFullExport(HttpServletRequest httpServletRequest,
+                                          HttpServletResponse response,
                                      @RequestParam(required = false,value = "startTime")String startTime,
                                      @RequestParam(required = false,value = "endTime")String endTime,
-                                     @RequestParam("substation")String substation
-                                     ) {
+                                     @RequestParam("substation")String substation) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("导出数据开始！");
         return routeService.download(response,startTime,endTime,substation);
     }
 
     @GetMapping(value = "/fullExportByCM")
-    public ApiResponse fullExportByCM(@RequestParam("startTime")String startTime,@RequestParam("endTime")String endTime) {
+    public ApiResponse fullExportByCM(HttpServletRequest httpServletRequest,
+                                      @RequestParam("startTime")String startTime,
+                                      @RequestParam("endTime")String endTime) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("统计分析查询开始！");
         return mbpService.fullExportByCM(startTime,endTime);
     }
