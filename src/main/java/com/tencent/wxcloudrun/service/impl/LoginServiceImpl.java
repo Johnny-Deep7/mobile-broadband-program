@@ -66,7 +66,7 @@ public class LoginServiceImpl implements LoginService {
             queryWrapper.eq("phone_number", phoneNumber);
         }
         LoginPTO loginPTO1 = loginMapper.selectOne(queryWrapper);
-        if (StringUtils.isBlank(loginPTO1.getPassWord())) {
+        if (StringUtils.checkValNull(loginPTO1)||StringUtils.isBlank(loginPTO1.getPassWord())) {
             apiResponse.setCode(400);
             apiResponse.setMsg("登录失败,当前用户不存在");
             return apiResponse;

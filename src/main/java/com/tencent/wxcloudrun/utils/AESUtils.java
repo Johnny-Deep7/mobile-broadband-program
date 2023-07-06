@@ -54,12 +54,4 @@ public class AESUtils {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        String s= "1jgs3y1IwpI9XXNjSV4pyg==";
-
-        String s1 = Base64.encodeBase64String(s.getBytes(StandardCharsets.UTF_8));
-        System.out.println(s1);
-        String decrypt = AESUtils.decode(s);
-        System.out.println(decrypt);
-    }
 }
