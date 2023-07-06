@@ -48,7 +48,7 @@ public class JwtUtil {
         try {
             Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(jwtToken);
         }catch(Exception e){
-            throw new RuntimeException("判断token失败");
+            return false;
         }
         return true;
     }
@@ -67,7 +67,7 @@ public class JwtUtil {
             }
             Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(jwtToken);
         }catch(Exception e){
-            throw new RuntimeException("token判断失败！");
+            return false;
         }
         return true;
     }
@@ -79,7 +79,9 @@ public class JwtUtil {
      */
     public static Integer getUserIdByJwtToken(HttpServletRequest request){
         String jwtToken = request.getHeader("token");
-        if(StringUtils.isEmpty(jwtToken)) return null;
+        if(StringUtils.isEmpty(jwtToken)) {
+            return null;
+        }
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey(APP_SECRET).parseClaimsJws(jwtToken);
         Claims claims = claimsJws.getBody();
         return (Integer)claims.get("id");
