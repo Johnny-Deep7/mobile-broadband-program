@@ -65,7 +65,14 @@ public class UserLoginController {
     }
 
     @PutMapping(value = "/updateAccountInformation")
-    public ApiResponse updateLogin(@RequestBody LoginDTO loginDTO) {
+    public ApiResponse updateLogin(HttpServletRequest httpServletRequest, @RequestBody LoginDTO loginDTO) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("开始更新用户登录信息！");
         LoginPTO loginPTO = new LoginPTO();
         BeanUtils.copyProperties(loginDTO, loginPTO);
