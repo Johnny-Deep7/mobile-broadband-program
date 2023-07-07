@@ -58,9 +58,15 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public ApiResponse login(LoginPTO loginPTO) {
+        ApiResponse apiResponse = new ApiResponse();
         String password = AESUtils.decode(loginPTO.getPassWord());
         String phoneNumber = AESUtils.decode(loginPTO.getPhoneNumber());
-        ApiResponse apiResponse = new ApiResponse();
+        if (password == null){
+            apiResponse.setCode(400);
+            apiResponse.setMsg("密码解析失败，请重新输入！");
+            return apiResponse;
+        }
+
         QueryResponse queryResponse = new QueryResponse();
         QueryWrapper<LoginPTO> queryWrapper = new QueryWrapper<>();
         if (StringUtils.isNotEmpty(loginPTO.getPhoneNumber())) {
@@ -166,7 +172,7 @@ public class LoginServiceImpl implements LoginService {
         QueryWrapper<LoginPTO> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", id);
         LoginPTO loginPTO = loginMapper.selectOne(queryWrapper);
-        loginPTO.setPassWord(passwordEncoder.encode(passWord));
+        loginPTO.setPassWord(passwordEncoder.encode(AESUtils.decode(passWord)));
         int i = loginMapper.updateById(loginPTO);
         if (i > 0) {
             apiResponse.setCode(200);
