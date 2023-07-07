@@ -49,6 +49,13 @@ public class MbpController {
     public ApiResponse parsingTable(HttpServletRequest httpServletRequest,@RequestParam(value = "file") MultipartFile file,
                              @RequestParam(value = "marketType") String marketType,
                              @RequestParam(required = false,value = "id")Integer id) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("处理{}表格数据开始！",marketType);
         return mbpService.parsingTable(file,marketType,id);
     }
