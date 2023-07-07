@@ -130,7 +130,10 @@ public class LoginServiceImpl implements LoginService {
     @Override
     public ApiResponse update(LoginPTO loginPTO) {
         ApiResponse apiResponse = new ApiResponse();
-        String password = AESUtils.decode(loginPTO.getPassWord());
+        if (StringUtils.isNotBlank(loginPTO.getPassWord())){
+            String password = AESUtils.decode(loginPTO.getPassWord());
+            loginPTO.setPassWord(passwordEncoder.encode(password));
+        }
         String phoneNumber = AESUtils.decode(loginPTO.getPhoneNumber());
 
         QueryWrapper<LoginPTO> queryWrapper = new QueryWrapper<>();
@@ -144,7 +147,7 @@ public class LoginServiceImpl implements LoginService {
             return apiResponse;
         }
         loginPTO.setPhoneNumber(phoneNumber);
-        loginPTO.setPassWord(passwordEncoder.encode(password));
+
         int i = loginMapper.update(loginPTO, queryWrapper);
         if (i > 0) {
             apiResponse.setCode(200);
