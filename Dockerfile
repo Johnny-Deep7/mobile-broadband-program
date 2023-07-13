@@ -22,19 +22,25 @@ FROM alpine:3.13
 # 选用国内镜像源以提高下载速度
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tencent.com/g' /etc/apk/repositories \
     && apk add --update --no-cache openjdk8-jre-base \
+	nginx \
+    zip \
     && rm -f /var/cache/apk/*
 
 # 容器默认时区为UTC，如需使用上海时间请启用以下时区设置命令
-# RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo Asia/Shanghai > /etc/timezone
+RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo Asia/Shanghai > /etc/timezone
 
 # 使用 HTTPS 协议访问容器云调用证书安装
 RUN apk add ca-certificates
 
-# 指定运行时的工作目录
-WORKDIR /app
-
 # 将构建产物jar包拷贝到运行时目录中
 COPY --from=build /app/target/*.jar .
+COPY nginx.conf /app/
+
+# 替换nginx、fpm、php配置并赋予777权限，不赋予权限修改或写日志有问题，配置文件放到本地根目录conf目录下
+RUN cp /app/nginx.conf /etc/nginx/conf.d/default.conf \
+    && mkdir -p /run/nginx \
+    && chmod -R 777 /app \
+    && chmod -R 777 /etc
 
 # 暴露端口
 # 此处端口必须与「服务设置」-「流水线」以及「手动上传代码包」部署时填写的端口一致，否则会部署失败。
