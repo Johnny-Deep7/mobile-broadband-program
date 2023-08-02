@@ -21,6 +21,14 @@ public class UserLoginController {
     @Autowired
     private LoginServiceImpl loginService;
 
+    @PostMapping(value = "/regInitialized")
+    public ApiResponse createLogin(@RequestBody LoginDTO loginDTO) {
+        log.info("开始创建用户登录信息");
+        LoginPTO loginPTO = new LoginPTO();
+        BeanUtils.copyProperties(loginDTO, loginPTO);
+        return loginService.regin(loginPTO);
+    }
+
     //注册用户
     @PostMapping(value = "/regin")
     public ApiResponse regin(@RequestBody LoginPTO loginPTO) {
