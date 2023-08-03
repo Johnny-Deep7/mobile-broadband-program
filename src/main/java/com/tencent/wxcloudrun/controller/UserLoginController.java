@@ -22,7 +22,14 @@ public class UserLoginController {
     private LoginServiceImpl loginService;
 
     @PostMapping(value = "/regInitialized")
-    public ApiResponse createLogin(@RequestBody LoginDTO loginDTO) {
+    public ApiResponse createLogin(HttpServletRequest httpServletRequest,@RequestBody LoginDTO loginDTO) {
+        ApiResponse apiResponse = ApiResponse.ok();
+        //首先判断token是否有效
+        if(!JwtUtil.checkToken(httpServletRequest)){
+            apiResponse.setCode(500);
+            apiResponse.setMsg("token无效");
+            return apiResponse;
+        }
         log.info("开始创建用户登录信息");
         LoginPTO loginPTO = new LoginPTO();
         BeanUtils.copyProperties(loginDTO, loginPTO);
